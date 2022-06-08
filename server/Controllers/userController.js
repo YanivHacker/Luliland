@@ -31,7 +31,7 @@ const deleteUser = async (req,res) => {
     const {id} = req.params;
     if(!mongoose.isValidObjectId(id))
         return res.status(404).send(`the id ${id} is not valid`);
-    await User.findByIdAndUpdate(id,{isDeleted: true}, (err, docs) => {console.log(err? `Deletion of user ${id} failed`:`User ${id} deleted successfuly`);});
+    const user = await User.findByIdAndUpdate(id,{isDeleted: true});
     res.json(user);
 }
 
