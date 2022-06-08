@@ -34,8 +34,6 @@ const createUser = async (req,res) => {
 }
 //TODO: add authentication for request
 const updateUser = async (req,res) => {
-    console.log('start update');
-    console.log(`req.body: ${req.body.toString()}`);
     const {id} = req.params;
     const {firstName, lastName, creationDate, isAdmin, allPostIDs, email, password, profilePicture, isDeleted} = req.body;
     if(!mongoose.isValidObjectId(id))

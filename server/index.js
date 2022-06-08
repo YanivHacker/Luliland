@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const UserRouter = require("./Routes/userRoutes");
-
+const PostRouter = require("./Routes/postRoutes");
 
 const port = process.env.port || 5000;
 const db = 'mongodb+srv://admin:1234@lulilanddb.j4tppp6.mongodb.net/?retryWrites=true&w=majority'
@@ -16,7 +16,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.json({ extended:true }));
 app.use(express.urlencoded({ extended:true }));
 app.use(cors());
-app.use('/users',UserRouter);
+app.use('/users', UserRouter);
+app.use('/posts', PostRouter);
 
 
 app.get('/',(req, res) => {res.send('Im alive');});
