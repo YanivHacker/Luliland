@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const UserRouter = require("./Routes/userRoutes");
 const PostRouter = require("./Routes/postRoutes");
 const CommentRouter = require("./Routes/commentRoutes");
+const DmMessage = require("./Routes/directMessagesRoutes");
 
 
 const port = process.env.port || 5000;
@@ -21,8 +22,7 @@ app.use(cors());
 app.use('/users', UserRouter);
 app.use('/posts', PostRouter);
 app.use('/comments', CommentRouter);
-
-
+app.use('/dm', DmMessage);
 
 app.get('/',(req, res) => {res.send('Im alive');});
 mongoose.connect(db,{ useUnifiedTopology: true, useNewUrlParser: true}).then(()=>app.listen(port, ()=>{
