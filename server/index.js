@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const UserRouter = require("./Routes/userRoutes");
 const PostRouter = require("./Routes/postRoutes");
+const CommentRouter = require("./Routes/commentRoutes");
+const DmMessage = require("./Routes/directMessagesRoutes");
+
 
 const port = process.env.port || 5000;
 const db = 'mongodb+srv://admin:1234@lulilanddb.j4tppp6.mongodb.net/?retryWrites=true&w=majority'
@@ -18,7 +21,8 @@ app.use(express.urlencoded({ extended:true }));
 app.use(cors());
 app.use('/users', UserRouter);
 app.use('/posts', PostRouter);
-
+app.use('/comments', CommentRouter);
+app.use('/dm', DmMessage);
 
 app.get('/',(req, res) => {res.send('Im alive');});
 mongoose.connect(db,{ useUnifiedTopology: true, useNewUrlParser: true}).then(()=>app.listen(port, ()=>{
