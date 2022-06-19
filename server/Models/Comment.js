@@ -4,8 +4,8 @@ const comment = new Schema({
     postID: {type: String, require: true},
     content: {type: String, require: false},
     images: {type: String, require: false},
-    creationDate: {type: Date, require: true},
-    isDeleted: {type: Boolean, require: true}
+    creationDate: {type: String, require: true, default: Date.now().toString()},
+    isDeleted: {type: Boolean, require: true, default: false}
 })
 
 const Comment = mongoose.model('Comment', comment)

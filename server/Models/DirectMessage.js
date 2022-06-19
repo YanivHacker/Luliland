@@ -5,7 +5,7 @@ const directMessages = new Schema({
     receiverEmail: {type: String, require: true},
     image: {type: String, require: false},
     content: {type: String, require: true},
-    creationDate: {type: Date, require: true},
+    creationDate: {type: Date, require: true, default: Date.now().toString()},
 })
 
 const DirectMessage = mongoose.model('DirectMessage', directMessages)
