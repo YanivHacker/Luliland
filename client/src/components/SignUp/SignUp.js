@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react"
 import {signUp} from "../../services/UserService";
 
-export function SignUp(){
+export const SignUp = ()=>{
     const firstName = useRef()
     const lastName = useRef()
     const email = useRef()
