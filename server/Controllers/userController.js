@@ -65,13 +65,13 @@ const validateFields = (admin, fullName, emailAddress) => {
 
 const createUser = async (req,res) => {
     try {
-        var creationDate = Date.now();
-        if(await mongoose.findOne({email: req.body.email})){
+        //var creationDate = Date.now();
+        /*if(await mongoose.findOne({email: req.body.email})){
             alert('User with this email address already exiSts. Please choose another email.')
             res.status(400).json(user);
-        }
-        var result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email};
-        const user = new User(result.firstName, result.lastName, result.email, creationDate, result.isAdmin, req.body.profilePicture);
+        }*/
+        var result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email, password:req.body.password};
+        const user = new User({firstName:result.firstName, lastName:result.lastName, email:result.email, password:result.password});
         await user.save();
         res.status(200).json(user);
     } catch (error) {

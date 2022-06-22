@@ -30,7 +30,7 @@ export const SignUpForm = ({
                         floatingLabelText="email"
                         value={user.email}
                         onChange={onChange}
-                        errorText={errors.username}
+                        errorText={errors.email}
                     />
                     <br/>
                     <TextField
@@ -44,7 +44,7 @@ export const SignUpForm = ({
                     <TextField
                         name="lastName"
                         floatingLabelText="last name"
-                        value={user.firstName}
+                        value={user.lastName}
                         onChange={onChange}
                         errorText={errors.email}
                     />

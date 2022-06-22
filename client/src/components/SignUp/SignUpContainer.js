@@ -71,15 +71,18 @@ export class SignUpContainer extends Component {
     validateForm(event) {
         event.preventDefault();
         var payload = validateSignUpForm(this.state.user);
+        console.log(payload)
         if (payload.success) {
             this.setState({
                 errors: {}
             });
             var user = {
-                usr: this.state.user.username,
-                pw: this.state.user.password,
-                email: this.state.user.email
+                email: this.state.user.email,
+                password: this.state.user.password,
+                firstName: this.state.user.firstName,
+                lastName: this.state.user.lastName
             };
+            console.log('go to submit sign up')
             this.submitSignup(user);
         } else {
             const errors = payload.errors;
