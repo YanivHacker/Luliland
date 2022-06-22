@@ -61,6 +61,7 @@ export const SignUp = ()=>{
                 onChange={loadImage}
                 imgExtension={[".jpg", ".png", ".gif", ".svg"]}
                 fileSizeError=" file size is too big"
+                singleImage ={true}
             />
         </>
     )
