@@ -6,7 +6,7 @@ const user = new Schema({
     email: {type: String, require: true},
     password: {type: String, require: true},
     creationDate: {type: String, require: true, default: Date.now().toString()},
-    isAdmin: {type: Boolean, require: true},
+    isAdmin: {type: Boolean, require: true, default: false},
     profilePicture: {type: String, require: false},
     allPostIDs: {type: [{type: String}], default: []},
     isDeleted: {type: Boolean, default: false}

@@ -70,7 +70,7 @@ const createUser = async (req,res) => {
             alert('User with this email address already exiSts. Please choose another email.')
             res.status(400).json(user);
         }
-        var result = validateFields(req.body.isAdmin, req.body.fullName, req.body.email);
+        var result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email};
         const user = new User(result.firstName, result.lastName, result.email, creationDate, result.isAdmin, req.body.profilePicture);
         await user.save();
         res.status(200).json(user);
@@ -81,14 +81,14 @@ const createUser = async (req,res) => {
 
 const updateUser = async (req,res) => {
     const {id} = req.params;
-    const {fullName, isAdmin, password, profilePicture} = req.body;
+    const {firstName, lastName, password, profilePicture} = req.body;
     if(!mongoose.isValidObjectId(id))
         return res.status(404).send(`the id ${id} is not valid`);
-    var result = validateFields(isAdmin, fullName, null);
+    var result = {firstName: firstName, lastName: lastName};
     if(profilePicture)
-        await User.findByIdAndUpdate(id, {firstName:result.firstName, lastName:result.lastName, isAdmin:result.isAdmin, password:password, profilePicture:profilePicture});
+        await User.findByIdAndUpdate(id, {firstName:result.firstName, lastName:result.lastName, password:password, profilePicture:profilePicture});
     else
-        await User.findByIdAndUpdate(id, {firstName:result.firstName, lastName:result.lastName, isAdmin:result.isAdmin, password:password});
+        await User.findByIdAndUpdate(id, {firstName:result.firstName, lastName:result.lastName,password:password});
     res.json(user);
 }
 // TODO: ASK SHAY IF WE NEED TO TAKE CARE OF ENDPOINTS NOT ACCESSED THROUGH UI
