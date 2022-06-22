@@ -1,15 +1,18 @@
 import React, {useRef, useState} from "react"
 import {signUp} from "../../services/UserService";
 import ImageUploader from "react-images-upload";
-
+import {SignUpForm} from "./SignUpForm";
+import {SignUpContainer} from "./SignUpContainer"
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import "./SignUpPage.css"
 
 export const SignUp = ()=>{
     const firstName = useRef()
     const lastName = useRef()
     const email = useRef()
     const password = useRef()
-    const [profileImage, setProfileImage] = useState("")
-
+    //const [profileImage, setProfileImage] = useState("")
+    const profile = useRef()
 
 
     function createUser(){
@@ -29,40 +32,46 @@ export const SignUp = ()=>{
     function loadImage(files){
         console.log(files)
         console.log(files.length)
-        const x = files[0].text().then(val=>console.log(val))
+
+        if(files.length>0)
+            console.log(URL.createObjectURL(files[0]))//files[0]
         //setProfileImage(files.length===0?"":files[0].text())
+        //console.log(profile.current.value)
     }
 
     return (
         <>
-                <label>
-                    first name:
-                    <input ref={firstName} type="text" />
-                    <br/>
-                    last name:
-                    <input ref={lastName} type="text"/>
-                    <br/>
-                    email:
-                    <input ref={email} type="email"/>
-                    <br/>
-                    password:
-                    <input ref={password} type="password" />
-                    <br/>
-                    profile image:
-                    <br/>
-                    <button type="submit" onClick={createUser}>sign up</button>
+            {/*    <label>*/}
+            {/*        first name:*/}
+            {/*        <input ref={firstName} type="text" />*/}
+            {/*        <br/>*/}
+            {/*        last name:*/}
+            {/*        <input ref={lastName} type="text"/>*/}
+            {/*        <br/>*/}
+            {/*        email:*/}
+            {/*        <input ref={email} type="email"/>*/}
+            {/*        <br/>*/}
+            {/*        password:*/}
+            {/*        <input ref={password} type="password" />*/}
+            {/*        <br/>*/}
+            {/*        profile image:*/}
+            {/*        <br/>*/}
+            {/*        <button type="submit" onClick={createUser}>sign up</button>*/}
 
-                </label>
-            <ImageUploader
-                withIcon={false}
-                withPreview={true}
-                label=""
-                buttonText="Upload Image"
-                onChange={loadImage}
-                imgExtension={[".jpg", ".png", ".gif", ".svg"]}
-                fileSizeError=" file size is too big"
-                singleImage ={true}
-            />
+            {/*    </label>*/}
+            {/*<ImageUploader*/}
+            {/*    withIcon={false}*/}
+            {/*    withPreview={true}*/}
+            {/*    label=""*/}
+            {/*    buttonText="Upload Image"*/}
+            {/*    onChange={loadImage}*/}
+            {/*    imgExtension={[".jpg", ".png", ".gif", ".svg"]}*/}
+            {/*    fileSizeError=" file size is too big"*/}
+            {/*    singleImage ={true}*/}
+            {/*/>*/}
+            <MuiThemeProvider>
+                <SignUpContainer />
+            </MuiThemeProvider>
         </>
     )
 }
