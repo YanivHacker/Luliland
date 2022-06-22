@@ -5,8 +5,8 @@ const user = new Schema({
     lastName: {type: String, require: true},
     email: {type: String, require: true},
     password: {type: String, require: true},
-    creationDate: {type: String, require: true, default: Date.now().toString()},
-    isAdmin: {type: Boolean, require: true, default: false},
+    creationDate: {type: String, default: Date.now().toString()},
+    isAdmin: {type: Boolean, default: false},
     profilePicture: {type: String, require: false},
     allPostIDs: {type: [{type: String}], default: []},
     isDeleted: {type: Boolean, default: false}
