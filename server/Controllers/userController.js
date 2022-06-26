@@ -10,6 +10,35 @@ const readUsers = async (req,res) =>{
     }
 }
 
+const logIn = async (req,res) => {
+    try {
+        if(!await User.findOne({email: req.body.email}, function (err, docs) {
+            if (err){
+                alert('No user found with this email.')
+                res.status(404).json(user);
+            }
+            else{
+                if(req.body.password !== docs.password){
+                    alert('Incorrect password inserted for this user, please try again.')
+                    res.status(400).json(user);
+                }
+                else
+                {
+                    alert('Login successful!')
+                    res.status(200).json(user)
+                    // todo: add some kind of session management and save the current logged in user.
+                }
+            }
+        })){
+            alert('No user found with this email.')
+            res.status(404).json(user);
+        }
+        res.status(404).json(user);
+    } catch (error) {
+        res.status(404).json({ message:error });
+    }
+}
+
 const getUserById = async (req,res) => {
     try{
         const {id} = req.params;
@@ -66,7 +95,7 @@ const validateFields = (admin, fullName, emailAddress) => {
 const createUser = async (req,res) => {
     try {
         //var creationDate = Date.now();
-        /*if(await mongoose.findOne({email: req.body.email})){
+        /*if(await User.findOne({email: req.body.email})){
             alert('User with this email address already exiSts. Please choose another email.')
             res.status(400).json(user);
         }*/
@@ -100,4 +129,4 @@ const deleteUser = async (req,res) => {
     res.json(user);
 }
 
-module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById};
+module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn};
