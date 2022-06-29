@@ -10,20 +10,19 @@ def make_sample_info(name: str) -> dict:
         'email': f"{name.split(' ')[0]}.{name.split(' ')[1]}@generated-email.com",
         'password': f"{name}-generated-password123"
     }
+    return res
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    driver.minimize_window()
-    driver.get("https://www.name-generator.org.uk/quick/")
+    # driver.minimize_window()
+    driver.get("https://fossbytes.com/tools/random-name-generator")
     time.sleep(10)
-    element = driver.find_element(By.XPATH, "//input[@name='count']").send_keys('100')
+    element = driver.find_element(By.XPATH, "//input[@name='totalNames']").send_keys('100')
     time.sleep(3)
-    element = driver.find_element(By.XPATH, "//input[@value='Write me some names']").click()
-    time.sleep(3)
+    element = driver.find_element(By.XPATH, "//button[text()='Generate Names']").click()
+    time.sleep(5)
     all_names = {}
-    for element in driver.find_elements(By.XPATH, "//form[@name='form']//div[@class='name_heading']"):
+    for element in driver.find_elements(By.XPATH, "/html/body/div/div[1]/div/div[3]/div[2]/div/div[2]/div[2]/ul//li"):
         name = element.text
-        response = requests.post(url="http://localhost/users/", params=make_sample_info(name))
+        response = requests.post(url="http://localhost:5001/users/", data=make_sample_info(name))
         print(f"Response for user {name}: {response}")
-
-

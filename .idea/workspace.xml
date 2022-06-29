@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment=".">
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added scraper">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/scraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/scraper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +32,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="NodeJSConfigurationType" path-to-node="node" nameIsGenerated="true" node-parameters="index.js" working-dir="$PROJECT_DIR$/server">
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -41,7 +48,7 @@
       <workItem from="1656253519662" duration="954000" />
       <workItem from="1656502251672" duration="10000" />
       <workItem from="1656502269726" duration="161000" />
-      <workItem from="1656504294759" duration="1729000" />
+      <workItem from="1656504294759" duration="4777000" />
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
@@ -64,7 +71,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656507557357</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added scraper">
+      <created>1656508746962</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1656508746962</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -85,6 +99,7 @@
     <MESSAGE value="added login backend" />
     <MESSAGE value="added default value to profile picture" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="added scraper" />
+    <option name="LAST_COMMIT_MESSAGE" value="added scraper" />
   </component>
 </project>
