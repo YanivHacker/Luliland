@@ -23,6 +23,24 @@ const validateSignUpForm = payload => {
         errors.password = "Password must have at least 8 characters.";
     }
 
+    if (
+        !payload ||
+        typeof payload.firstName !== "string" ||
+        !validator.isAlpha(payload.firstName)
+    ) {
+        isFormValid = false;
+        errors.firstName = "First name should contain only english letters.";
+    }
+
+    if (
+        !payload ||
+        typeof payload.firstName !== "string" ||
+        !validator.isAlpha(payload.lastName)
+    ) {
+        isFormValid = false;
+        errors.lastName = "Last name should contain only english letters.";
+    }
+
     if (!isFormValid) {
         message = "Check the form for errors.";
     }
