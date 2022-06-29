@@ -11,29 +11,25 @@ const readUsers = async (req,res) =>{
 }
 
 const logIn = async (req,res) => {
-    try {
-        if(!await User.findOne({email: req.body.email}, function (err, docs) {
-            console.log(docs)
-            if (err){
+    try{
+        await User.findOne({email: req.body.email}, function (err, docs) {
+            if (err || !docs){
                 res.status(404).json({message:'No user found with this email.', isSuccess:false});
             }
             else{
+                console.log(docs)
                 if(req.body.password !== docs.password){
                     res.status(400).json({message:'Incorrect password inserted for this user, please try again.', isSuccess:false});
                 }
                 else
                 {
-                    console.log('done1')
-                    res.status(200)//.json({message:'Success to log in', isSuccess:true})
-                    console.log('done2')
+                    res.status(200).json({message:'Success to log in', isSuccess:true})
                     // todo: add some kind of session management and save the current logged in user.
                 }
             }
-        })){console.log('success check')}
-        //res.status(404).json({message:'No user found with this email.', isSuccess:false});
-    } catch (error) {
-        console.log('catch case')
-        res.status(404).json({ message:error, isSuccess:false });
+        })
+    }catch (error){
+        
     }
 }
 
