@@ -3,7 +3,7 @@ import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import PasswordStr from "./PasswordStr";
-import "./style.css";
+import "./signUpForm.css";
 
 
 export const SignUpForm = ({
@@ -38,7 +38,7 @@ export const SignUpForm = ({
                         floatingLabelText="first name"
                         value={user.firstName}
                         onChange={onChange}
-                        errorText={errors.email}
+                        errorText={errors.firstName}
                     />
                     <br/>
                     <TextField
@@ -46,7 +46,7 @@ export const SignUpForm = ({
                         floatingLabelText="last name"
                         value={user.lastName}
                         onChange={onChange}
-                        errorText={errors.email}
+                        errorText={errors.lastName}
                     />
                     <br/>
                     <TextField

@@ -4,9 +4,6 @@ import ImageUploader from "react-images-upload";
 export const LoadImage = props =>{
     const [imgUrl,setImgUrl] = useState(undefined)
 
-    const onUrlChanged = e => {
-        setImgUrl(e.target.value)
-    }
     const onImage = async (failedImages, sucessImages)=>{
         if(sucessImages.length!==1)
             return
