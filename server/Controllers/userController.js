@@ -4,10 +4,16 @@ const User = require('../Models/User')
 const readUsers = async (req,res) =>{
     try {
         const users = await User.find();
-        res.status(200).json(users);
+        if(res) {
+            res.status(200).json(users);
+        }
+        else return users;
     } catch (err) {
-        res.status(404).json({error: err.message});
+        if(res) {
+            res.status(404).json({error: err.message});
+        }
     }
+    return null;
 }
 
 const logIn = async (req,res) => {
