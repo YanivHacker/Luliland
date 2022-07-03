@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ahocorasick": "^1.0.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "count-min-sketch": "^0.1.1",

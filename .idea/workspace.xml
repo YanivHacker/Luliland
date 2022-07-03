@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="updated user scraper">
-      <change afterPath="$PROJECT_DIR$/server/most-popular-first-names.js" afterDir="false" />
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added Count-Min-Sketch algorithm usage">
+      <change afterPath="$PROJECT_DIR$/server/Utils/aho-corasick.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/most-popular-first-names.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Utils/most-popular-first-names.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
     </list>
@@ -44,6 +45,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/Utils" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Unnamed" type="NodeJSConfigurationType" path-to-node="node" nameIsGenerated="true" node-parameters="index.js" working-dir="$PROJECT_DIR$/server">
       <method v="2" />
@@ -62,7 +68,7 @@
       <workItem from="1656502269726" duration="161000" />
       <workItem from="1656504294759" duration="6018000" />
       <workItem from="1656674786009" duration="4995000" />
-      <workItem from="1656841085066" duration="509000" />
+      <workItem from="1656841085066" duration="1837000" />
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
@@ -99,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656513286128</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added Count-Min-Sketch algorithm usage">
+      <created>1656841623361</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1656841623361</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,17 +135,7 @@
     <MESSAGE value="." />
     <MESSAGE value="added scraper" />
     <MESSAGE value="updated user scraper" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated user scraper" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/most-popular-first-names.js</url>
-          <line>12</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Added Count-Min-Sketch algorithm usage" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Count-Min-Sketch algorithm usage" />
   </component>
 </project>

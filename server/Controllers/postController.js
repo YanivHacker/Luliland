@@ -4,10 +4,16 @@ const Post = require('../Models/Post');
 const readPosts = async (req,res) =>{
     try {
         const posts = await Post.find();
-        res.status(200).json(posts);
+        if(res) {
+            res.status(200).json(posts);
+        }
+        else return posts;
     } catch (err) {
-        res.status(404).json({error: err.message});
+        if(res) {
+            res.status(404).json({error: err.message});
+        }
     }
+    return null;
 }
 
 const getPostById = async (req,res) => {

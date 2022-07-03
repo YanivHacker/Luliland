@@ -1,6 +1,6 @@
 //Import library
 const createCountMinSketch = require("count-min-sketch")
-const {readUsers} = require("./Controllers/userController");
+const {readUsers} = require("../Controllers/userController");
 
 //Create data structure
 let sketch = createCountMinSketch()
