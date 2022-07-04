@@ -16,6 +16,40 @@ const readUsers = async (req,res) =>{
     return null;
 }
 
+const searchUsers = async (req, res) => {
+    try {
+        let users = null
+        let method = req.body.searchBy
+        let content = req.body.keyword
+        if(!content){
+            res.status(400).json({error: 'No keywords entered for search query,or no search method selected'});
+        }
+        else if(!content.includes(' ')) {
+            const regex = new RegExp(content, 'i') // i for case insensitive
+            if(!method)
+                users = await User.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}]})
+            else{
+                if(method === 'firstName')
+                    users = await User.find({firstName: {$regex: regex}});
+                else if (method === 'lastName')
+                    users = await User.find({lastName: {$regex: regex}});
+                else res.status(400).json({error: 'Invalid filter clause'});
+            }
+        }
+        else
+        {
+            let values = content.split(' ', 1);
+            const firstNameRegex = new RegExp(values[0], 'i') // i for case insensitive
+            const lastNameRegex = new RegExp(values[1], 'i') // i for case insensitive
+            users = await User.find({$and: [{firstName: {$regex: firstNameRegex}}, {lastName: {$regex: lastNameRegex}}]})
+        }
+        res.status(200).json(users);
+    }
+    catch (err) {
+        res.status(400).json({error: err});
+    }
+}
+
 const logIn = async (req,res) => {
     try{
         await User.findOne({email: req.body.email}, function (err, docs) {
@@ -129,4 +163,4 @@ const deleteUser = async (req,res) => {
     res.json(user);
 }
 
-module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn};
+module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers};
