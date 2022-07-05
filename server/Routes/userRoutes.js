@@ -9,5 +9,6 @@ usersRouter.patch('/:id',userController.updateUser);
 usersRouter.delete('/:id',userController.deleteUser);
 usersRouter.post('/login', userController.logIn);
 usersRouter.get('/search', userController.searchUsers);
+usersRouter.get('/mostactive', userController.getMostActiveUsers);
 
 module.exports = usersRouter;

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const User = require('../Models/User')
+const User = require('../Models/User');
+const Post = require('../Models/Post');
 
 const readUsers = async (req,res) =>{
     try {
@@ -142,10 +143,55 @@ const createUser = async (req,res) => {
     }
 }
 
+const getMostActiveUsers = async (req, res) => {
+    Post.aggregate(
+        [
+            {
+                $group: {
+                    _id: "$userEmail",
+                    count: {"$sum": 1}
+                }
+            },
+            {
+                $sort: {
+                    count: -1
+                }
+            }
+        ],
+
+        async function (err, result) {
+            console.log("Before getting user data:")
+            console.log(result)
+            if (err) {
+                if (res)
+                    res.status(400).json({message: err});
+            } else {
+                let updatedResult = []
+                for(let i = 0; i < result.length; i++){
+                    await User.findOne({email: result[i]._id}, function(err, docs){
+                        if (err){
+                            res.status(400).json({message: err});
+                        }
+                        if (docs){
+                            docs.numberOfPosts = result[i].count;
+                            updatedResult.push(docs);
+                        }
+                    });
+                }
+                console.log("After getting user data:")
+                console.log(updatedResult)
+                if (res) {
+                    res.status(200).json(updatedResult); // maybe not json? just send?
+                }
+            }
+        }
+    );
+};
+
 const updateUser = async (req,res) => {
     const {id} = req.params;
     const {firstName, lastName, password, profilePicture} = req.body;
-    if(!mongoose.isValidObjectId(id))
+    if(!User.isValidObjectId(id))
         return res.status(404).send(`the id ${id} is not valid`);
     var result = {firstName: firstName, lastName: lastName};
     if(profilePicture)
@@ -157,10 +203,10 @@ const updateUser = async (req,res) => {
 // TODO: ASK SHAY IF WE NEED TO TAKE CARE OF ENDPOINTS NOT ACCESSED THROUGH UI
 const deleteUser = async (req,res) => {
     const {id} = req.params;
-    if(!mongoose.isValidObjectId(id))
+    if(!User.isValidObjectId(id))
         return res.status(404).send(`the id ${id} is not valid`);
     const user = await User.findByIdAndUpdate(id,{isDeleted: true});
     res.json(user);
 }
 
-module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers};
+module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers, getMostActiveUsers};
