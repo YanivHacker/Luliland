@@ -10,7 +10,7 @@ const PostRouter = require("./Routes/postRoutes");
 const CommentRouter = require("./Routes/commentRoutes");
 const DmMessage = require("./Routes/directMessagesRoutes");
 const CMSFunc = require("./Utils/most-popular-first-names");
-const {onConnection} = require("./Controllers/webSocketManager");
+const {onConnection} = require("./Controllers/socketManager");
 // const User = require("./Controllers/userController");
 
 
@@ -33,13 +33,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
-io.on('connection', (socket) => {
-    console.log('a user connected');
-    console.log(socket);
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
+io.on('connection', onConnection);
 
 app.use('/users', UserRouter);
 app.use('/posts', PostRouter);
