@@ -1,5 +1,6 @@
 import "./sidebar.css"
 import HomeIcon from '@mui/icons-material/Home';
+import {Users} from "../../dummyData"
 import {
     RssFeed,
     Chat,
@@ -10,6 +11,7 @@ import {
     WorkOutline,
     Event
 } from "@material-ui/icons";
+import CloseFriend from "../CloseFriend/CloseFriend";
 
 const SidebarData = [
     {
@@ -41,6 +43,13 @@ export default function Sidebar() {
                             </li>
                         )
                     })}
+                </ul>
+                <button className="sidebarButton">Show More</button>
+                <hr className="sidebarHr" />
+                <ul className="sidebarFriendList">
+                    {Users.map((u) => (
+                        <CloseFriend key={u.id} user={u} />
+                    ))}
                 </ul>
             </div>
         </div>
