@@ -38,7 +38,7 @@ const validatePost = async (content, images) => {
 
 const createPost = async (req,res) => {
     try {
-        validatePost(req.body.content, req.body.images)
+        // validatePost(req.body.content, req.body.images)
         const post = new Post(req.body);
         await post.save();
         res.status(200).json(post);
