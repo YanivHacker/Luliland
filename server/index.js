@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const http = require('http');
-const WebSocket = require('ws');
+const { Server } = require("socket.io");
 const UserRouter = require("./Routes/userRoutes");
 const PostRouter = require("./Routes/postRoutes");
 const CommentRouter = require("./Routes/commentRoutes");
@@ -27,11 +27,19 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-const webSocketServer = new WebSocket.Server({server})
-
-webSocketServer.on('connection',(socket)=>{
-    console.log(`socket ${socket} is connected`)
-})
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    console.log(socket);
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
 
 app.use('/users', UserRouter);
 app.use('/posts', PostRouter);
@@ -43,6 +51,6 @@ mongoose.connect(db,{ useUnifiedTopology: true, useNewUrlParser: true}).then(()=
     console.log(`server is running on port: http://127.0.0.1:${port}`);
 })).catch((err)=>console.log('dont succeed to connect'));
 
-module.exports = {webSocketServer}
+module.exports = {io}
 
 // User.getMostActiveUsers(null, null);
