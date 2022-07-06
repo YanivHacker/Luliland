@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 const Post = require('../Models/Post');
 
 const readPosts = async (req,res) =>{
-    try {
-        const posts = await Post.find();
-        if(res) {
-            res.status(200).json(posts);
+    await Post.find({isDeleted: false}, function(err, docs) {
+        if (!req || !res){
+            if(err)
+                return null;
+            return docs;
         }
-        else return posts;
-    } catch (err) {
-        if(res) {
-            res.status(404).json({error: err.message});
+        else if (err)
+            res.status(400).json({message: err});
+        else if(docs) {
+            res.status(200).json(docs);
         }
-    }
-    return null;
+        else return null;
+    });
 }
 
 const getPostById = async (req,res) => {
