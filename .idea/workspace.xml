@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< master
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added Dror's requests">
       <change afterPath="$PROJECT_DIR$/server/Utils/currentUser.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+<<<<<<< master
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added avoidance of double server sending to client">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
+=======
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> wip
+>>>>>>> wip
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,10 +64,29 @@
       <recent name="$PROJECT_DIR$/server/Utils" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="Unnamed" type="NodeJSConfigurationType" path-to-node="node" nameIsGenerated="true" node-parameters="index.js" working-dir="$PROJECT_DIR$/server">
+  <component name="RunManager" selected="npm.start">
+    <configuration name="Unnamed" type="NodeJSConfigurationType" path-to-node="node" node-parameters="index.js" working-dir="$PROJECT_DIR$/server">
       <method v="2" />
     </configuration>
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="start" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2">
+        <option name="NpmBeforeRunTask" enabled="true">
+          <package-json value="$PROJECT_DIR$/client/package.json" />
+          <command value="install" />
+          <arguments value="--force" />
+          <node-interpreter value="project" />
+          <envs />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Node.js.Unnamed" />
+      <item itemvalue="npm.start" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
