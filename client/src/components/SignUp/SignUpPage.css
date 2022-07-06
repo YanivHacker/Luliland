@@ -5,6 +5,6 @@ html, body, #root {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #4c91ad;
+    #background-color: #4c91ad;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
