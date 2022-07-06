@@ -1,6 +1,7 @@
 import "./rightbar.css";
 import { Users } from "../../dummyData";
 import Online from "../Online/Online";
+import CloseFriend from "../CloseFriend/CloseFriend";
 
 export default function Rightbar({ profile }) {
     const HomeRightbar = () => {
@@ -13,10 +14,11 @@ export default function Rightbar({ profile }) {
           </span>
                 </div>
                 <img className="rightbarAd" src="assets/ad.png" alt="" />
-                <h4 className="rightbarTitle">Online Friends</h4>
+                <hr className="rightbarHr" />
+                <h4 className="rightbarTitle">Friends ({Users.length})</h4>
                 <ul className="rightbarFriendList">
                     {Users.map((u) => (
-                        <Online key={u.id} user={u} />
+                        <CloseFriend key={u.id} user={u} />
                     ))}
                 </ul>
             </>

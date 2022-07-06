@@ -12,6 +12,7 @@ import {
     Event
 } from "@material-ui/icons";
 import CloseFriend from "../CloseFriend/CloseFriend";
+import Online from "../Online/Online";
 
 const SidebarData = [
     {
@@ -47,8 +48,9 @@ export default function Sidebar() {
                 <button className="sidebarButton">Show More</button>
                 <hr className="sidebarHr" />
                 <ul className="sidebarFriendList">
+                    <h4 className="sidebarTitle">Online Friends</h4>
                     {Users.map((u) => (
-                        <CloseFriend key={u.id} user={u} />
+                        <Online key={u.id} user={u} />
                     ))}
                 </ul>
             </div>
