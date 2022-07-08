@@ -14,6 +14,7 @@
 >>>>>>> wip
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
 <<<<<<< master
+<<<<<<< master
       <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
 =======
@@ -33,7 +34,18 @@
       <change beforePath="$PROJECT_DIR$/client/src/pages/profile/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Profile/Profile.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/pages/profile/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Profile/profile.css" afterDir="false" />
 >>>>>>> wip
+<<<<<<< master
 >>>>>>> wip
+=======
+=======
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Topbar/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Topbar/Topbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
+>>>>>>> started implement communication with backend
+>>>>>>> started implement communication with backend
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +55,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -66,6 +78,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
 <<<<<<< master
+<<<<<<< master
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -75,6 +88,8 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
 =======
+=======
+>>>>>>> started implement communication with backend
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -87,7 +102,20 @@
 >>>>>>> wip
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
+<<<<<<< master
 >>>>>>> wip
+=======
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+>>>>>>> started implement communication with backend
+>>>>>>> started implement communication with backend
   }
 }</component>
   <component name="RecentsManager">
@@ -139,12 +167,17 @@
       <workItem from="1656841085066" duration="2414000" />
       <workItem from="1656914544185" duration="2038000" />
       <workItem from="1657015648153" duration="6148000" />
+<<<<<<< master
       <workItem from="1657110739083" duration="3139000" />
       <workItem from="1657274393591" duration="3341000" />
       <workItem from="1657721992085" duration="2814000" />
       <workItem from="1657814090909" duration="4382000" />
       <workItem from="1658053461561" duration="2570000" />
       <workItem from="1658122768530" duration="7333000" />
+=======
+      <workItem from="1657110739083" duration="1700000" />
+      <workItem from="1657285384264" duration="6614000" />
+>>>>>>> started implement communication with backend
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
