@@ -3,46 +3,60 @@ const Comment = require('../Models/Comment');
 const Post = require("../Models/Post");
 
 const readComments = async (req,res) =>{
+    let sent = false;
     try {
         const {postId} = req.params
         await Comment.find({postID: postId}, function(error, result){
-            if(error || !result)
+            if(error || !result) {
                 res.status(404).send("Didn't find comment or error occurred.");
+                sent = true;
+            }
             else res.status(200).json(result);
         });
     } catch (err) {
-        res.status(404).json({error: err.message});
+        if(!sent)
+            res.status(404).json({error: err.message});
     }
 }
 
 const getCommentById = async (req,res) => {
+    let sent = false;
     try{
         const {id} = req.params;
-        if(!Comment.isValidObjectId(id))
+        if(!Comment.isValidObjectId(id)) {
             return res.status(404).send(`the id ${id} is not valid`);
+            sent = true;
+        }
         await Comment.findOne({_id:id}, function(error, result){
             if(error || !result){
-                res.status(404).send("Didn't find message or error occurred.");
+                if(!sent)
+                    res.status(404).send("Didn't find message or error occurred.");
             }
             else res.status(200).json(result);
         });
     }catch(err) {
-        res.status(404).json({error: err.message});
+        if(!sent)
+            res.status(404).json({error: err.message});
     }
 }
 
 const createComment = async (req,res) => {
+    let sent = false;
     try {
         const {postID, content} = req.body
         await Post.findById(postID, function(error, result){
-            if(error || !result)
+            if(error || !result) {
                 res.status(404).send("Error with finding post for comment creation.");
+                sent = true;
+            }
         })
         const comment = new Comment({postID: postID, content: content});
         await comment.save();
-        res.status(200).json(comment);
+        if(!sent)
+            res.status(200).json(comment);
     } catch (error) {
-        res.status(404).json({ message:error });
+        if(!sent)
+            res.status(404).json({ message:error });
     }
 }
 // const updateComment = async (req,res) => {
@@ -58,13 +72,17 @@ const createComment = async (req,res) => {
 
 const deleteComment = async (req,res) => {
     const {id} = req.params;
-    if(!Comment.isValidObjectId(id))
-        return res.status(404).send(`the id ${id} is not valid`);
+    let sent = false;
+    if(!Comment.isValidObjectId(id)) {
+        res.status(404).send(`the id ${id} is not valid`);
+        sent = true;
+    }
     await Comment.findByIdAndUpdate(id,{isDeleted: true}, function(error, result){
-        if(error)
+        if(error && !sent)
             res.status(400).send("Deletion of comment " + id + " failed with error " + error);
     });
-    res.status(200).send("Comment deleted successfully.");
+    if(!sent)
+        res.status(200).send("Comment deleted successfully.");
 }
 
 module.exports = {readComments, createComment, deleteComment,getCommentById};

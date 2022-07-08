@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="updated readPosts">
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added validations and new API routes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/commentController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/commentController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Models/Comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Models/Comment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Routes/commentRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/commentRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Routes/postRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/postRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/userRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +20,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -150,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657112450774</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="added validations and new API routes">
+      <created>1657277800330</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1657277800330</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,6 +187,7 @@
     <MESSAGE value="Added group by - still  need to validate it works." />
     <MESSAGE value="Added default value to isDeleted in Post" />
     <MESSAGE value="updated readPosts" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated readPosts" />
+    <MESSAGE value="added validations and new API routes" />
+    <option name="LAST_COMMIT_MESSAGE" value="added validations and new API routes" />
   </component>
 </project>
