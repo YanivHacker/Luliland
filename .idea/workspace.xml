@@ -39,13 +39,19 @@
 =======
 =======
       <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" afterDir="false" />
+<<<<<<< master
       <change beforePath="$PROJECT_DIR$/client/src/components/Topbar/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Topbar/Topbar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
 >>>>>>> started implement communication with backend
+<<<<<<< master
 >>>>>>> started implement communication with backend
+=======
+=======
+      <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
+>>>>>>> wip
+>>>>>>> wip
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +85,7 @@
   </component>
 <<<<<<< master
 <<<<<<< master
+<<<<<<< master
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -90,11 +97,16 @@
 =======
 =======
 >>>>>>> started implement communication with backend
+=======
+=======
+>>>>>>> wip
+>>>>>>> wip
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+<<<<<<< master
 <<<<<<< master
     "last_opened_file_path": "/Users/yaniv.hacker/WebstormProjects/Luliland/server/Utils",
 =======
@@ -115,9 +127,18 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
 >>>>>>> started implement communication with backend
+<<<<<<< master
 >>>>>>> started implement communication with backend
+=======
+=======
+    "last_opened_file_path": "C:/Users/Jonathan/Documents/Colman Jonathan/Advanced Topics/Luliland/server/index.js",
+    "list.type.of.created.stylesheet": "CSS",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> wip
+>>>>>>> wip
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/server/Utils" />
@@ -128,7 +149,7 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.start">
-    <configuration name="Unnamed" type="NodeJSConfigurationType" path-to-node="node" node-parameters="index.js" working-dir="$PROJECT_DIR$/server">
+    <configuration name="Server" type="NodeJSConfigurationType" path-to-node="node" node-parameters="index.js" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/server">
       <method v="2" />
     </configuration>
     <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
@@ -147,7 +168,7 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Node.js.Unnamed" />
+      <item itemvalue="Node.js.Server" />
       <item itemvalue="npm.start" />
     </list>
   </component>
