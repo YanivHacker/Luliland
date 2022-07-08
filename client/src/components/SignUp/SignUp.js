@@ -36,7 +36,7 @@ export const SignUp = ()=>{
         if(files.length>0)
             console.log(URL.createObjectURL(files[0]))//files[0]
         //setProfileImage(files.length===0?"":files[0].text())
-        //console.log(profile.current.value)
+        //console.log(Profile.current.value)
     }
 
     return (
@@ -54,7 +54,7 @@ export const SignUp = ()=>{
             {/*        password:*/}
             {/*        <input ref={password} type="password" />*/}
             {/*        <br/>*/}
-            {/*        profile image:*/}
+            {/*        Profile image:*/}
             {/*        <br/>*/}
             {/*        <button type="submit" onClick={createUser}>sign up</button>*/}
 
