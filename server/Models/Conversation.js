@@ -8,4 +8,4 @@ const conversation = new Schema({
 }, {timestamps: true})
 
 const Conversation = mongoose.model('Conversation', conversation)
-module.exports = {Conversation}
+module.exports = Conversation

@@ -1,7 +1,7 @@
 const Message = require('../Models/Message')
 
 //add message
-export const sendMessage = async (req,res) => {
+const sendMessage = async (req,res) => {
     try{
         const newMessage = new Message(req.body)
         const savedMessage = await newMessage.save()
@@ -11,7 +11,7 @@ export const sendMessage = async (req,res) => {
     }
 }
 
-export const getMessages = async (req,res) => {
+const getMessages = async (req,res) => {
     try{
         const messages = await Message.find({
             conversationId:req.params.conversationId
@@ -21,3 +21,5 @@ export const getMessages = async (req,res) => {
         res.status(500).json(err)
     }
 }
+
+module.exports = {sendMessage, getMessages}

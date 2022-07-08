@@ -1,7 +1,7 @@
-import {Conversation} from "../Models/Conversation"
+const Conversation = require("../Models/Conversation")
 
 //new conv
-export const newConversation = async (req,res) => {
+const newConversation = async (req,res) => {
     try{
         const conversation = new Conversation({
             members: [req.body.senderId, req.body.receiverId]
@@ -14,7 +14,7 @@ export const newConversation = async (req,res) => {
 }
 
 //get conv of user
-export const getConversation = async (req,res) => {
+const getConversation = async (req,res) => {
     try{
         const conversation = await Conversation.find({
             members: { $in:[req.params.userId]}
@@ -24,3 +24,5 @@ export const getConversation = async (req,res) => {
         res.status(500).json(err)
     }
 }
+
+module.exports = {newConversation, getConversation}
