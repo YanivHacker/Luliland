@@ -8,7 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import validator from "validator/es";
 import {login} from "../../services/UserService";
-import "./LogIn.css"
+import "./login.css"
 
 export default function FormDialog() {
     const [open, setOpen] = useState(false)
@@ -92,7 +92,7 @@ export default function FormDialog() {
                         fullWidth
                     />
                     {successLogIn==="FAILED" &&
-                    <label className={"errorMessage"}>email or password is wrong</label>
+                        <label className={"errorMessage"}>email or password is wrong</label>
                     }
                 </DialogContent>
                 <DialogActions>

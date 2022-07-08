@@ -2,18 +2,36 @@
 <project version="4">
   <component name="ChangeListManager">
 <<<<<<< master
+<<<<<<< master
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added Dror's requests">
       <change afterPath="$PROJECT_DIR$/server/Utils/currentUser.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
 =======
 <<<<<<< master
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added avoidance of double server sending to client">
+=======
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added default value to isDeleted in Post">
+>>>>>>> wip
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< master
       <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
 =======
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> wip
+<<<<<<< master
+=======
+=======
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/LogIn/LogIn.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/LogIn/LogIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Sidebar/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Sidebar/Sidebar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/SignUp/SignUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SignUp/SignUp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/home/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/profile/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Profile/Profile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/profile/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Profile/profile.css" afterDir="false" />
 >>>>>>> wip
 >>>>>>> wip
     </list>
@@ -26,6 +44,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -46,6 +65,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< master
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -54,6 +74,20 @@
     &quot;last_opened_file_path&quot;: &quot;/Users/yaniv.hacker/WebstormProjects/Luliland/server/Utils&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+<<<<<<< master
+    "last_opened_file_path": "/Users/yaniv.hacker/WebstormProjects/Luliland/server/Utils",
+=======
+    "list.type.of.created.stylesheet": "CSS",
+>>>>>>> wip
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> wip
   }
 }</component>
   <component name="RecentsManager">
@@ -61,6 +95,7 @@
       <recent name="$PROJECT_DIR$/server/Utils" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jonathan\Documents\Colman Jonathan\Advanced Topics\Luliland\client\src\components" />
       <recent name="$PROJECT_DIR$/server/Utils" />
     </key>
   </component>
