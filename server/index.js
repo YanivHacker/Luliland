@@ -9,7 +9,7 @@ const CommentRouter = require("./Routes/commentRoutes");
 const DmMessage = require("./Routes/directMessagesRoutes");
 
 
-const port = process.env.port || 5001;
+const port = process.env.port || 5000;
 const db = 'mongodb+srv://admin:1234@lulilanddb.j4tppp6.mongodb.net/?retryWrites=true&w=majority'
 dotenv.config();
 

@@ -1,11 +1,31 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import './messenger.css'
 import Topbar from "../../components/Topbar/Topbar";
 import Conversation from "../../components/Conversations/Conversations";
 import Message from "../../components/Message/Message";
 import ChatOnline from "../../components/ChatOnline/ChatOnline";
 
+import {Users} from "../../dummyData"
+import {getAllUsers} from "../../services/UserService"
+
 export default function Messenger() {
+    const [userList,setUserList] = useState([])
+    const [onlineUserList,setOnlineUserList] = useState([])
+    useEffect(()=>{
+        console.log('use effect call')
+        //setUserList(Users)
+        setOnlineUserList([Users[0],Users[1]])
+        const initalizeFriendUserList = async () =>{
+            try{
+                const response = await getAllUsers()
+                console.log(response.data)
+                setUserList(response.data)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        initalizeFriendUserList()
+    },[])
     return (
         <>
             <Topbar/>
@@ -13,11 +33,7 @@ export default function Messenger() {
                 <div className="chatMenu">
                     <div className="chatMenuWrapper">
                         <input placeholder="Search for friends" className="chatMenuInput"/>
-                        {/*TODO: read from a user list*/}
-                        <Conversation/>
-                        <Conversation/>
-                        <Conversation/>
-                        <Conversation/>
+                        { userList.map(user=><Conversation key={user._id} user={user}/>) }
                     </div>
                 </div>
                 <div className="chatBox">
@@ -44,7 +60,7 @@ export default function Messenger() {
                 </div>
                 <div className="chatOnline">
                     <div className="chatOnlineWrapper">
-                        <ChatOnline/>
+                        { onlineUserList.map(user=><ChatOnline key={user.id.toString()} user={user}/>) }
                     </div>
                 </div>
             </div>
