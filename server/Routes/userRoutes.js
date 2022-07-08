@@ -8,6 +8,7 @@ usersRouter.post('/',userController.createUser);
 usersRouter.patch('/:id',userController.updateUser);
 usersRouter.delete('/:id',userController.deleteUser);
 usersRouter.post('/login', userController.logIn);
+usersRouter.get('/:id/posts', userController.readPostsByUser);
 usersRouter.get('/search', userController.searchUsers);
 usersRouter.get('/mostactive', userController.getMostActiveUsers);
 
