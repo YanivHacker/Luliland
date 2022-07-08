@@ -15,7 +15,7 @@ const readPosts = async (req,res) =>{
             res.status(200).json(docs);
         }
         else return null;
-    });
+    }).clone();
 }
 
 const readCommentsByPost = async (req,res) => {
@@ -36,7 +36,7 @@ const readCommentsByPost = async (req,res) => {
             if(!sent)
                 res.status(200).json(docs);
         }
-    })
+    }).clone();
 }
 
 const getPostById = async (req,res) => {
@@ -59,7 +59,7 @@ const getPostById = async (req,res) => {
                 res.status(200).json(post);
                 sent = true;
             }
-        });
+        }).clone();
     }catch(err) {
         if(!sent) {
             res.status(404).json({error: err.message});
@@ -86,7 +86,7 @@ const createPost = async (req,res) => {
                 res.status(400).send("No user with email " + userEmail + "exists.");
                 sent = true;
             }
-        })
+        }).clone();
 
         if(!title && !sent) {
             res.status(400).send("Cannot create post without a title.");
@@ -125,7 +125,7 @@ const updatePost = async (req,res) => {
             }
 
         }
-    })
+    }).clone();
     resDoc.userEmail = userEmail
     if(title)
         resDoc.title = title
@@ -142,7 +142,7 @@ const updatePost = async (req,res) => {
         }
         if(!sent)
             res.status(200).json(docs)
-    });
+    }).clone();
 }
 
 const deletePost = async (req,res) => {
@@ -157,7 +157,7 @@ const deletePost = async (req,res) => {
             res.status(400).send("Error while deleting post with ID " + id);
             sent = true;
         }
-    });
+    }).clone();
     if(!sent)
         res.status(200).send("Post deleted successfully.");
 }

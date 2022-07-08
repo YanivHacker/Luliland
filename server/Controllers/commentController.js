@@ -12,7 +12,7 @@ const readComments = async (req,res) =>{
                 sent = true;
             }
             else res.status(200).json(result);
-        });
+        }).clone();
     } catch (err) {
         if(!sent)
             res.status(404).json({error: err.message});
@@ -33,7 +33,7 @@ const getCommentById = async (req,res) => {
                     res.status(404).send("Didn't find message or error occurred.");
             }
             else res.status(200).json(result);
-        });
+        }).clone();
     }catch(err) {
         if(!sent)
             res.status(404).json({error: err.message});
@@ -49,7 +49,7 @@ const createComment = async (req,res) => {
                 res.status(404).send("Error with finding post for comment creation.");
                 sent = true;
             }
-        })
+        }).clone();
         const comment = new Comment({postID: postID, content: content});
         await comment.save();
         if(!sent)
@@ -80,7 +80,7 @@ const deleteComment = async (req,res) => {
     await Comment.findByIdAndUpdate(id,{isDeleted: true}, function(error, result){
         if(error && !sent)
             res.status(400).send("Deletion of comment " + id + " failed with error " + error);
-    });
+    }).clone();
     if(!sent)
         res.status(200).send("Comment deleted successfully.");
 }

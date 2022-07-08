@@ -5,7 +5,7 @@ const Post = require('../Models/Post');
 const readUsers = async (req,res) =>{
     let sent = false
     try {
-        const users = await User.find();
+        const users = await User.find().clone();
         if(res) {
             res.status(200).json(users);
             sent = true;
@@ -33,12 +33,12 @@ const searchUsers = async (req, res) => {
         else if(!content.includes(' ')) {
             const regex = new RegExp(content, 'i') // i for case insensitive
             if(!method)
-                users = await User.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}]})
+                users = await User.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}]}).clone();
             else{
                 if(method === 'firstName')
-                    users = await User.find({firstName: {$regex: regex}});
+                    users = await User.find({firstName: {$regex: regex}}).clone();
                 else if (method === 'lastName')
-                    users = await User.find({lastName: {$regex: regex}});
+                    users = await User.find({lastName: {$regex: regex}}).clone();
                 else {
                     res.status(400).json({error: 'Invalid filter clause'});
                     sent = true;
@@ -50,7 +50,7 @@ const searchUsers = async (req, res) => {
             let values = content.split(' ', 1);
             const firstNameRegex = new RegExp(values[0], 'i') // i for case insensitive
             const lastNameRegex = new RegExp(values[1], 'i') // i for case insensitive
-            users = await User.find({$and: [{firstName: {$regex: firstNameRegex}}, {lastName: {$regex: lastNameRegex}}]})
+            users = await User.find({$and: [{firstName: {$regex: firstNameRegex}}, {lastName: {$regex: lastNameRegex}}]}).clone();
         }
         if(!sent){
             res.status(200).json(users);
@@ -92,7 +92,7 @@ const logIn = async (req,res) => {
                     // todo: add some kind of session management and save the current logged in user.
                 }
             }
-        })
+        }).clone();
     }catch (error){
         if(!sent){
             res.status(400).send("Error occurred in login.");
@@ -122,7 +122,7 @@ const getUserById = async (req,res) => {
                     sent = true;
                 }
             }
-        });
+        }).clone();
 
     }catch(err) {
         if(!sent) {
@@ -170,7 +170,7 @@ const createUser = async (req,res) => {
                 res.status(404).send("User with email " + result.email + " already exists");
                 sent = true;
             }
-        });
+        }).clone();
         const user = new User({firstName:result.firstName, lastName:result.lastName, email:result.email, password:result.password});
         await user.save();
         if(!sent) {
@@ -222,7 +222,7 @@ const getMostActiveUsers = async (req, res) => {
                             docs.numberOfPosts = result[i].count;
                             updatedResult.push(docs);
                         }
-                    });
+                    }).clone();
                 }
                 console.log("After getting user data:")
                 console.log(updatedResult)
@@ -244,7 +244,7 @@ const updateUser = async (req,res) => {
             res.status(400).send("No user exists with the email provided.");
             sent = true;
         }
-    });
+    }).clone();
     let updateInfo = {}
     if(firstName)
         updateInfo.firstName = firstName
@@ -263,7 +263,7 @@ const updateUser = async (req,res) => {
             }
 
         }
-    });
+    }).clone();
     if(!sent) {
         res.status(200).json("Updated successfully");
         sent = true;
@@ -279,7 +279,7 @@ const readPostsByUser = async (req,res) =>{
             res.status(400).send("User with this email doesn't exist.");
             sent = true;
         }
-    })
+    }).clone();
     await Post.find({userEmail: userEmail, isDeleted: false}, function(err, docs) {
         if (!req || !res){
             if(err)
@@ -295,7 +295,7 @@ const readPostsByUser = async (req,res) =>{
             sent = true;
         }
         else return null;
-    });
+    }).clone();
 }
 
 const deleteUser = async (req,res) => {
@@ -306,7 +306,7 @@ const deleteUser = async (req,res) => {
             res.status(400).send(error);
             sent = true;
         }
-    });
+    }).clone();
     if(!sent)
         res.status(200).send("Deleted user successfully");
 }
