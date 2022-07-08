@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added default value to isDeleted in Post">
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="updated readPosts">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/commentController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/commentController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Models/Comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Models/Comment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Routes/commentRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/commentRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Routes/postRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/postRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/userRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +70,8 @@
       <workItem from="1656841085066" duration="2414000" />
       <workItem from="1656914544185" duration="2038000" />
       <workItem from="1657015648153" duration="6148000" />
-      <workItem from="1657110739083" duration="1700000" />
+      <workItem from="1657110739083" duration="3139000" />
+      <workItem from="1657274393591" duration="3341000" />
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
@@ -135,7 +143,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657111726441</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="updated readPosts">
+      <created>1657112450774</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1657112450774</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,27 +178,7 @@
     <MESSAGE value="Added user search" />
     <MESSAGE value="Added group by - still  need to validate it works." />
     <MESSAGE value="Added default value to isDeleted in Post" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added default value to isDeleted in Post" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>181</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>175</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>171</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="updated readPosts" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated readPosts" />
   </component>
 </project>

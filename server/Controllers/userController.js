@@ -78,63 +78,47 @@ const getUserById = async (req,res) => {
     try{
         const {id} = req.params;
         if(!mongoose.isValidObjectId(id))
-            return res.status(404).send(`the id ${id} is not valid`);
-        const user = await User.findOne({_id:id});
-        res.status(200).json(user);
+            return res.status(404).send("the id ${id} is not valid");
+        await User.findOne({_id:id}, function(error, docs){
+            if(error || !docs){
+                res.status(404).send("User with id " + id + " not found");
+            }
+            else res.status(200).json(docs);
+        });
 
     }catch(err) {
         res.status(404).json({error: err.message});
     }
 }
 
-const validateFields = (admin, fullName, emailAddress) => {
-    var firstName = null;
-    var lastName = null;
-    var email = null;
-    var isAdmin = null;
-    if(!admin){
-        alert('No administrative information provided.');
-        res.status(400).json(user);
-    }
-    else {
-        isAdmin = admin;
-    }
-    if(req.body.fullName && req.body.fullName.length > 0){
-        var regName = '/^[a-zA-Z]+ [a-zA-Z]+$/';
-        if(!regName.test(req.body.fullName)){
-            alert('Invalid name given.');
-            res.status(400).json(user);
-        }else{
-            names = req.body.fullName.split(' ', 1);
-            firstName = names[0];
-            lastName = names[1];
-        }
-    }
-    else{
-        alert('No name given.');
-        res.status(400).json(user);
-    }
-    
-    if(emailAddress && emailAddress.length > 0){
-        var regName = '/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/';
-        if(!regName.test(emailAddress)){
-            alert('Invalid email format given.');
-            res.status(400).json(user);
-        }else{
-            email = req.body.email;
-        }
-    }
-    return {firstName, lastName, email, isAdmin};
-}
+const validateEmail = (email) => {
+    return email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
 
 const createUser = async (req,res) => {
     try {
-        //var creationDate = Date.now();
-        /*if(await User.findOne({email: req.body.email})){
-            alert('User with this email address already exiSts. Please choose another email.')
-            res.status(400).json(user);
-        }*/
-        var result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email, password:req.body.password};
+        let result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email, password:req.body.password};
+        if(!result.firstName || !result.lastName || !result.email || !result.password) {
+            res.status(404).json({message: "Information missing for user creation."});
+        }
+
+        else if(!validateEmail(result.email)){
+            res.status(400).json({message: "Wrong email format."});
+        }
+
+        else if(!(/^[a-zA-Z]+$/.test(result.firstName)) || !(/^[a-zA-Z]+$/.test(result.lastName))){
+            res.status(400).json({message: "User name can contain english letters only."});
+        }
+
+        else await User.findOne({email:result.email}, function(error, docs){
+            if(error)
+                res.status(400).send("Error with user creation");
+            else if(docs){
+                res.status(404).send("User with email " + result.email + " already exists");
+            }
+        });
         const user = new User({firstName:result.firstName, lastName:result.lastName, email:result.email, password:result.password});
         await user.save();
         res.status(200).json(user);
@@ -189,24 +173,60 @@ const getMostActiveUsers = async (req, res) => {
 };
 
 const updateUser = async (req,res) => {
-    const {id} = req.params;
+    const {email} = req.params;
     const {firstName, lastName, password, profilePicture} = req.body;
-    if(!User.isValidObjectId(id))
-        return res.status(404).send(`the id ${id} is not valid`);
-    var result = {firstName: firstName, lastName: lastName};
+    await User.findOne({email:email}, function(error, docs){
+        if(error || !docs)
+            res.status(400).send("No user exists with the email provided.");
+    });
+    let updateInfo = {}
+    if(firstName)
+        updateInfo.firstName = firstName
+    if(lastName)
+        updateInfo.lastName = lastName
+    if(password)
+        updateInfo.password = password
     if(profilePicture)
-        await User.findByIdAndUpdate(id, {firstName:result.firstName, lastName:result.lastName, password:password, profilePicture:profilePicture});
-    else
-        await User.findByIdAndUpdate(id, {firstName:result.firstName, lastName:result.lastName,password:password});
-    res.json(user);
-}
-// TODO: ASK SHAY IF WE NEED TO TAKE CARE OF ENDPOINTS NOT ACCESSED THROUGH UI
-const deleteUser = async (req,res) => {
-    const {id} = req.params;
-    if(!User.isValidObjectId(id))
-        return res.status(404).send(`the id ${id} is not valid`);
-    const user = await User.findByIdAndUpdate(id,{isDeleted: true});
-    res.json(user);
+        updateInfo.profilePicture = profilePicture
+
+    await User.findOneAndUpdate({email: email}, updateInfo, function(error, result){
+        if(error){
+            res.status(400).send(error)
+        }
+    });
+    res.status(200).json("Updated successfully");
 }
 
-module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers, getMostActiveUsers};
+
+const readPostsByUser = async (req,res) =>{
+    const {userEmail} = req.params
+    await User.findOne({email: userEmail}, function(error, docs){
+        if(error)
+            res.status(400).send("User with this email doesn't exist.");
+    })
+    await Post.find({userEmail: userEmail, isDeleted: false}, function(err, docs) {
+        if (!req || !res){
+            if(err)
+                return null;
+            return docs;
+        }
+        else if (err)
+            res.status(400).json({message: err});
+        else if(docs) {
+            res.status(200).json(docs);
+        }
+        else return null;
+    });
+}
+
+const deleteUser = async (req,res) => {
+    const {email} = req.params;
+    await User.findOneAndUpdate({email: email},{isDeleted: true}, function(error, result){
+        if(error){
+            res.status(400).send(error);
+        }
+    });
+    res.status(200).send("Deleted user successfully");
+}
+
+module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers, getMostActiveUsers, readPostsByUser};
