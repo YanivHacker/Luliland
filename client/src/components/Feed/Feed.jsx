@@ -12,22 +12,22 @@ export default function Feed() {
 
     useEffect( () => {
         console.log("service call")
-        const fetchPosts = async () =>{
+        const fetchPosts = async () => {
             const response = await axios.get(POST_SERVICE);
             console.log(response);
             setPosts(response.data);
         };
         fetchPosts();
+        console.log(posts)
     }, []);
     
     return (
         <div className="feed">
             <div className="feedContainer">
                 <Share />
-                {console.log(posts)}
-                {posts && posts.map((p) => (
-                    <Post key={p.id} post={p} />
-                ))}
+                {/*{posts && posts.map((p) => (*/}
+                {/*    <Post key={p.id} post={p} />*/}
+                {/*))}*/}
             </div>
         </div>
     );
