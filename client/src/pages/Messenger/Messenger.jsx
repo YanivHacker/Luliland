@@ -6,20 +6,30 @@ import Message from "../../components/Message/Message";
 import ChatOnline from "../../components/ChatOnline/ChatOnline";
 
 import {Users} from "../../dummyData"
-import {getAllUsers} from "../../services/UserService"
+import {getAllUserConversation} from "../../services/ConversationService";
+
+// --------------------------------------------------
+// TODO: read user id from local storage
+// --------------------------------------------------
+
+const currentUserId = "62bc6283a42e798700e2c099"
 
 export default function Messenger() {
-    const [userList,setUserList] = useState([])
+    const [userIdList,setUserIdList] = useState([])
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
-        console.log('use effect call')
-        //setUserList(Users)
         setOnlineUserList([Users[0],Users[1]])
         const initalizeFriendUserList = async () =>{
             try{
-                const response = await getAllUsers()
-                console.log(response.data)
-                setUserList(response.data)
+                let userList = []
+                await getAllUserConversation(currentUserId).then(list=>{
+                    userList = list.map(conversation => {
+                        const members = conversation.members
+                        return members.filter(id => id !== currentUserId)[0]
+                    })
+                    setUserIdList(userList)
+                    console.log(userList)
+                })
             }catch(err){
                 console.log(err)
             }
@@ -33,7 +43,9 @@ export default function Messenger() {
                 <div className="chatMenu">
                     <div className="chatMenuWrapper">
                         <input placeholder="Search for friends" className="chatMenuInput"/>
-                        { userList.map(user=><Conversation key={user._id} user={user}/>) }
+                        { userIdList.map(userId=>{
+                            return <Conversation key={userId} userId={userId}/>
+                        }) }
                     </div>
                 </div>
                 <div className="chatBox">

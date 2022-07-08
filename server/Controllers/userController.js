@@ -114,6 +114,7 @@ const getUserByEmail = async (req,res) => {
             }
             else {
                 if(!sent) {
+                    console.log('user found')
                     res.status(200).json(docs);
                     sent = true;
                 }

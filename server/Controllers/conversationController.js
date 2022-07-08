@@ -14,7 +14,7 @@ const newConversation = async (req,res) => {
 }
 
 //get conv of user
-const getConversation = async (req,res) => {
+const getAllConversation = async (req, res) => {
     try{
         const conversation = await Conversation.find({
             members: { $in:[req.params.userId]}
@@ -25,4 +25,4 @@ const getConversation = async (req,res) => {
     }
 }
 
-module.exports = {newConversation, getConversation}
+module.exports = {newConversation, getAllConversation}

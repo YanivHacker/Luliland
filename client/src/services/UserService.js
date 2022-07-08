@@ -21,4 +21,10 @@ const getAllUsers = async () => { //may raise an exception
     return await axios.get(USER_SERVICE)
 }
 
-module.exports = {signUp, login, getAllUsers}
+const getUserById = async (id) => {
+    const response = await axios.get(USER_SERVICE + `/${id}`)
+    console.log(response.data)
+    return response.data
+}
+
+module.exports = {signUp, login, getAllUsers, getUserById}
