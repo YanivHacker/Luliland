@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Post = require('../Models/Post');
 const User = require("../Models/User");
+const {AddPostToUser, deletePostFromUser} = require("./userController");
 
 const readPosts = async (req,res) =>{
     await Post.find({isDeleted: false}, function(err, docs) {
@@ -21,10 +22,6 @@ const readPosts = async (req,res) =>{
 const readCommentsByPost = async (req,res) => {
     let sent = false;
     const {postID} = req.params
-    if(!Post.isValidObjectId(postID)) {
-        res.status(404).send("No post with id " + postID);
-        sent = true;
-    }
 
     await Comment.find({postID: postID}, function(error, docs){
         if(error || !docs)
@@ -43,12 +40,8 @@ const getPostById = async (req,res) => {
     let sent = false;
     try{
         const {id} = req.params;
-        if(!mongoose.isValidObjectId(id)){
-            res.status(404).send("the id ${id} is not valid");
-            sent = true;
-        }
 
-        await Post.findOne({_id:id}, function(error, result){
+        await Post.findById(id, function(error, result){
             if(error){
                 if(!sent) {
                     res.status(404).send("Post not found.");
@@ -98,6 +91,7 @@ const createPost = async (req,res) => {
         }
         const post = new Post({userEmail:userEmail, title:title, content:content, images:images});
         await post.save();
+        await AddPostToUser({email: userEmail, postID: post.id});
         if(!sent)
             res.status(200).json(post);
     } catch (error) {
@@ -110,7 +104,7 @@ const updatePost = async (req,res) => {
     let sent = false;
     const {id} = req.params;
     const {userEmail, title, content, images, allCommentIDs} = req.body;
-    if(!id || !Post.isValidObjectId(id)) {
+    if(!id) {
         if(!sent) {
             res.status(404).send(`the id ${id} is not valid`);
             sent = true;
@@ -135,7 +129,7 @@ const updatePost = async (req,res) => {
         resDoc.images = images
     if(allCommentIDs)
         resDoc.allCommentIDs = allCommentIDs
-    await Post.findByIdAndUpdate(id,resDoc, function(error, docs){
+    await Post.findByIdAndUpdate(id,resDoc, {new: true}, function(error, docs){
         if(error && !sent) {
             res.status(400).send("Error in post update: " + error);
             sent = true;
@@ -148,18 +142,15 @@ const updatePost = async (req,res) => {
 const deletePost = async (req,res) => {
     let sent = false;
     const {id} = req.params;
-    if(!Post.isValidObjectId(id)) {
-        res.status(404).send(`the id ${id} is not valid`);
-        sent = true;
-    }
-    await Post.findByIdAndUpdate(id,{isDeleted: true}, function(error, result){
+    await Post.findByIdAndUpdate(id,{isDeleted: true}, async function(error, result){
         if(error && !sent) {
             res.status(400).send("Error while deleting post with ID " + id);
             sent = true;
         }
-    }).clone();
-    if(!sent)
-        res.status(200).send("Post deleted successfully.");
+        if(result)
+            await deletePostFromUser({email: result.userEmail, postID: result.id});
+        if(!sent)
+            res.status(200).send("Post deleted successfully.");    }).clone();
 }
 
 module.exports = {readPosts, createPost, updatePost, deletePost,getPostById, readCommentsByPost};

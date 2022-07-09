@@ -7,8 +7,6 @@ const UserRouter = require("./Routes/userRoutes");
 const PostRouter = require("./Routes/postRoutes");
 const CommentRouter = require("./Routes/commentRoutes");
 const DmMessage = require("./Routes/directMessagesRoutes");
-const CMSFunc = require("./Utils/most-popular-first-names");
-// const User = require("./Controllers/userController");
 
 
 const port = process.env.port || 5001;
@@ -30,5 +28,3 @@ app.get('/',(req, res) => {res.send('Im alive');});
 mongoose.connect(db,{ useUnifiedTopology: true, useNewUrlParser: true}).then(()=>app.listen(port, ()=>{
     console.log(`server is running on port: ${port}`);
 })).catch((err)=>console.log('dont succeed to connect'));
-
-// User.getMostActiveUsers(null, null);

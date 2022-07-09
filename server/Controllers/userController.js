@@ -105,11 +105,7 @@ const getUserById = async (req,res) => {
     let sent = false;
     try{
         const {id} = req.params;
-        if(!mongoose.isValidObjectId(id)) {
-            res.status(404).send("the id ${id} is not valid");
-            sent = true;
-        }
-        await User.findOne({_id:id}, function(error, docs){
+        await User.findById(id, function(error, docs){
             if(error || !docs){
                 if(!sent){
                     res.status(404).send("User with id " + id + " not found");
@@ -213,7 +209,7 @@ const getMostActiveUsers = async (req, res) => {
             } else {
                 let updatedResult = []
                 for(let i = 0; i < result.length; i++){
-                    await User.findOne({email: result[i]._id}, function(err, docs){
+                    await User.findOne({email: result[i].id}, function(err, docs){
                         if (err && !sent){
                             res.status(400).json({message: err});
                             sent = true;
@@ -295,6 +291,51 @@ const addUserFriend = async(req, res) => {
     }).clone();
 }
 
+const deletePostFromUser = async (req) => {
+    let succeeded = true;
+    let allPostIDs = null;
+    await User.findOne({email:req.email}, async function (error, docs) {
+        if (error || !docs) {
+            succeeded = false;
+        } else allPostIDs = docs.allPostIDs;
+
+        if (!succeeded)
+            return false;
+        let toRemove = req.postID;
+        allPostIDs = allPostIDs.filter(e => e !== toRemove)
+        await User.findOneAndUpdate({email: req.email}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
+            if (error) succeeded = false;
+            console.log("Posts after removal: " + docs.allPostIDs);
+        }).clone();
+    }).clone();
+
+    return succeeded;
+}
+
+const AddPostToUser = async (req) => {
+    let succeeded = true;
+    let allPostIDs = null;
+    await User.findOne({email:req.email}, async function (error, docs) {
+        if (error || !docs) {
+            succeeded = false;
+        }
+        allPostIDs = docs.allPostIDs;
+        if(allPostIDs == null) allPostIDs = [];
+        console.log(docs);
+        if (!succeeded)
+            return false;
+        let newPostId = req.postID;
+        allPostIDs.push(newPostId);
+
+        await User.findOneAndUpdate({email: req.email}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
+            if (error) succeeded = false;
+            console.log("Posts after addition: " + docs.allPostIDs);
+        }).clone();
+    }).clone();
+
+    return succeeded;
+}
+
 const updateUser = async (req,res) => {
     let sent = false;
     const {email} = req.params;
@@ -371,4 +412,6 @@ const deleteUser = async (req,res) => {
         res.status(200).send("Deleted user successfully");
 }
 
-module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers, getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend};
+module.exports = {readUsers, createUser, updateUser, AddPostToUser,
+                  deleteUser,getUserById, logIn, searchUsers, deletePostFromUser,
+                  getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend};

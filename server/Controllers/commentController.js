@@ -23,10 +23,6 @@ const getCommentById = async (req,res) => {
     let sent = false;
     try{
         const {id} = req.params;
-        if(!Comment.isValidObjectId(id)) {
-            return res.status(404).send(`the id ${id} is not valid`);
-            sent = true;
-        }
         await Comment.findOne({_id:id}, function(error, result){
             if(error || !result){
                 if(!sent)
@@ -73,10 +69,6 @@ const createComment = async (req,res) => {
 const deleteComment = async (req,res) => {
     const {id} = req.params;
     let sent = false;
-    if(!Comment.isValidObjectId(id)) {
-        res.status(404).send(`the id ${id} is not valid`);
-        sent = true;
-    }
     await Comment.findByIdAndUpdate(id,{isDeleted: true}, function(error, result){
         if(error && !sent)
             res.status(400).send("Deletion of comment " + id + " failed with error " + error);
