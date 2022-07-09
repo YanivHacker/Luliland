@@ -235,6 +235,66 @@ const getMostActiveUsers = async (req, res) => {
     );
 };
 
+const getFriendsByUser = async(req, res) => {
+    let sent = false;
+    const {email} = req.params;
+    let friends = null;
+    await User.findOne({email:email}, function(error, docs){
+        if(error || !docs) {
+            res.status(400).send("No user exists with the email provided.");
+            sent = true;
+        }
+        else friends = docs.friends;
+    }).clone();
+
+    await User.find({email: {$in: friends}}, function(error, docs){
+        if((error || !docs) && !sent){
+            res.status(400).send("No user exists with the email provided, or no friends for user.");
+            sent = true;
+        }
+        else if (!sent) {
+            res.status(200).json(docs);
+            sent = true;
+        }
+    }).clone();
+}
+
+const addUserFriend = async(req, res) => {
+    let sent = false;
+    const {email} = req.params;
+    let friends = null;
+    await User.findOne({email:email}, function(error, docs){
+        if(error || !docs) {
+            res.status(400).send("No user exists with the email provided.");
+            sent = true;
+        }
+        else friends = docs.friends;
+    }).clone();
+    let newFriend = req.body.friendEmail;
+    if(!newFriend && !sent){
+        res.status(400).send("No friend email provided.");
+        sent = true;
+    }
+    await User.findOne({email:newFriend}, function(error, docs){
+        if((error || !docs) && !sent) {
+            res.status(400).send("No user exists with the friend email provided.");
+            sent = true;
+        }
+    }).clone();
+
+    friends.push(newFriend);
+    await User.findOneAndUpdate({email: email}, {friends: friends}, function(error, docs){
+        if((error || !docs) && !sent) {
+            res.status(400).send("Error while updating user's friends");
+            sent = true;
+        }
+        else if(!sent){
+            res.status(200).send("Updated friend list successfully.");
+            sent = true;
+        }
+    }).clone();
+}
+
 const updateUser = async (req,res) => {
     let sent = false;
     const {email} = req.params;
@@ -311,4 +371,4 @@ const deleteUser = async (req,res) => {
         res.status(200).send("Deleted user successfully");
 }
 
-module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers, getMostActiveUsers, readPostsByUser};
+module.exports = {readUsers, createUser, updateUser, deleteUser,getUserById, logIn, searchUsers, getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend};

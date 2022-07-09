@@ -5,6 +5,7 @@ const user = new Schema({
     lastName: {type: String, require: true},
     email: {type: String, require: true},
     password: {type: String, require: true},
+    friends: {type: [{type: String}], default: []},
     creationDate: {type: String, default: Date.now().toString()},
     isAdmin: {type: Boolean, default: false},
     profilePicture: {type: String, default: ''},
