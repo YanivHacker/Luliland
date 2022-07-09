@@ -13,3 +13,10 @@ export const createConversation = async (conversationInfo) => {
     await axios.post(CONVERSATION_SERVICE,conversationInfo)
     return conversationInfo
 }
+
+export const getSpecificConversation = async (userId1, userId2) => {
+    let result = null
+    await axios.get(CONVERSATION_SERVICE, {params: {userId1, userId2}}).then(response => result=response.data)
+    console.log(result)
+    return result;
+}

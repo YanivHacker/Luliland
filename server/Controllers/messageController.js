@@ -13,10 +13,9 @@ const sendMessage = async (req,res) => {
 
 const getMessages = async (req,res) => {
     try{
-        const messages = await Message.find({
+        await Message.find({
             conversationId:req.params.conversationId
-        });
-        res.status(200).json(messages);
+        }).clone().then(messages => res.status(200).json(messages));
     }catch(err){
         res.status(500).json(err)
     }

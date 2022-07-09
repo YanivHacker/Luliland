@@ -5,5 +5,6 @@ const ConversationController = require('../Controllers/conversationController')
 
 conversationRouter.post("/",ConversationController.newConversation)
 conversationRouter.get("/:userId",ConversationController.getAllConversation)
+conversationRouter.get("/", ConversationController.getSpecificConversationBuUsers)
 
 module.exports = {conversationRouter}

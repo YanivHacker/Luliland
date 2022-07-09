@@ -6,7 +6,7 @@ import Message from "../../components/Message/Message";
 import ChatOnline from "../../components/ChatOnline/ChatOnline";
 
 import {Users} from "../../dummyData"
-import {getAllUserConversation} from "../../services/ConversationService";
+import {getAllUserConversation, getSpecificConversation} from "../../services/ConversationService";
 import {getUserFriends} from "../../services/UserService";
 
 // --------------------------------------------------
@@ -18,6 +18,10 @@ const currentUserEmail = "Tiffany.Martinez@generated-email.com"
 
 export default function Messenger() {
     const [friendList, setFriendList] = useState([])
+    const [currentChat, setCurrentChat] = useState(null)
+    const [messages,setMessages] = useState(([]))
+
+
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
         setOnlineUserList([Users[0],Users[1]])// TODO: get online users from server
@@ -42,30 +46,44 @@ export default function Messenger() {
                     <div className="chatMenuWrapper">
                         <input placeholder="Search for friends" className="chatMenuInput"/>
                         { friendList.map(user=>{
-                            return <Conversation key={user._id} user={user}/>
+                            return (
+                                <div key={user._id} onClick={()=>{
+                                    setCurrentChat(getSpecificConversation(currentUserId, user._id))
+                                }
+                                }>
+                                    <Conversation user={user}/>
+                                </div>
+                            )
                         }) }
                     </div>
                 </div>
                 <div className="chatBox">
                     <div className="chatBoxWrapper">
-                        <div className="chatBoxTop">
-                            <Message/>
-                            <Message own={true}/>
-                            <Message/>
-                            <Message/>
-                            <Message own={true}/>
-                            <Message/>
-                            <Message/>
-                            <Message own={true}/>
-                            <Message/>
-                            <Message/>
-                            <Message own={true}/>
-                            <Message/>
-                        </div>
-                        <div className="chatBoxBottom">
-                            <textarea className="chatMessageInput" placeholder="write something ..."></textarea>
-                            <button className="chatSubmitButton">Send</button>
-                        </div>
+                        {
+                            currentChat ?
+                                <>
+                                    <div className="chatBoxTop">
+                                        <Message/>
+                                        <Message own={true}/>
+                                        <Message/>
+                                        <Message/>
+                                        <Message own={true}/>
+                                        <Message/>
+                                        <Message/>
+                                        <Message own={true}/>
+                                        <Message/>
+                                        <Message/>
+                                        <Message own={true}/>
+                                        <Message/>
+                                    </div>
+                                    <div className="chatBoxBottom">
+                                        <textarea className="chatMessageInput" placeholder="write something ..."></textarea>
+                                        <button className="chatSubmitButton">Send</button>
+                                    </div>
+                                </>
+                                :
+                                <span className="noConversationText">Open a conversation to start a chat.</span>
+                        }
                     </div>
                 </div>
                 <div className="chatOnline">
