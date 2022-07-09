@@ -9,7 +9,7 @@ import {Users} from "../../dummyData"
 import {getAllUserConversation} from "../../services/ConversationService";
 
 // --------------------------------------------------
-// TODO: read user id from local storage
+// TODO: read current user id from local storage
 // --------------------------------------------------
 
 const currentUserId = "62bc6283a42e798700e2c099"
@@ -35,7 +35,7 @@ export default function Messenger() {
             }
         }
         initalizeFriendUserList()
-    },[])
+    },[userIdList])
     return (
         <>
             <Topbar/>
