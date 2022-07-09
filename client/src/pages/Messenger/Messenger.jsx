@@ -7,35 +7,33 @@ import ChatOnline from "../../components/ChatOnline/ChatOnline";
 
 import {Users} from "../../dummyData"
 import {getAllUserConversation} from "../../services/ConversationService";
+import {getUserFriends} from "../../services/UserService";
 
 // --------------------------------------------------
 // TODO: read current user id from local storage
 // --------------------------------------------------
 
 const currentUserId = "62bc6283a42e798700e2c099"
+const currentUserEmail = "Tiffany.Martinez@generated-email.com"
 
 export default function Messenger() {
-    const [userIdList,setUserIdList] = useState([])
+    const [friendList, setFriendList] = useState([])
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
-        setOnlineUserList([Users[0],Users[1]])
-        const initalizeFriendUserList = async () =>{
+        setOnlineUserList([Users[0],Users[1]])// TODO: get online users from server
+        const initializeFriendUserList = async () =>{
+            let friendList = []
             try{
-                let userList = []
-                await getAllUserConversation(currentUserId).then(list=>{
-                    userList = list.map(conversation => {
-                        const members = conversation.members
-                        return members.filter(id => id !== currentUserId)[0]
-                    })
-                    setUserIdList(userList)
-                    console.log(userList)
-                })
+                friendList = await getUserFriends(currentUserEmail)
             }catch(err){
                 console.log(err)
+            }finally {
+                setFriendList(friendList)
             }
         }
-        initalizeFriendUserList()
-    },[userIdList])
+        initializeFriendUserList()
+
+    },[currentUserId])
     return (
         <>
             <Topbar/>
@@ -43,8 +41,8 @@ export default function Messenger() {
                 <div className="chatMenu">
                     <div className="chatMenuWrapper">
                         <input placeholder="Search for friends" className="chatMenuInput"/>
-                        { userIdList.map(userId=>{
-                            return <Conversation key={userId} userId={userId}/>
+                        { friendList.map(user=>{
+                            return <Conversation key={user._id} user={user}/>
                         }) }
                     </div>
                 </div>
