@@ -198,4 +198,4 @@ const deletePost = async (req,res) => {
             res.status(200).send("Post deleted successfully.");    }).clone();
 }
 
-module.exports = {readPosts, createPost, updatePost, deletePost,getPostById, readCommentsByPost};
+module.exports = {readPosts, createPost, updatePost, deletePost,getPostById, readCommentsByPost, addCommentToPost, deleteCommentFromPost};
