@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Comment = require('../Models/Comment');
 const Post = require("../Models/Post");
+const {addCommentToPost, deleteCommentFromPost} = require("../Controllers/postController");
 
 const readComments = async (req,res) =>{
     let sent = false;
@@ -48,6 +49,7 @@ const createComment = async (req,res) => {
         }).clone();
         const comment = new Comment({postID: postID, content: content});
         await comment.save();
+        await addCommentToPost({postID: comment.postID, commentID: comment.id});
         if(!sent)
             res.status(200).json(comment);
     } catch (error) {
@@ -55,24 +57,16 @@ const createComment = async (req,res) => {
             res.status(404).json({ message:error });
     }
 }
-// const updateComment = async (req,res) => {
-//     const {id} = req.params;
-//     const {postID, content, images, creationDate, isDeleted} = req.body;
-//     validateComment(content, images);
-//     if(!mongoose.isValidObjectId(id))
-//         return res.status(404).send(`the id ${id} is not valid`);
-//     const comment = {_id:id, userEmail, postID, content, images, creationDate, isDeleted};
-//     await   Comment.findByIdAndUpdate(id,req.body);
-//     res.json(comment);
-// }
 
 const deleteComment = async (req,res) => {
     const {id} = req.params;
     let sent = false;
-    await Comment.findByIdAndUpdate(id,{isDeleted: true}, function(error, result){
+    await Comment.findByIdAndUpdate(id,{isDeleted: true}, {new: true}, async function(error, result){
         if(error && !sent)
             res.status(400).send("Deletion of comment " + id + " failed with error " + error);
+        await deleteCommentFromPost({postID: result.postID, commentID: result.id});
     }).clone();
+
     if(!sent)
         res.status(200).send("Comment deleted successfully.");
 }

@@ -100,6 +100,51 @@ const createPost = async (req,res) => {
     }
 }
 
+const deleteCommentFromPost = async (req) => {
+    let succeeded = true;
+    let allCommentIDs = null;
+    await Post.findById(req.postID, async function (error, docs) {
+        if (error || !docs) {
+            succeeded = false;
+        } else allCommentIDs = docs.allCommentIDs;
+
+        if (!succeeded)
+            return false;
+        let toRemove = req.commentID;
+        allCommentIDs = allCommentIDs.filter(e => e !== toRemove)
+        await Post.findByIdAndUpdate(req.postID, {allCommentIDs: allCommentIDs}, {new: true}, function (error, docs) {
+            if (error) succeeded = false;
+            console.log("Posts after removal: " + docs.allCommentIDs);
+        }).clone();
+    }).clone();
+
+    return succeeded;
+}
+
+const addCommentToPost = async (req) => {
+    let succeeded = true;
+    let allCommentsIDs = null;
+    await Post.findById(req.postID, async function (error, docs) {
+        if (error || !docs) {
+            succeeded = false;
+        }
+        allCommentsIDs = docs.allCommentIDs;
+        if(allCommentsIDs == null) allCommentsIDs = [];
+        console.log(docs);
+        if (!succeeded)
+            return false;
+        let newCommentId = req.commentID;
+        allCommentsIDs.push(newCommentId);
+
+        await Post.findByIdAndUpdate(req.postID, {allCommentsIDs: allCommentsIDs}, {new: true}, function (error, docs) {
+            if (error) succeeded = false;
+            console.log("Posts after addition: " + docs.allCommentsIDs);
+        }).clone();
+    }).clone();
+
+    return succeeded;
+}
+
 const updatePost = async (req,res) => {
     let sent = false;
     const {id} = req.params;
