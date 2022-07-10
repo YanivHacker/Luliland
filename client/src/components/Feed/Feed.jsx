@@ -8,19 +8,16 @@ const {SERVER_URL} = require("../../services/HttpServiceHelper");
 const POST_SERVICE = SERVER_URL + '/posts'
 
 export default function Feed() {
-    const {posts, setPosts} = useState([]);
-
+    const [posts, setPosts] = useState([]);
+    const fetchPosts = async () => {
+        const response = await axios.get(POST_SERVICE);
+        const { data } = response;
+        setPosts(data);
+    };
     useEffect( () => {
-        console.log("service call")
-        const fetchPosts = async () => {
-            const response = await axios.get(POST_SERVICE);
-            console.log(response);
-            setPosts(response.data);
-        };
         fetchPosts();
-        console.log(posts)
     }, []);
-    
+    console.log(posts)
     return (
         <div className="feed">
             <div className="feedContainer">

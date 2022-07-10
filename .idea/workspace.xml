@@ -11,8 +11,6 @@
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added avoidance of double server sending to client">
 =======
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added default value to isDeleted in Post">
->>>>>>> wip
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
