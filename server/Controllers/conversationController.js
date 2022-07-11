@@ -26,7 +26,6 @@ const getAllConversation = async (req, res) => {
 
 const getSpecificConversationBuUsers = async (req, res) => {
     try{
-        console.log(req.query)
         const userId1 = req.query.userId1
         const userId2 = req.query.userId2
         await Conversation.findOne({

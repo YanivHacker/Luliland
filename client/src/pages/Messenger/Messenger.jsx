@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import './messenger.css'
 import Topbar from "../../components/Topbar/Topbar";
 import Conversation from "../../components/Conversations/Conversations";
@@ -8,6 +8,7 @@ import ChatOnline from "../../components/ChatOnline/ChatOnline";
 import {Users} from "../../dummyData"
 import {getAllUserConversation, getSpecificConversation} from "../../services/ConversationService";
 import {getUserFriends} from "../../services/UserService";
+import {fetchConversationMessages, sendMessage} from "../../services/MessageService";
 
 // --------------------------------------------------
 // TODO: read current user id from local storage
@@ -18,9 +19,11 @@ const currentUserEmail = "Tiffany.Martinez@generated-email.com"
 
 export default function Messenger() {
     const [friendList, setFriendList] = useState([])
-    const [currentChat, setCurrentChat] = useState(null)
+    const [currentConversationId, setCurrentConversationId] = useState(null)
+    const [currentMessages, setCurrentMessages] = useState([])
     const [messages,setMessages] = useState(([]))
-
+    const [selectedFriendId,setSelectedFriendId] = useState(null)
+    const messageContent = useRef()
 
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
@@ -36,8 +39,18 @@ export default function Messenger() {
             }
         }
         initializeFriendUserList()
-
     },[currentUserId])
+
+    //fetch message list
+    useEffect(()=>{
+        const initalizeMessageList = async () => {
+            const res = await fetchConversationMessages(currentConversationId)
+            setCurrentMessages(res)
+        }
+        initalizeMessageList()
+    },[currentConversationId])
+
+
     return (
         <>
             <Topbar/>
@@ -47,10 +60,14 @@ export default function Messenger() {
                         <input placeholder="Search for friends" className="chatMenuInput"/>
                         { friendList.map(user=>{
                             return (
-                                <div key={user._id} onClick={()=>{
-                                    setCurrentChat(getSpecificConversation(currentUserId, user._id))
-                                }
-                                }>
+                                <div key={user._id} onClick={()=> {
+                                    const initializeConversation = async () => {
+                                        const conversation = await getSpecificConversation(currentUserId, user._id)
+                                        setCurrentConversationId(conversation._id)
+                                        setSelectedFriendId(user._id)
+                                    }
+                                    initializeConversation()
+                                }}>
                                     <Conversation user={user}/>
                                 </div>
                             )
@@ -60,25 +77,23 @@ export default function Messenger() {
                 <div className="chatBox">
                     <div className="chatBoxWrapper">
                         {
-                            currentChat ?
+                            currentConversationId!=null ?
                                 <>
                                     <div className="chatBoxTop">
-                                        <Message/>
-                                        <Message own={true}/>
-                                        <Message/>
-                                        <Message/>
-                                        <Message own={true}/>
-                                        <Message/>
-                                        <Message/>
-                                        <Message own={true}/>
-                                        <Message/>
-                                        <Message/>
-                                        <Message own={true}/>
-                                        <Message/>
+                                        {currentMessages.map(message => {
+                                            console.log(message.sender)
+                                            return <Message own={message.sender===currentUserId} userId={message.sender===currentUserId ? currentUserId : selectedFriendId} messageInfo={message} key={message._id}/>
+                                        })}
                                     </div>
+
                                     <div className="chatBoxBottom">
-                                        <textarea className="chatMessageInput" placeholder="write something ..."></textarea>
-                                        <button className="chatSubmitButton">Send</button>
+                                        <textarea ref={messageContent} className="chatMessageInput" placeholder="write something ..."></textarea>
+                                        {/*show new messages live*/}
+                                        <button disabled={!messageContent.current.value || messageContent.current.value == "" || messageContent.current.value.length == 0}
+                                                className="chatSubmitButton"
+                                                onClick={()=>sendMessage(currentUserId,currentConversationId,messageContent.current.value)}>
+                                            Send
+                                        </button>
                                     </div>
                                 </>
                                 :

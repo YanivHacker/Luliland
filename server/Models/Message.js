@@ -3,10 +3,12 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const message = new Schema({
     conversationId:{
-        type:String
+        type:String,
+        required: true
     },
     sender:{
-        type:String
+        type:String,
+        required: true
     },
     text: {
         type:String,
