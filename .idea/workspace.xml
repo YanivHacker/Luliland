@@ -11,7 +11,9 @@
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added avoidance of double server sending to client">
 =======
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added default value to isDeleted in Post">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Post/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Post/Post.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +65,7 @@
       <recent name="$PROJECT_DIR$/server/Utils" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="Node.js.Server">
     <configuration name="Server" type="NodeJSConfigurationType" path-to-node="node" node-parameters="index.js" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/server">
       <method v="2" />
     </configuration>
@@ -341,5 +343,17 @@
     <MESSAGE value="return only non-deleted posts and users" />
     <MESSAGE value="Added Dror's requests" />
     <option name="LAST_COMMIT_MESSAGE" value="Added Dror's requests" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
+          <line>274</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

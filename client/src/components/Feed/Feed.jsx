@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
-const POST_SERVICE = SERVER_URL + '/posts'
+const POST_SERVICE = SERVER_URL + '/posts';
 
 export default function Feed() {
     const [posts, setPosts] = useState([]);
@@ -22,9 +22,9 @@ export default function Feed() {
         <div className="feed">
             <div className="feedContainer">
                 <Share />
-                {/*{posts && posts.map((p) => (*/}
-                {/*    <Post key={p.id} post={p} />*/}
-                {/*))}*/}
+                {posts && posts.map((p) => (
+                    <Post key={p.id} post={p} />
+                ))}
             </div>
         </div>
     );
