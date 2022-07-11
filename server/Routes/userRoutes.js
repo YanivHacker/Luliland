@@ -5,13 +5,13 @@ const usersRouter = express.Router();
 usersRouter.get('/',userController.readUsers);
 usersRouter.get('/:id',userController.getUserById);
 usersRouter.post('/',userController.createUser);
-usersRouter.patch('/:id',userController.updateUser);
-usersRouter.delete('/:id',userController.deleteUser);
+usersRouter.patch('/:email',userController.updateUser);
+usersRouter.delete('/:email',userController.deleteUser);
 usersRouter.post('/login', userController.logIn);
-usersRouter.get('/:id/posts', userController.readPostsByUser);
+usersRouter.get('/:userEmail/posts', userController.readPostsByUser);
 usersRouter.get('/search', userController.searchUsers);
 usersRouter.get('/mostactive', userController.getMostActiveUsers);
-usersRouter.get('/:id/addFriend', userController.addUserFriend);
-usersRouter.get('/:id/friends', userController.getFriendsByUser);
+usersRouter.get('/:email/addFriend', userController.addUserFriend);
+usersRouter.get('/:email/friends', userController.getFriendsByUser);
 
 module.exports = usersRouter;
