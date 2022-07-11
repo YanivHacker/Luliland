@@ -89,7 +89,8 @@ export default function Messenger() {
                                     <div className="chatBoxBottom">
                                         <textarea ref={messageContent} className="chatMessageInput" placeholder="write something ..."></textarea>
                                         {/*show new messages live*/}
-                                        <button disabled={!messageContent.current.value || messageContent.current.value == "" || messageContent.current.value.length == 0}
+                                        {/*todo: check disable*/}
+                                        <button
                                                 className="chatSubmitButton"
                                                 onClick={()=>sendMessage(currentUserId,currentConversationId,messageContent.current.value)}>
                                             Send
