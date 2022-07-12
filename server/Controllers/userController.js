@@ -101,14 +101,14 @@ const logIn = async (req,res) => {
     }
 }
 
-const getUserById = async (req,res) => {
+const getUserByEmail = async (req,res) => {
     let sent = false;
     try{
-        const {id} = req.params;
-        await User.findById(id, function(error, docs){
+        const {email} = req.params;
+        await User.findOne({email: email, isDeleted: false}, function(error, docs){
             if(error || !docs){
                 if(!sent){
-                    res.status(404).send("User with id " + id + " not found");
+                    res.status(404).send("User with email " + email + " not found");
                     sent = true;
                 }
             }
@@ -413,5 +413,5 @@ const deleteUser = async (req,res) => {
 }
 
 module.exports = {readUsers, createUser, updateUser, AddPostToUser,
-                  deleteUser,getUserById, logIn, searchUsers, deletePostFromUser,
+                  deleteUser,getUserByEmail, logIn, searchUsers, deletePostFromUser,
                   getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend};

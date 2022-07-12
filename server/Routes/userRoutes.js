@@ -3,7 +3,7 @@ const express = require('express');
 const usersRouter = express.Router();
 
 usersRouter.get('/',userController.readUsers);
-usersRouter.get('/:id',userController.getUserById);
+usersRouter.get('/:email',userController.getUserByEmail);
 usersRouter.post('/',userController.createUser);
 usersRouter.patch('/:email',userController.updateUser);
 usersRouter.delete('/:email',userController.deleteUser);
