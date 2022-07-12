@@ -4,7 +4,7 @@ const post = new Schema({
     userEmail: {type: String, require: true},
     title: {type: String, require: true},
     content: {type: String, require: false},
-    images: {type: [{type: String}], default: []},
+    image: {type: String, require: false},
     creationDate: {type: String, require: true, default: Date.now().toString()},
     isDeleted: {type: Boolean, require: true, default: false},
     allCommentIDs: {type: [{type: String}], default: []}

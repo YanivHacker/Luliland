@@ -64,7 +64,7 @@ const getPostById = async (req,res) => {
 // userEmail: {type: String, require: true},
 // title: {type: String, require: true},
 // content: {type: String, require: false},
-// images: {type: [{type: String}], default: []},
+// image: {type: [{type: String}], default: []},
 // creationDate: {type: String, require: true, default: Date.now().toString()},
 // isDeleted: {type: Boolean, require: true, default: false},
 // allCommentIDs: {type: [{type: String}], default: []}
@@ -72,8 +72,8 @@ const getPostById = async (req,res) => {
 const createPost = async (req,res) => {
     let sent = false;
     try {
-        // validatePost(req.body.content, req.body.images)
-        const {userEmail, title, content, images} = req.body
+        // validatePost(req.body.content, req.body.image)
+        const {userEmail, title, content, image} = req.body
         await User.findOne({email: userEmail}, function(error, docs){
             if(error || !docs) {
                 res.status(400).send("No user with email " + userEmail + "exists.");
@@ -85,11 +85,11 @@ const createPost = async (req,res) => {
             res.status(400).send("Cannot create post without a title.");
             sent = true;
         }
-        if(!content && !images && !sent) {
-            res.status(400).send("No content nor images in this post.");
+        if(!content && !image && !sent) {
+            res.status(400).send("No content nor image in this post.");
             sent = true;
         }
-        const post = new Post({userEmail:userEmail, title:title, content:content, images:images});
+        const post = new Post({userEmail:userEmail, title:title, content:content, image:image});
         await post.save();
         await AddPostToUser({email: userEmail, postID: post.id});
         if(!sent)
@@ -148,7 +148,7 @@ const addCommentToPost = async (req) => {
 const updatePost = async (req,res) => {
     let sent = false;
     const {id} = req.params;
-    const {userEmail, title, content, images, allCommentIDs} = req.body;
+    const {userEmail, title, content, image, allCommentIDs} = req.body;
     if(!id) {
         if(!sent) {
             res.status(404).send(`the id ${id} is not valid`);
@@ -170,8 +170,8 @@ const updatePost = async (req,res) => {
         resDoc.title = title
     if(content)
         resDoc.content = content
-    if(images)
-        resDoc.images = images
+    if(image)
+        resDoc.image = image
     if(allCommentIDs)
         resDoc.allCommentIDs = allCommentIDs
     await Post.findByIdAndUpdate(id,resDoc, {new: true}, function(error, docs){
