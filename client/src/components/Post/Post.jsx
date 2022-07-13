@@ -3,6 +3,7 @@ import { MoreVert } from "@material-ui/icons";
 //import { Users } from "../../dummyData";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
@@ -17,14 +18,14 @@ export default function Post({ post }) {
     const fetchUser = async () => {
         const response = await axios.get(SERVER_URL + `/users/${post.userEmail}`);
         const { data } = response;
-        console.log(data)
+        //console.log(data);
         setUser(data);
     };
     useEffect( () => {
         fetchUser();
-    }, []);
+    }, [post.userEmail]);
     //console.log(user)
-    //console.log(post.userEmail)
+    console.log(post.images)
 
 
     const likeHandler =()=>{
@@ -36,11 +37,13 @@ export default function Post({ post }) {
             <div className="postWrapper">
                 <div className="postTop">
                     <div className="postTopLeft">
-                        <img
-                            className="postProfileImg"
-                            src={user.profilePicture ? user.profilePicture : <PersonIcon />}
-                            alt=""
-                        />
+                        <Link to={`/profile/${post.userEmail}`}>
+                            <img
+                                className="postProfileImg"
+                                src={user.profilePicture ? user.profilePicture : "assets/person/person-icon.png"}
+                                alt=""
+                            />
+                        </Link>
                         <span className="postUsername">
                             {user.firstName}
                         </span>
@@ -52,8 +55,8 @@ export default function Post({ post }) {
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post.title}</span>
-                    <img className="postImg" src={post.photo} alt="" />
-                    <span className="postText">{post.content}</span>
+                    <img className="postImg" src={post.images} alt="" />
+                    <span className="postContent">{post.content}</span>
                 </div>
                 <div className="postBottom">
                     <div className="postBottomLeft">

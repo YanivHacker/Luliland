@@ -7,23 +7,25 @@ import axios from "axios";
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
 const POST_SERVICE = SERVER_URL + '/posts';
 
-export default function Feed() {
+export default function Feed({userEmail}) {
     const [posts, setPosts] = useState([]);
     const fetchPosts = async () => {
-        const response = await axios.get(POST_SERVICE);
+        const response = userEmail
+        ? await axios.get(SERVER_URL + `/users/${userEmail}/posts`)
+        : await axios.get(POST_SERVICE);
         const { data } = response;
         setPosts(data);
     };
     useEffect( () => {
         fetchPosts();
-    }, []);
+    }, [userEmail]);
     console.log(posts)
     return (
         <div className="feed">
             <div className="feedContainer">
                 <Share />
                 {posts && posts.map((p) => (
-                    <Post key={p.id} post={p} />
+                    <Post key={p._id} post={p} />
                 ))}
             </div>
         </div>
