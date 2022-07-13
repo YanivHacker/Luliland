@@ -8,6 +8,7 @@ const user = new Schema({
     friends: {type: [{type: String}], default: []},
     creationDate: {type: String, default: Date.now().toString()},
     isAdmin: {type: Boolean, default: false},
+    address: {type: String, default: 'Not provided'},
     profilePicture: {type: String, default: ''},
     allPostIDs: {type: [{type: String}], default: []},
     isDeleted: {type: Boolean, default: false}

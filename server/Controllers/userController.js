@@ -263,21 +263,37 @@ const addUserFriend = async(req, res) => {
             sent = true;
         }
         else friends = docs.friends;
+        if(!friends)
+            friends = [];
     }).clone();
     let newFriend = req.body.friendEmail;
     if(!newFriend && !sent){
         res.status(400).send("No friend email provided.");
         sent = true;
     }
+    let friendFriends;
+
     await User.findOne({email:newFriend}, function(error, docs){
         if((error || !docs) && !sent) {
             res.status(400).send("No user exists with the friend email provided.");
             sent = true;
         }
+        friendFriends = docs.friends;
     }).clone();
 
+    if(!friendFriends)
+        friendFriends = [];
+
     friends.push(newFriend);
+    friendFriends.push(email);
     await User.findOneAndUpdate({email: email}, {friends: friends}, function(error, docs){
+        if((error || !docs) && !sent) {
+            res.status(400).send("Error while updating user's friends");
+            sent = true;
+        }
+    }).clone();
+
+    await User.findOneAndUpdate({email: newFriend}, {friends: friendFriends}, function(error, docs){
         if((error || !docs) && !sent) {
             res.status(400).send("Error while updating user's friends");
             sent = true;

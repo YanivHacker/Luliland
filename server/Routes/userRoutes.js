@@ -11,7 +11,7 @@ usersRouter.post('/login', userController.logIn);
 usersRouter.get('/:userEmail/posts', userController.readPostsByUser);
 usersRouter.get('/search', userController.searchUsers);
 usersRouter.get('/mostactive', userController.getMostActiveUsers);
-usersRouter.get('/:email/addFriend', userController.addUserFriend);
+usersRouter.post('/:email/addFriend', userController.addUserFriend);
 usersRouter.get('/:email/friends', userController.getFriendsByUser);
 
 module.exports = usersRouter;
