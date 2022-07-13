@@ -4,6 +4,7 @@ import { MoreVert } from "@material-ui/icons";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { format } from "timeago.js";
 import PersonIcon from '@mui/icons-material/Person';
 
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
@@ -47,7 +48,7 @@ export default function Post({ post }) {
                         <span className="postUsername">
                             {user.firstName}
                         </span>
-                        <span className="postDate">{post.date}</span>
+                        <span className="postDate">{format(post.creationDate)}</span>
                     </div>
                     <div className="postTopRight">
                         <MoreVert />
@@ -55,7 +56,7 @@ export default function Post({ post }) {
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post.title}</span>
-                    <img className="postImg" src={post.images} alt="" />
+                        <img className="postImg" src={post.images} alt="" />
                     <span className="postContent">{post.content}</span>
                 </div>
                 <div className="postBottom">
