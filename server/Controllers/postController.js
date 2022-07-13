@@ -62,7 +62,6 @@ const getPostById = async (req,res) => {
 }
 //
 // userEmail: {type: String, require: true},
-// title: {type: String, require: true},
 // content: {type: String, require: false},
 // image: {type: [{type: String}], default: []},
 // creationDate: {type: String, require: true, default: Date.now().toString()},
@@ -73,23 +72,18 @@ const createPost = async (req,res) => {
     let sent = false;
     try {
         // validatePost(req.body.content, req.body.image)
-        const {userEmail, title, content, image} = req.body
+        const {userEmail, content, image} = req.body
         await User.findOne({email: userEmail}, function(error, docs){
             if(error || !docs) {
                 res.status(400).send("No user with email " + userEmail + "exists.");
                 sent = true;
             }
         }).clone();
-
-        if(!title && !sent) {
-            res.status(400).send("Cannot create post without a title.");
-            sent = true;
-        }
         if(!content && !image && !sent) {
             res.status(400).send("No content nor image in this post.");
             sent = true;
         }
-        const post = new Post({userEmail:userEmail, title:title, content:content, image:image});
+        const post = new Post({userEmail:userEmail, content:content, image:image});
         await post.save();
         await AddPostToUser({email: userEmail, postID: post.id});
         if(!sent)
@@ -148,7 +142,7 @@ const addCommentToPost = async (req) => {
 const updatePost = async (req,res) => {
     let sent = false;
     const {id} = req.params;
-    const {userEmail, title, content, image, allCommentIDs} = req.body;
+    const {userEmail, content, image, allCommentIDs} = req.body;
     if(!id) {
         if(!sent) {
             res.status(404).send(`the id ${id} is not valid`);
@@ -166,8 +160,6 @@ const updatePost = async (req,res) => {
         }
     }).clone();
     resDoc.userEmail = userEmail
-    if(title)
-        resDoc.title = title
     if(content)
         resDoc.content = content
     if(image)

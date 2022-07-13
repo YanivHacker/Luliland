@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const post = new Schema({
     userEmail: {type: String, require: true},
-    title: {type: String, require: true},
     content: {type: String, require: false},
     image: {type: String, require: false},
     creationDate: {type: String, require: true, default: Date.now().toString()},
