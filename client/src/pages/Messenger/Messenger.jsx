@@ -21,7 +21,6 @@ export default function Messenger() {
     const [friendList, setFriendList] = useState([])
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
-    const [messages,setMessages] = useState(([]))
     const [selectedFriendId,setSelectedFriendId] = useState(null)
     const messageContent = useRef()
 
@@ -81,7 +80,6 @@ export default function Messenger() {
                                 <>
                                     <div className="chatBoxTop">
                                         {currentMessages.map(message => {
-                                            console.log(message.sender)
                                             return <Message own={message.sender===currentUserId} userId={message.sender===currentUserId ? currentUserId : selectedFriendId} messageInfo={message} key={message._id}/>
                                         })}
                                     </div>
@@ -92,7 +90,19 @@ export default function Messenger() {
                                         {/*todo: check disable*/}
                                         <button
                                                 className="chatSubmitButton"
-                                                onClick={()=>sendMessage(currentUserId,currentConversationId,messageContent.current.value)}>
+                                                onClick={()=>{
+                                                        const text = messageContent.current.value
+                                                        if(text && text!== ""){
+                                                            const sendAndGetNewMessage = async ()=>{
+                                                                const savedMessage = await sendMessage(currentUserId,currentConversationId,text)
+                                                                setCurrentMessages([...currentMessages,savedMessage])
+                                                            }
+                                                            sendAndGetNewMessage()
+                                                        }else
+                                                            console.log('message is empty')
+                                                    }
+                                                }
+                                        >
                                             Send
                                         </button>
                                     </div>

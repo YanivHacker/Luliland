@@ -4,8 +4,52 @@ import {getUserById} from "../../services/UserService";
 
 export default  function Message({own, userId, messageInfo}){
     const [userInfo,setUserInfo] = useState({})
+    //TODO: display text of time ago using https://bobbyhadz.com/blog/javascript-convert-timestamp-to-time-ago
+
+    const toTimestamp = (strDate) => {
+        const dt = new Date(strDate).getTime();
+        return dt;
+    }
+    const relativeTime = (timestamp) => {
+        const rtf = new Intl.RelativeTimeFormat('en', {
+            numeric: 'auto',
+        });
+        const oneDayInMs = 1000 * 60 * 60 * 24;
+        const oneHourInMs = 1000 * 60 * 60
+        const oneMinuteInMs = 1000 * 60
+        const oneSecondInMs = 1000
+
+        const difference = timestamp - new Date().getTime()
+
+        if(Math.abs(difference)>oneDayInMs){
+            const daysDifference = Math.round(
+                (difference) / oneDayInMs,
+            );
+        console.log(`oneDayInMs: ${oneDayInMs}`)
+            return rtf.format(daysDifference, 'day');
+        }
+        if(Math.abs(difference)>oneHourInMs){
+            const hoursDifference = Math.round(
+                (difference) / oneHourInMs,
+            );
+            return rtf.format(hoursDifference, 'hour');
+        }
+        if(Math.abs(difference)>oneMinuteInMs){
+            const miniuteDifference = Math.round(
+                difference / oneMinuteInMs
+            )
+            return rtf.format(miniuteDifference, 'minute');
+        }
+        if(Math.abs(difference)>oneSecondInMs){
+            const secondDifference = Math.round(
+                difference / oneSecondInMs
+            )
+            return rtf.format(secondDifference, 'second');
+        }
+        return "now"
+    }
+
     useEffect(()=>{
-        console.log(own)
         const initializeUserInfo = async (userId) => {
             let result = {}
             try{
@@ -15,12 +59,10 @@ export default  function Message({own, userId, messageInfo}){
             }
             finally {
                 setUserInfo(result)
-                console.log(userInfo)
             }
         }
         initializeUserInfo(userId)
     },[userId])
-    console.log(own ? "message own" : "message")
     return (
         <>
             <div className={own ? "message own" : "message"}>
@@ -34,7 +76,7 @@ export default  function Message({own, userId, messageInfo}){
                         {messageInfo.text}
                     </p>
                 </div>
-                <div className="messageBottom">1 hour ago</div>
+                <div className="messageBottom">{relativeTime(toTimestamp(messageInfo.createdAt))}</div>
             </div>
         </>
     )
