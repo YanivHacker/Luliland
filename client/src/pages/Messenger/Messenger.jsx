@@ -14,14 +14,13 @@ import {fetchConversationMessages, sendMessage} from "../../services/MessageServ
 // TODO: read current user id from local storage
 // --------------------------------------------------
 
-const currentUserId = "62bc6283a42e798700e2c099"
 const currentUserEmail = "Tiffany.Martinez@generated-email.com"
 
 export default function Messenger() {
     const [friendList, setFriendList] = useState([])
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
-    const [selectedFriendId,setSelectedFriendId] = useState(null)
+    const [selectedFriendEmail,setSelectedFriendEmail] = useState(null)
     const messageContent = useRef()
 
     const [onlineUserList,setOnlineUserList] = useState([])
@@ -38,7 +37,7 @@ export default function Messenger() {
             }
         }
         initializeFriendUserList()
-    },[currentUserId])
+    },[currentUserEmail])
 
     //fetch message list
     useEffect(()=>{
@@ -61,9 +60,9 @@ export default function Messenger() {
                             return (
                                 <div key={user._id} onClick={()=> {
                                     const initializeConversation = async () => {
-                                        const conversation = await getSpecificConversation(currentUserId, user._id)
+                                        const conversation = await getSpecificConversation(currentUserEmail, user.email)
                                         setCurrentConversationId(conversation._id)
-                                        setSelectedFriendId(user._id)
+                                        setSelectedFriendEmail(user.email)
                                     }
                                     initializeConversation()
                                 }}>
@@ -80,7 +79,7 @@ export default function Messenger() {
                                 <>
                                     <div className="chatBoxTop">
                                         {currentMessages.map(message => {
-                                            return <Message own={message.sender===currentUserId} userId={message.sender===currentUserId ? currentUserId : selectedFriendId} messageInfo={message} key={message._id}/>
+                                            return <Message own={message.sender===currentUserEmail} userEmail={message.sender===currentUserEmail ? currentUserEmail : selectedFriendEmail} messageInfo={message} key={message._id}/>
                                         })}
                                     </div>
 
@@ -94,7 +93,7 @@ export default function Messenger() {
                                                         const text = messageContent.current.value
                                                         if(text && text!== ""){
                                                             const sendAndGetNewMessage = async ()=>{
-                                                                const savedMessage = await sendMessage(currentUserId,currentConversationId,text)
+                                                                const savedMessage = await sendMessage(currentUserEmail,currentConversationId,text)
                                                                 setCurrentMessages([...currentMessages,savedMessage])
                                                             }
                                                             sendAndGetNewMessage()

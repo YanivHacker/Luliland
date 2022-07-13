@@ -14,8 +14,8 @@ export const createConversation = async (conversationInfo) => {
     return conversationInfo
 }
 
-export const getSpecificConversation = async (userId1, userId2) => {
+export const getSpecificConversation = async (userEmail1, userEmail2) => {
     let result = null
-    await axios.get(CONVERSATION_SERVICE, {params: {userId1, userId2}}).then(response => result=response.data)
+    await axios.get(CONVERSATION_SERVICE, {params: {userEmail1, userEmail2}}).then(response => result=response.data)
     return result;
 }

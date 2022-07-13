@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import './conversations.css'
-import {getUserById} from "../../services/UserService";
 
 export default function Conversation({user}){
     return(

@@ -4,7 +4,7 @@ const Conversation = require("../Models/Conversation")
 const newConversation = async (req,res) => {
     try{
         const conversation = new Conversation({
-            members: [req.body.senderId, req.body.receiverId]
+            members: [req.body.senderEmail, req.body.receiverEmail]
         });
         await conversation.save()
         res.status(200).json(conversation)
@@ -17,7 +17,7 @@ const newConversation = async (req,res) => {
 const getAllConversation = async (req, res) => {
     try{
         const conversation = await Conversation.find({
-            members: { $in:[req.params.userId]}
+            members: { $in:[req.params.userEmail]}
         }).clone().then(conversations => res.status(200).json(conversations));
     }catch(err){
         res.status(500).json(err)
@@ -26,12 +26,12 @@ const getAllConversation = async (req, res) => {
 
 const getSpecificConversationBuUsers = async (req, res) => {
     try{
-        const userId1 = req.query.userId1
-        const userId2 = req.query.userId2
+        const userEmail1 = req.query.userEmail1
+        const userEmail2 = req.query.userEmail2
         await Conversation.findOne({
             $and: [
-                {members: { $in:[userId1]}},
-                {members: { $in:[userId2]}}
+                {members: { $in:[userEmail1]}},
+                {members: { $in:[userEmail2]}}
             ]
         }).clone().then(conversations => res.status(200).json(conversations));
     }catch(err){

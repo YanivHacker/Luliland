@@ -21,8 +21,8 @@ const getAllUsers = async () => { //may raise an exception
     return await axios.get(USER_SERVICE)
 }
 
-const getUserById = async (id) => {
-    const response = await axios.get(USER_SERVICE + `/${id}`)
+const getUserByEmail = async (email) => {
+    const response = await axios.get(USER_SERVICE + `/${email}`)
     return response.data
 }
 
@@ -31,4 +31,4 @@ const getUserFriends = async (userEmail) => {
     return response.data
 }
 
-module.exports = {signUp, login, getAllUsers, getUserById, getUserFriends}
+module.exports = {signUp, login, getAllUsers, getUserByEmail, getUserFriends}

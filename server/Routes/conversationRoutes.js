@@ -4,7 +4,7 @@ const conversationRouter = express.Router();
 const ConversationController = require('../Controllers/conversationController')
 
 conversationRouter.post("/",ConversationController.newConversation)
-conversationRouter.get("/:userId",ConversationController.getAllConversation)
+conversationRouter.get("/:userEmail",ConversationController.getAllConversation)
 conversationRouter.get("/", ConversationController.getSpecificConversationBuUsers)
 
 module.exports = {conversationRouter}
