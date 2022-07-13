@@ -42,7 +42,7 @@ const relativeTime = (timestamp) => {
         )
         return rtf.format(secondDifference, 'second');
     }
-    return "now"
+    return "just now"
 }
 
 

@@ -21,7 +21,8 @@ export default function Messenger() {
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
     const [selectedFriendEmail,setSelectedFriendEmail] = useState(null)
-    const messageContent = useRef()
+    const scrollRef = useRef()
+    const newMessageContent = useRef()
 
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
@@ -47,6 +48,10 @@ export default function Messenger() {
         }
         initalizeMessageList()
     },[currentConversationId])
+
+    useEffect(()=>{
+        scrollRef.current?.scrollIntoView({behavior:'smooth'})
+    },[currentMessages])
 
 
     return (
@@ -79,18 +84,22 @@ export default function Messenger() {
                                 <>
                                     <div className="chatBoxTop">
                                         {currentMessages.map(message => {
-                                            return <Message own={message.sender===currentUserEmail} userEmail={message.sender===currentUserEmail ? currentUserEmail : selectedFriendEmail} messageInfo={message} key={message._id}/>
+                                            return (
+                                                <div key={message._id} ref={scrollRef}>
+                                                    <Message own={message.sender===currentUserEmail} userEmail={message.sender===currentUserEmail ? currentUserEmail : selectedFriendEmail} messageInfo={message}/>
+                                                </div>
+                                            )
                                         })}
                                     </div>
 
                                     <div className="chatBoxBottom">
-                                        <textarea ref={messageContent} className="chatMessageInput" placeholder="write something ..."></textarea>
+                                        <textarea ref={newMessageContent} className="chatMessageInput" placeholder="write something ..."></textarea>
                                         {/*show new messages live*/}
                                         {/*todo: check disable*/}
                                         <button
                                                 className="chatSubmitButton"
                                                 onClick={()=>{
-                                                        const text = messageContent.current.value
+                                                        const text = newMessageContent.current.value
                                                         if(text && text!== ""){
                                                             const sendAndGetNewMessage = async ()=>{
                                                                 const savedMessage = await sendMessage(currentUserEmail,currentConversationId,text)
