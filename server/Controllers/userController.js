@@ -234,15 +234,13 @@ const getMostActiveUsers = async (req, res) => {
 const getFriendsByUser = async(req, res) => {
     let sent = false;
     const {email} = req.params;
-    let friends = null;
+    let friends = [];
     await User.findOne({email:email}, function(error, docs){
         if(error || !docs) {
             res.status(400).send("No user exists with the email provided.");
             sent = true;
         }
-        else friends = docs.friends;
-    }).clone();
-
+    }).clone().then(response => friends = response.friends);
     await User.find({email: {$in: friends}}, function(error, docs){
         if((error || !docs) && !sent){
             res.status(400).send("No user exists with the email provided, or no friends for user.");

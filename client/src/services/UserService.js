@@ -17,4 +17,18 @@ const login = async (credentials) => {
         .then(response => console.log(response))
 }
 
-module.exports = {signUp, login}
+const getAllUsers = async () => { //may raise an exception
+    return await axios.get(USER_SERVICE)
+}
+
+const getUserByEmail = async (email) => {
+    const response = await axios.get(USER_SERVICE + `/${email}`)
+    return response.data
+}
+
+const getUserFriends = async (userEmail) => {
+    const response = await axios.get(USER_SERVICE + `/${userEmail}/friends`)
+    return response.data
+}
+
+module.exports = {signUp, login, getAllUsers, getUserByEmail, getUserFriends}
