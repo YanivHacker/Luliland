@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
+import {io} from "socket.io-client"
 import './messenger.css'
 import Topbar from "../../components/Topbar/Topbar";
 import Conversation from "../../components/Conversations/Conversations";
@@ -6,7 +7,7 @@ import Message from "../../components/Message/Message";
 import ChatOnline from "../../components/ChatOnline/ChatOnline";
 
 import {Users} from "../../dummyData"
-import {getAllUserConversation, getSpecificConversation} from "../../services/ConversationService";
+import {getSpecificConversation} from "../../services/ConversationService";
 import {getUserFriends} from "../../services/UserService";
 import {fetchConversationMessages, sendMessage} from "../../services/MessageService";
 
@@ -21,6 +22,8 @@ export default function Messenger() {
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
     const [selectedFriendEmail,setSelectedFriendEmail] = useState(null)
+    const [arrivalMessage, setArrivalMessage] = useState(null)
+    const socket = useRef()
     const scrollRef = useRef()
     const newMessageContent = useRef()
 
@@ -39,6 +42,24 @@ export default function Messenger() {
         }
         initializeFriendUserList()
     },[currentUserEmail])
+
+    //initialize socket
+    useEffect(() => {
+        socket.current = io("ws://localhost:8900")
+        socket.current.emit("addUser",currentUserEmail)
+        socket.current.on("getMessage", data => {
+            setArrivalMessage({
+                sender: data.senderEmail,
+                text: data.text,
+                createdAt: Date.now()
+            })
+        })
+    },[])
+
+    useEffect(()=>{
+        arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
+            setCurrentMessages([...currentMessages, arrivalMessage])
+    }, [arrivalMessage, currentConversationId])
 
     //fetch message list
     useEffect(()=>{
@@ -94,11 +115,10 @@ export default function Messenger() {
 
                                     <div className="chatBoxBottom">
                                         <textarea ref={newMessageContent} className="chatMessageInput" placeholder="write something ..."></textarea>
-                                        {/*show new messages live*/}
                                         {/*todo: check disable*/}
                                         <button
                                                 className="chatSubmitButton"
-                                                onClick={()=>{
+                                                onClick={(e)=>{
                                                         const text = newMessageContent.current.value
                                                         if(text && text!== ""){
                                                             const sendAndGetNewMessage = async ()=>{
@@ -106,6 +126,11 @@ export default function Messenger() {
                                                                 setCurrentMessages([...currentMessages,savedMessage])
                                                             }
                                                             sendAndGetNewMessage()
+                                                            socket.current.emit("sendMessage",{
+                                                                senderEmail: currentUserEmail,
+                                                                receiverEmail: selectedFriendEmail,
+                                                                text: newMessageContent
+                                                            })
                                                         }else
                                                             console.log('message is empty')
                                                     }
