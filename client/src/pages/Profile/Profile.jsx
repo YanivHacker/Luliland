@@ -11,6 +11,7 @@ import {getUserByEmail} from "../../services/UserService";
 
 
 export default function Profile() {
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState({});
     const userEmail = useParams().userEmail;
     console.log(userEmail);
@@ -33,7 +34,7 @@ export default function Profile() {
                             <div className="profileCover">
                                 <img
                                     className="profileCoverImg"
-                                    src="assets/post/3.jpeg"
+                                    src="assets/post/3.jpg"
                                     alt=""
                                 />
                                 <img

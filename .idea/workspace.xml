@@ -11,9 +11,18 @@
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="added avoidance of double server sending to client">
 =======
     <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added default value to isDeleted in Post">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/Login/Login.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/Login/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/Register/Register.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/Register/register.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Feed/Feed.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/Post/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Post/Post.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Profile/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Profile/Profile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/services/UserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/UserService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +74,7 @@
       <recent name="$PROJECT_DIR$/server/Utils" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.Server">
+  <component name="RunManager" selected="npm.start">
     <configuration name="Server" type="NodeJSConfigurationType" path-to-node="node" node-parameters="index.js" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/server">
       <method v="2" />
     </configuration>
@@ -115,7 +124,7 @@
 =======
       <workItem from="1657110739083" duration="1700000" />
       <workItem from="1657285384264" duration="6614000" />
->>>>>>> started implement communication with backend
+      <workItem from="1657891940301" duration="12468000" />
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
@@ -350,8 +359,13 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
           <line>274</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
+          <line>137</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
