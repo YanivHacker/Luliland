@@ -1,45 +1,25 @@
 import React from 'react'
 import './adminSidebar.css'
-//icons
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-
-const data = [
-    {
-        title: "users",
-        icon: <PeopleAltIcon />,
-        url: "/"
-    },
-    {
-        title: "users2",
-        icon: <PeopleAltIcon />,
-        url: "/"
-    },
-    {
-        title: "user3",
-        icon: <PeopleAltIcon />,
-        url: "/"
-    },
-    {
-        title: "user4",
-        icon: <PeopleAltIcon />,
-        url: "/"
-    },
-    {
-        title: "users5",
-        icon: <PeopleAltIcon />,
-        url: "/"
-    }
-]//todo: delete this
 
 
-export default function AdminSidebar(){
+/*
+* data list should contain objects with the following template:
+* {
+    title: string,
+    icon: mui-icon component,
+    action: onClick event function
+* }
+* */
+
+
+export default function AdminSidebar({data}){
     return(
             <>
                 <div className="adminSidebar">
                     <ul className="sidebarList">
                         {data.map((val,key) => {
                             return (
-                                <li className="row" key={key}>
+                                <li className="row" key={key} onClick={val.action}>
                                     <div id="icon">{val.icon}</div>
                                     <div id="title">{val.title}</div>
                                 </li>
