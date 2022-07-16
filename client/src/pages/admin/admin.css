@@ -1,0 +1,19 @@
+.admin {
+    height: 100vh;
+}
+
+.adminContainer {
+    display: flex;
+    height: 100%;
+}
+
+.adminContainer .menu {
+    flex:2;
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    flex: 8;
+    height: 100%;
+}
