@@ -3,10 +3,11 @@ import './admin.css'
 import AdminSidebar from "../../components/AdminSiderbar/AdminSidebar";
 import Topbar from "../../components/Topbar/Topbar";
 import UserTable from "../../components/UserTable/UserTable";
-
+import PostTable from "../../components/PostTable/PostTable";
 
 //icons
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 
 
 export default function Admin(){
@@ -17,6 +18,11 @@ export default function Admin(){
             title: 'users',
             icon: <PeopleAltIcon />,
             action: e => setSelectedView(<UserTable/>)
+        },
+        {
+            title: 'posts',
+            icon: <StickyNote2Icon />,
+            action: e => setSelectedView(<PostTable/>)
         }
     ]
 
