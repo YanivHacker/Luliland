@@ -18,7 +18,8 @@ const login = async (credentials) => {
 }
 
 const getAllUsers = async () => { //may raise an exception
-    return await axios.get(USER_SERVICE)
+    const res = await axios.get(USER_SERVICE)
+    return res.data
 }
 
  const getUserByEmail = async (email) => {

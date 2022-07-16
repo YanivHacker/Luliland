@@ -2,6 +2,7 @@ import React from 'react'
 import './admin.css'
 import AdminSidebar from "../../components/AdminSiderbar/AdminSidebar";
 import Topbar from "../../components/Topbar/Topbar";
+import UserTable from "../../components/UserTable/UserTable";
 
 export default function Admin(){
 
@@ -13,7 +14,7 @@ export default function Admin(){
                     <AdminSidebar/>
                 </div>
                 <div className="content">
-                    hi
+                    <UserTable/>
                 </div>
             </div>
         </div>
