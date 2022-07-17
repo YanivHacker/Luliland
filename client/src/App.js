@@ -6,23 +6,39 @@ import { SignUp } from "./components/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
 import Messenger from "./pages/Messenger/Messenger";
 import { AuthContext } from "./context/AuthContext";
-import {useContext} from "react";
-import Login from "./pages/Login/Login";
-// import Login from "./components/Login/Login";
+import {useContext, useState} from "react";
+import Login from "./components/Login/Login";
 import Register from "./pages/Register/Register";
 import {Navigate} from 'react-router-dom';
+import {sendMessage} from "./services/MessageService";
+import {getUserByEmail} from "./services/UserService";
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const userEmail = localStorage.getItem("email");
+  const password = localStorage.getItem("password");
+  console.log("email " + userEmail)
+  const [user, setUser] = useState([]);
+  if(userEmail) {
+    const getUser = async () => {
+      const user = await getUserByEmail(userEmail);
+      setUser(user)
+    }
+    getUser();
+
+  }
+  console.log(password)
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={user ? <Home /> : <Register />}>
+            {console.log(userEmail)}
           </Route>
-          <Route path="/login" element={user ? <Navigate to="/" /> : <Login />}>
+          <Route path="/login" element={user ? <Navigate to="/" /> : <Register />}>
           </Route>
           <Route path="/register" element={user ? <Navigate to="/" /> : <Register />}>
+          </Route>
+          <Route path="/logout" element={<Login />}>
           </Route>
           {/*<Route exact path="/" element={<Register/>} />*/}
           {/*<Route exact path="/login" element={<Login />} />*/}

@@ -1,8 +1,19 @@
 import "./topbar.css"
 import {Search, Person, Chat, Notifications} from "@material-ui/icons"
-import { Link } from 'react-router-dom';
+import {Button} from '@material-ui/core'
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 
 export default function Topbar() {
+    const isUserNameExists  = localStorage.getItem("username");
+    const isUserPasswordExists  = localStorage.getItem("password");
+    const nav = useNavigate();
+    const onClickLogOut = (isUserNameExists,isUserPasswordExists) => {
+            localStorage.clear();
+            nav('/logout');
+
+        return
+    };
+
     return (
         <div className="topbarContainer">
             <div className="topbarleft">
@@ -37,6 +48,13 @@ export default function Topbar() {
                 </div>
                 <div className="topbarImage">
                     <Person />
+                </div>
+                <div className="topbarImage">
+                    <Button onClick={(e) => {
+                        onClickLogOut(isUserNameExists, isUserPasswordExists)
+                    }} style={{background:"grey"}}>
+                        Logout
+                    </Button>
                 </div>
             </div>
         </div>

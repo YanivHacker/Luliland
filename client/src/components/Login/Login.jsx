@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import validator from "validator/es";
 import {login} from "../../services/UserService";
 import "./login.css"
+import {useNavigate} from "react-router-dom";
 
 export default function FormDialog() {
     const [open, setOpen] = useState(false)
@@ -18,6 +19,8 @@ export default function FormDialog() {
     const [validPassword,setValidPassword] = useState(true)
     const emailRef = useRef("")
     const passwordRef = useRef("")
+    const navigate = useNavigate();
+
 
     const validateError = () => {
         const email = emailRef.current.value
@@ -44,6 +47,9 @@ export default function FormDialog() {
         if(res)
         {
             setSuccessLogIn("SUCCESS")
+            localStorage.setItem("email",emailRef.current.value)
+            localStorage.setItem("password",passwordRef.current.value)
+            navigate("/")
             handleClose()
         }
         else

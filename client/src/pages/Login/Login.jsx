@@ -5,32 +5,33 @@ import { CircularProgress } from "@material-ui/core";
 import login from  "../../services/UserService";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
 
 const USER_SERVICE = SERVER_URL + '/users'
 
-export const loginCall = async (userCredential, dispatch) => {
-    dispatch({ type: "LOGIN_START" });
+export const loginCall = async (userCredential) => {
     try {
         const res = await axios.post(USER_SERVICE + "/login", userCredential);
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
-        dispatch({ type: "LOGIN_FAILURE", payload: err });
+        console.log("Error in Login")
     }
 };
 
 export default function Login() {
     const email = useRef();
     const password = useRef();
-    const [isFetching, dispatch] = useContext(AuthContext);
-
+    // const [isFetching, dispatch] = useContext(AuthContext);
+    const isUserNameExists  = localStorage.getItem("email");
+    const isUserPasswordExists  = localStorage.getItem("password");
+    const navigate = useNavigate();
     const handleClick = (e) => {
+        loginCall({email: email.current.value, password: password.current.value})
+        localStorage.setItem("email",email.current.value)
+        localStorage.setItem("password",password.current.value)
+        navigate("/")
         e.preventDefault();
-        loginCall(
-            { email: email.current.value, password: password.current.value },
-            dispatch
-        );
     };
 
     return (
@@ -59,20 +60,12 @@ export default function Login() {
                             className="loginInput"
                             ref={password}
                         />
-                        <button className="loginButton" type="submit" disabled={isFetching}>
-                            {isFetching ? (
-                                <CircularProgress color="white" size="20px" />
-                            ) : (
-                                "Log In"
-                            )}
+                        <button className="loginButton" type="submit" onSubmit={handleClick}>
+                            Log In
                         </button>
                         <span className="loginForgot">Forgot Password?</span>
                         <button className="loginRegisterButton">
-                            {isFetching ? (
-                                <CircularProgress color="white" size="20px" />
-                            ) : (
-                                "Create a New Account"
-                            )}
+                            Create a New Account
                         </button>
                     </form>
                 </div>
