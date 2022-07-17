@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../Models/User');
 const Post = require('../Models/Post');
+const NodeGeocoder = require('node-geocoder');
 
 const readUsers = async (req,res) =>{
     let sent = false
@@ -137,7 +138,7 @@ const validateEmail = (email) => {
 const createUser = async (req,res) => {
     let sent = false;
     try {
-        let result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email, password:req.body.password};
+        let result = {firstName: req.body.firstName,lastName: req.body.lastName, email: req.body.email, password:req.body.password, address: req.body.address};
         if(!result.firstName || !result.lastName || !result.email || !result.password) {
             res.status(404).json({message: "Information missing for user creation."});
             sent = true;
@@ -167,7 +168,7 @@ const createUser = async (req,res) => {
                 sent = true;
             }
         }).clone();
-        const user = new User({firstName:result.firstName, lastName:result.lastName, email:result.email, password:result.password});
+        const user = new User({firstName:result.firstName, lastName:result.lastName, email:result.email, password:result.password, address: result.address});
         await user.save();
         if(!sent) {
             res.status(200).json(user);
@@ -179,6 +180,51 @@ const createUser = async (req,res) => {
             sent = true;
         }
     }
+}
+
+const searchLatAndLngByAddress = async(address) => {
+    const options = {
+        provider: 'google',
+
+        // Optional depending on the providers
+        // fetch: customFetchImplementation,
+        apiKey: 'AIzaSyDgRiuBRnyBk0p69oZpOwQQFzm8dLYuBKw', // for Mapquest, OpenCage, Google Premier
+        formatter: null // 'gpx', 'string', ...
+    };
+    const geocoder = NodeGeocoder(options);
+
+// Using callback
+    try {
+        let status = await geocoder.geocode({'address': address});
+        return {lat: status[0].latitude, long: status[0].longitude};
+    }
+    catch (err){
+        console.log("Error converting address " + address + " with error " + err);
+        return null;
+    }
+}
+
+const getAllUserAddresses = async(req, res) => {
+    let sent = false;
+    await User.find(async function(error, result){
+        if(error){
+            res.status(400).send("Error gettings user addresses from DB.");
+            sent = true;
+        }
+        if(result) {
+            let addresses = result.map(user => user.address).filter(address => (address !== "Not provided")); // searchLatAndLngByAddress if possible
+            let converted = []
+            for (let i = 0; i < addresses.length; i++) {
+                let object = await searchLatAndLngByAddress(addresses[i]);
+                if (object)
+                    converted.push(object);
+            }
+            if (!sent) {
+                res.status(200).json(converted);
+                sent = true;
+            }
+        }
+    }).clone();
 }
 
 const getMostActiveUsers = async (req, res) => {
@@ -353,7 +399,7 @@ const AddPostToUser = async (req) => {
 const updateUser = async (req,res) => {
     let sent = false;
     const {email} = req.params;
-    const {firstName, lastName, password, profilePicture} = req.body;
+    const {firstName, lastName, password, profilePicture, address} = req.body;
     await User.findOne({email:email}, function(error, docs){
         if(error || !docs) {
             res.status(400).send("No user exists with the email provided.");
@@ -369,6 +415,8 @@ const updateUser = async (req,res) => {
         updateInfo.password = password
     if(profilePicture)
         updateInfo.profilePicture = profilePicture
+    if(address)
+        updateInfo.address = address
 
     await User.findOneAndUpdate({email: email}, updateInfo, function(error, result){
         if(error){
@@ -428,4 +476,4 @@ const deleteUser = async (req,res) => {
 
 module.exports = {readUsers, createUser, updateUser, AddPostToUser,
                   deleteUser,getUserByEmail, logIn, searchUsers, deletePostFromUser,
-                  getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend};
+                  getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend, getAllUserAddresses};

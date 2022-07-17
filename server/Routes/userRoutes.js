@@ -2,6 +2,7 @@ const userController = require('../Controllers/userController')
 const express = require('express');
 const usersRouter = express.Router();
 
+usersRouter.get('/addresses', userController.getAllUserAddresses);
 usersRouter.get('/',userController.readUsers);
 usersRouter.get('/:email',userController.getUserByEmail);
 usersRouter.post('/',userController.createUser);

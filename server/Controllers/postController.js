@@ -49,7 +49,7 @@ const getPostById = async (req,res) => {
                 }
             }
             if(!sent) {
-                res.status(200).json(post);
+                res.status(200).json(result);
                 sent = true;
             }
         }).clone();
