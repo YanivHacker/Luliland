@@ -14,5 +14,7 @@ usersRouter.get('/search', userController.searchUsers);
 usersRouter.get('/mostactive', userController.getMostActiveUsers);
 usersRouter.post('/:email/addFriend', userController.addUserFriend);
 usersRouter.get('/:email/friends', userController.getFriendsByUser);
+usersRouter.get('/popularFirstNames', userController.getPopularFirstNames);
+usersRouter.get('/popularLastNames', userController.getPopularLastNames);
 
 module.exports = usersRouter;

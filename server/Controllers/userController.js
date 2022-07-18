@@ -3,6 +3,7 @@ const User = require('../Models/User');
 const Post = require('../Models/Post');
 const NodeGeocoder = require('node-geocoder');
 const Conversation = require("../Models/Conversation");
+const {getPopularNames} = require("../Utils/most-popular-first-names");
 
 const readUsers = async (req,res) =>{
     let sent = false
@@ -480,6 +481,16 @@ const deleteUser = async (req,res) => {
         res.status(200).send("Deleted user successfully");
 }
 
+const getPopularFirstNames = async (req, res) => {
+    const result = getPopularNames(true);
+    res.status(200).json(result);
+}
+
+const getPopularLastNames = async (req, res) => {
+    const result = getPopularNames(false);
+    res.status(200).json(result);
+}
+
 module.exports = {readUsers, createUser, updateUser, AddPostToUser,
                   deleteUser,getUserByEmail, logIn, searchUsers, deletePostFromUser,
-                  getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend, getAllUserAddresses};
+                  getMostActiveUsers, readPostsByUser, getFriendsByUser, addUserFriend, getAllUserAddresses, getPopularFirstNames, getPopularLastNames};
