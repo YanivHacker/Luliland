@@ -1,14 +1,27 @@
-import React, {useState} from "react";
-import {Button, Form, Input, PageHeader, Space, Image, Avatar} from "antd";
+import React, {useRef, useState} from "react";
+import {Button, Form, Input, PageHeader, notification, Avatar} from "antd";
 import 'antd/dist/antd.css';
 import {getCurrentUser} from "../../Utils/currentUser";
-
+import {SERVER_URL} from "../../services/HttpServiceHelper";
+import axios from "axios";
 
 function AntDesignOutlined() {
     return null;
 }
 
+const openNotification = (content) => {
+    notification.open({
+        message: content,
+    });
+};
+
 export default function UpdateUser() {
+    const firstName = useRef();
+    const lastName = useRef();
+    const password = useRef();
+    const address = useRef();
+    const profilePicture = useRef();
+
     const user = getCurrentUser();
     const [file, setFile] = useState(null);
     const onFinish = (values) => {
@@ -47,6 +60,7 @@ export default function UpdateUser() {
                     >
                         <Input
                             placeholder={user.firstName}
+                            ref={firstName}
                         />
                     </Form.Item>
 
@@ -56,6 +70,7 @@ export default function UpdateUser() {
                     >
                         <Input
                             placeholder={user.lastName}
+                            ref={lastName}
                         />
                     </Form.Item>
 
@@ -65,6 +80,7 @@ export default function UpdateUser() {
                     >
                         <Input
                             placeholder={user.address}
+                            ref={address}
                         />
                     </Form.Item>
 
@@ -72,13 +88,15 @@ export default function UpdateUser() {
                         label="Password"
                         name="password"
                     >
-                        <Input.Password />
+                        <Input.Password ref={password}/>
                     </Form.Item>
 
                     <Form.Item style={{paddingLeft: 400}}>
                         <Avatar
                             size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
                             icon={<AntDesignOutlined />}
+                            src={user.profilePicture}
+                            ref={profilePicture}
                         />
                     </Form.Item>
 
@@ -88,7 +106,15 @@ export default function UpdateUser() {
                             span: 16,
                         }}
                         style={{paddingLeft: 230}}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" onClick={async () => {
+                            let data = {firstName: firstName.current.value, lastName: lastName.current.value, password: password.current.value,
+                                        address: address.current.value, profilePicture: profilePicture.current.value}
+                            const response = await axios.patch(SERVER_URL + `/users/${user.email}`, data);
+                            if(response.status === 200){
+                                openNotification('User updated successfully!');
+                            }
+                            else openNotification('Error while updating your user');
+                        }}>
                             Submit
                         </Button>
                     </Form.Item>

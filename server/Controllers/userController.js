@@ -414,15 +414,15 @@ const updateUser = async (req,res) => {
         }
     }).clone();
     let updateInfo = {}
-    if(firstName)
+    if(firstName && firstName.length > 0)
         updateInfo.firstName = firstName
-    if(lastName)
+    if(lastName && lastName.length > 0)
         updateInfo.lastName = lastName
-    if(password)
+    if(password && password.length > 0)
         updateInfo.password = password
-    if(profilePicture)
+    if(profilePicture && profilePicture.length > 0)
         updateInfo.profilePicture = profilePicture
-    if(address)
+    if(address && address.length > 0)
         updateInfo.address = address
 
     await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo, function(error, result){
