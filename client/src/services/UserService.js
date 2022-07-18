@@ -11,6 +11,11 @@ const signUp = (user) => {
         .catch(err=>console.log(err))
 }
 
+const deleteUserByEmail = async (email) => {
+    const res = await axios.delete(`${USER_SERVICE}/${email}`)
+    return res.status === 200
+}
+
 const login = async (credentials) => {
     console.log(credentials)
     await axios.post(USER_SERVICE + "/login",credentials)
@@ -38,4 +43,4 @@ const getUserFriends = async (userEmail) => {
     return response.data
 }
 
-module.exports = {signUp, login, getAllUsers, getUserByEmail, getUserFriends, getAllAddresses}
+module.exports = {signUp, login, getAllUsers, getUserByEmail, getUserFriends, getAllAddresses, deleteUserByEmail}

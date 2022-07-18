@@ -21,7 +21,7 @@ function Map({points}){
     console.log(points)
     return (
         <>
-            <h1 style={{"text-align":"center"}}>
+            <h1 style={{"textAlign":"center"}}>
                Users' Addresses on Map
             </h1>
             <GoogleMap zoom={8} center={center} mapContainerClassName={"map-container"} >

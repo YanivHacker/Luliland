@@ -8,8 +8,8 @@ import PostTable from "../../components/PostTable/PostTable";
 //icons
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
-import CommentIcon from '@mui/icons-material/Comment';
-import CommentTable from "../../components/CommentTable/CommentTable";
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import Analytic from "../../components/Analytic/Analytic";
 
 export default function Admin(){
     const [selectedView, setSelectedView] = useState(<div/>)
@@ -24,6 +24,11 @@ export default function Admin(){
             title: 'posts',
             icon: <StickyNote2Icon />,
             action: e => setSelectedView(<PostTable/>)
+        },
+        {
+            title: 'analytics info',
+            icon: <QueryStatsIcon />,
+            action: e => setSelectedView(<Analytic/>)
         }
     ]
 

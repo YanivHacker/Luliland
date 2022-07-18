@@ -8,4 +8,11 @@ const getAllPosts = async () =>{
     return res.data
 }
 
-module.exports = {getAllPosts}
+const getDistributionTag = async (tag1,tag2,tag3) => {
+    const res = await axios.post(`${POST_SERVICE}/tags`, {tag1, tag2, tag3})
+    if(res.status!==200)
+        return null
+    return res.data
+}
+
+module.exports = {getAllPosts, getDistributionTag}
