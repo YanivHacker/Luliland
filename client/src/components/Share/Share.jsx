@@ -10,30 +10,41 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import getUserByEmail from "../../services/UserService";
 
+const {SERVER_URL} = require("../../services/HttpServiceHelper");
+const POST_SERVICE = SERVER_URL + '/posts';
+
 export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-    const desc = useRef();
+    const content = useRef();
     const [file, setFile] = useState(null);
-    const user = JSON.parse(localStorage.getItem("user"))
+    const user = JSON.parse(localStorage.getItem("user"));
     const submitHandler = async (e) => {
         e.preventDefault();
         const newPost = {
-            userId: user._id,
-            desc: desc.current.value,
+            userEmail: user.email,
+            content: content.current.value,
         };
+        debugger
         if (file) {
             const data = new FormData();
             const fileName = Date.now() + file.name;
             data.append("name", fileName);
             data.append("file", file);
-            newPost.img = fileName;
+            //newPost.img = fileName;
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function() {
+                var base64data = reader.result;
+                newPost.image = base64data;
+                console.log(base64data);
+            }
             console.log(newPost);
-            try {
-                await axios.post("/:", data);
-            } catch (err) {}
+            // try {
+            //     await axios.post("/:", data);
+            // } catch (err) {}
         }
         try {
-            await axios.post("/posts", newPost);
+            await axios.post(POST_SERVICE, newPost);
             window.location.reload();
         } catch (err) {}
     };
@@ -54,7 +65,7 @@ export default function Share() {
                     <input
                         placeholder={"What's in your mind " + JSON.parse(localStorage.getItem("user")).firstName + "?"}
                         className="shareInput"
-                        ref={desc}
+                        ref={content}
                     />
                 </div>
                 <hr className="shareHr" />
