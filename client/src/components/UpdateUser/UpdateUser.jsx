@@ -36,8 +36,8 @@ export default function UpdateUser() {
                 <PageHeader
                     className="site-page-header"
                     onBack={() => null}
-                    title="Title"
-                    subTitle="This is a subtitle"
+                    title="Edit your details"
+                    subTitle={user.firstName + " " + user.lastName}
                 />
                 <Form
                     name="basic"
