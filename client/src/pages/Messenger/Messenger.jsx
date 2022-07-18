@@ -15,7 +15,7 @@ import {fetchConversationMessages, sendMessage} from "../../services/MessageServ
 // TODO: read current user id from local storage
 // --------------------------------------------------
 
-const currentUserEmail = "Tiffany.Martinez@generated-email.com"
+const currentUserEmail = getCurrentUser().email;
 
 export default function Messenger() {
     const [friendList, setFriendList] = useState([])
