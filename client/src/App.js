@@ -34,7 +34,7 @@ function App() {
           <Route exact path="/" element={user ? <Home /> : <Register />}>
             {console.log(userEmail)}
           </Route>
-          <Route path="/login" element={user ? <Navigate to="/" /> : <Register />}>
+          <Route path="/login" element={<Login />}>
           </Route>
           <Route path="/register" element={user ? <Navigate to="/" /> : <Register />}>
           </Route>

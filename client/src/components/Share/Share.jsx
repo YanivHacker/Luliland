@@ -14,13 +14,7 @@ export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const desc = useRef();
     const [file, setFile] = useState(null);
-    const [user, setUser] = useState([]);
-    const userEmail = localStorage.getItem("email");
-    const getUser = async () => {
-        const user = await getUserByEmail(userEmail);
-        setUser(user)
-    }
-
+    const user = JSON.parse(localStorage.getItem("user"))
     const submitHandler = async (e) => {
         e.preventDefault();
         const newPost = {
@@ -58,7 +52,7 @@ export default function Share() {
                         alt=""
                     />
                     <input
-                        placeholder={"What's in your mind " + user.username + "?"}
+                        placeholder={"What's in your mind " + JSON.parse(localStorage.getItem("user")).firstName + "?"}
                         className="shareInput"
                         ref={desc}
                     />

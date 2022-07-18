@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import validator from "validator/es";
-import {login} from "../../services/UserService";
+import {getUserByEmail, login} from "../../services/UserService";
 import "./login.css"
 import {useNavigate} from "react-router-dom";
 
@@ -47,8 +47,9 @@ export default function FormDialog() {
         if(res)
         {
             setSuccessLogIn("SUCCESS")
-            localStorage.setItem("email",emailRef.current.value)
-            localStorage.setItem("password",passwordRef.current.value)
+            const user = await getUserByEmail(emailRef.current.value);
+            localStorage.setItem("user",JSON.stringify(user))
+            //localStorage.setItem("password",passwordRef.current.value)
             navigate("/")
             handleClose()
         }
