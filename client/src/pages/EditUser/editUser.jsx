@@ -1,71 +1,125 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import React from 'react';
+const { Option } = Select;
+const layout = {
+    labelCol: {
+        span: 8,
+    },
+    wrapperCol: {
+        span: 16,
+    },
+};
+const tailLayout = {
+    wrapperCol: {
+        offset: 8,
+        span: 16,
+    },
+};
 
 const EditUser = () => {
-    const onFinish = (values) => {
-        console.log('Success:', values);
+    const [form] = Form.useForm();
+
+    const onGenderChange = (value) => {
+        switch (value) {
+            case 'male':
+                form.setFieldsValue({
+                    note: 'Hi, man!',
+                });
+                return;
+
+            case 'female':
+                form.setFieldsValue({
+                    note: 'Hi, lady!',
+                });
+                return;
+
+            case 'other':
+                form.setFieldsValue({
+                    note: 'Hi there!',
+                });
+        }
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+    const onFinish = (values) => {
+        console.log(values);
+    };
+
+    const onReset = () => {
+        form.resetFields();
+    };
+
+    const onFill = () => {
+        form.setFieldsValue({
+            note: 'Hello world!',
+            gender: 'male',
+        });
     };
 
     return (
-        <Form
-            name="basic"
-            labelCol={{
-                span: 8,
-            }}
-            wrapperCol={{
-                span: 16,
-            }}
-            initialValues={{
-                remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-        >
+        <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
             <Form.Item
-                label="First Name"
-                name="firstname"
+                name="note"
+                label="Note"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
             >
                 <Input />
             </Form.Item>
-
             <Form.Item
-                label="Last Name"
-                name="lastname"
+                name="gender"
+                label="Gender"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
             >
-                <Input.Password />
+                <Select
+                    placeholder="Select a option and change input text above"
+                    onChange={onGenderChange}
+                    allowClear
+                >
+                    <Option value="male">male</Option>
+                    <Option value="female">female</Option>
+                    <Option value="other">other</Option>
+                </Select>
             </Form.Item>
-
             <Form.Item
-                label="Password"
-                name="password"
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.gender !== currentValues.gender}
             >
-                <Input.Password />
+                {({ getFieldValue }) =>
+                    getFieldValue('gender') === 'other' ? (
+                        <Form.Item
+                            name="customizeGender"
+                            label="Customize Gender"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    ) : null
+                }
             </Form.Item>
-
-            <Form.Item
-                label="Address"
-                name="address"
-            >
-                <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-                wrapperCol={{
-                    offset: 8,
-                    span: 16,
-                }}
-            >
+            <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit">
                     Submit
+                </Button>
+                <Button htmlType="button" onClick={onReset}>
+                    Reset
+                </Button>
+                <Button type="link" htmlType="button" onClick={onFill}>
+                    Fill form
                 </Button>
             </Form.Item>
         </Form>
     );
 };
-//todo add profile picture update to here
+
 export default EditUser;
