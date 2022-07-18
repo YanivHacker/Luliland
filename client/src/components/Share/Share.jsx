@@ -13,6 +13,9 @@ import getUserByEmail from "../../services/UserService";
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
 const POST_SERVICE = SERVER_URL + '/posts';
 
+const blobToBase64 = require('blob-to-base64')
+
+
 export default function Share() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const content = useRef();
@@ -24,29 +27,28 @@ export default function Share() {
             userEmail: user.email,
             content: content.current.value,
         };
-        debugger
         if (file) {
             const data = new FormData();
             const fileName = Date.now() + file.name;
             data.append("name", fileName);
             data.append("file", file);
             //newPost.img = fileName;
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onloadend = function() {
-                var base64data = reader.result;
-                newPost.image = base64data;
-                console.log(base64data);
-            }
-            console.log(newPost);
+            blobToBase64.default(file, async function (error, base64) {
+                if (!error) {
+                    try {
+                        newPost.image = base64
+                        console.log(newPost);
+                        await axios.post(POST_SERVICE, newPost);
+                        window.location.reload();
+
+                    } catch (err) {}
+                }
+            })
+
             // try {
             //     await axios.post("/:", data);
             // } catch (err) {}
         }
-        try {
-            await axios.post(POST_SERVICE, newPost);
-            window.location.reload();
-        } catch (err) {}
     };
 
     return (

@@ -6,10 +6,11 @@ import {getUserFriends} from "../../services/UserService";
 import {useContext, useState, useEffect} from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import {getCurrentUser} from "../../Utils/currentUser"
 
 
 export default function Rightbar({ profile }) {
-    const { user: currentUser, dispatch } = useContext(AuthContext);
+    const user = getCurrentUser();
 
     const HomeRightbar = () => {
         return (

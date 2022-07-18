@@ -10,10 +10,12 @@ import {Users} from "../../dummyData"
 import {getSpecificConversation} from "../../services/ConversationService";
 import {getUserFriends} from "../../services/UserService";
 import {fetchConversationMessages, sendMessage} from "../../services/MessageService";
+import {getCurrentUser} from "../../Utils/currentUser";
 
 // --------------------------------------------------
 // TODO: read current user id from local storage
 // --------------------------------------------------
+
 
 const currentUserEmail = getCurrentUser().email;
 

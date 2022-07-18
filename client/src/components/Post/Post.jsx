@@ -56,7 +56,7 @@ export default function Post({ post }) {
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post.title}</span>
-                        <img className="postImg" src={post.images} alt="" />
+                        <img className="postImg" src={post.image} alt="" />
                     <span className="postContent">{post.content}</span>
                 </div>
                 <div className="postBottom">
