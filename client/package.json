@@ -9,6 +9,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.4",
     "@mui/x-data-grid": "^5.13.1",
+    "@react-google-maps/api": "^2.12.1",
     "@sanity/client": "^3.3.2",
     "@sanity/image-url": "^1.0.1",
     "@testing-library/jest-dom": "^5.16.4",

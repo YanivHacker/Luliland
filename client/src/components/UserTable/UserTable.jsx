@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import './userTable.css'
 import { DataGrid} from '@mui/x-data-grid';
-import {getAllUsers} from "../../services/UserService";
+import {getAllAddresses, getAllUsers} from "../../services/UserService";
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
+import CustomGoogleMap from "../GoogleMap/CustomGoogleMap";
 
 const columns = [
     { field: 'email', headerName: 'Email', width: 300, sortable: false},
     { field: 'firstName', headerName: 'First name', width: 130, sortable: false },
     { field: 'lastName', headerName: 'Last name', width: 130, sortable: false },
+    { field: 'address', headerName: 'Address', width: 130, sortable: false },
     { field: 'numOfFriends', headerName: 'Amount Of Friends', width: 140, sortable: false, valueGetter: (params) => `${ params.row?.friends?.length ||'0'}` },
     { field: 'createdAt', headerName: 'Created at', width: 180, sortable: false, valueGetter: (params) => {
             try{
@@ -25,7 +27,8 @@ const columns = [
 ]
 
 export default function UserTable(){
-    const [allUserList,setAllUserList] = useState()
+    const [allUserList,setAllUserList] = useState([])
+    const [addressesList,setAddressesList] = useState(null)
     useEffect(() => {
         const initializeUserList = async () => {
             try{
@@ -37,6 +40,23 @@ export default function UserTable(){
         }
         initializeUserList()
     }, [])
+    useEffect(()=>{
+        const initializeAddressesList = async () => {
+            console.log('xxx')
+            try{
+                const list = await getAllAddresses()
+                console.log(`list from server:`)
+                console.log(list)
+                setAddressesList([{lat:12,lng:32}])
+            }catch (err){
+                console.log(err)
+                setAddressesList([])
+            }finally {
+                console.log(addressesList)
+            }
+        }
+        initializeAddressesList()
+    },[])
     return (
         <>
             <div className="userTable">
@@ -48,6 +68,11 @@ export default function UserTable(){
                     getRowId={user => user.email}
                 />
             </div>
+            {addressesList &&
+                <div className="googleMap">
+                    <CustomGoogleMap points={addressesList}/>
+                </div>
+            }
         </>
     )
 }
