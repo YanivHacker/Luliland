@@ -6,7 +6,7 @@ const NodeGeocoder = require('node-geocoder');
 const readUsers = async (req,res) =>{
     let sent = false
     try {
-        const users = await User.find().clone();
+        const users = await User.find({isDeleted: false}).clone();
         if(res) {
             res.status(200).json(users);
             sent = true;
@@ -34,7 +34,7 @@ const searchUsers = async (req, res) => {
         else if(!content.includes(' ')) {
             const regex = new RegExp(content, 'i') // i for case insensitive
             if(!method)
-                users = await User.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}]}).clone();
+                users = await User.find({$or: [{firstName: {$regex: regex}}, {lastName: {$regex: regex}}], isDeleted: false}).clone();
             else{
                 if(method === 'firstName')
                     users = await User.find({firstName: {$regex: regex}}).clone();
@@ -51,7 +51,7 @@ const searchUsers = async (req, res) => {
             let values = content.split(' ', 1);
             const firstNameRegex = new RegExp(values[0], 'i') // i for case insensitive
             const lastNameRegex = new RegExp(values[1], 'i') // i for case insensitive
-            users = await User.find({$and: [{firstName: {$regex: firstNameRegex}}, {lastName: {$regex: lastNameRegex}}]}).clone();
+            users = await User.find({$and: [{firstName: {$regex: firstNameRegex}}, {lastName: {$regex: lastNameRegex}}], isDeleted: false}).clone();
         }
         if(!sent){
             res.status(200).json(users);
@@ -68,7 +68,7 @@ const searchUsers = async (req, res) => {
 const logIn = async (req,res) => {
     let sent = false;
     try{
-        await User.findOne({email: req.body.email}, function (err, docs) {
+        await User.findOne({email: req.body.email, isDeleted: false}, function (err, docs) {
             if (err || !docs){
                 res.status(404).json({message:'No user found with this email.', isSuccess:false});
                 sent = true;
@@ -158,7 +158,7 @@ const createUser = async (req,res) => {
             }
         }
 
-        else await User.findOne({email:result.email}, function(error, docs){
+        else await User.findOne({email:result.email, isDeleted: false}, function(error, docs){
             if(error && !sent) {
                 res.status(400).send("Error with user creation");
                 sent = true;
@@ -206,7 +206,7 @@ const searchLatAndLngByAddress = async(address) => {
 
 const getAllUserAddresses = async(req, res) => {
     let sent = false;
-    await User.find(async function(error, result){
+    await User.find({isDeleted: false}, async function(error, result){
         if(error){
             res.status(400).send("Error gettings user addresses from DB.");
             sent = true;
@@ -255,7 +255,7 @@ const getMostActiveUsers = async (req, res) => {
             } else {
                 let updatedResult = []
                 for(let i = 0; i < result.length; i++){
-                    await User.findOne({email: result[i].id}, function(err, docs){
+                    await User.findOne({email: result[i].id, isDeleted: false}, function(err, docs){
                         if (err && !sent){
                             res.status(400).json({message: err});
                             sent = true;
@@ -281,13 +281,13 @@ const getFriendsByUser = async(req, res) => {
     let sent = false;
     const {email} = req.params;
     let friends = [];
-    await User.findOne({email:email}, function(error, docs){
+    await User.findOne({email:email, isDeleted: false}, function(error, docs){
         if(error || !docs) {
             res.status(400).send("No user exists with the email provided.");
             sent = true;
         }
     }).clone().then(response => friends = response.friends);
-    await User.find({email: {$in: friends}}, function(error, docs){
+    await User.find({email: {$in: friends}, isDeleted: false}, function(error, docs){
         if((error || !docs) && !sent){
             res.status(400).send("No user exists with the email provided, or no friends for user.");
             sent = true;
@@ -303,7 +303,7 @@ const addUserFriend = async(req, res) => {
     let sent = false;
     const {email} = req.params;
     let friends = null;
-    await User.findOne({email:email}, function(error, docs){
+    await User.findOne({email:email, isDeleted: false}, function(error, docs){
         if(error || !docs) {
             res.status(400).send("No user exists with the email provided.");
             sent = true;
@@ -319,7 +319,7 @@ const addUserFriend = async(req, res) => {
     }
     let friendFriends;
 
-    await User.findOne({email:newFriend}, function(error, docs){
+    await User.findOne({email:newFriend, isDeleted: false}, function(error, docs){
         if((error || !docs) && !sent) {
             res.status(400).send("No user exists with the friend email provided.");
             sent = true;
@@ -332,14 +332,14 @@ const addUserFriend = async(req, res) => {
 
     friends.push(newFriend);
     friendFriends.push(email);
-    await User.findOneAndUpdate({email: email}, {friends: friends}, function(error, docs){
+    await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}, function(error, docs){
         if((error || !docs) && !sent) {
             res.status(400).send("Error while updating user's friends");
             sent = true;
         }
     }).clone();
 
-    await User.findOneAndUpdate({email: newFriend}, {friends: friendFriends}, function(error, docs){
+    await User.findOneAndUpdate({email: newFriend, isDeleted: false}, {friends: friendFriends}, function(error, docs){
         if((error || !docs) && !sent) {
             res.status(400).send("Error while updating user's friends");
             sent = true;
@@ -354,7 +354,7 @@ const addUserFriend = async(req, res) => {
 const deletePostFromUser = async (req) => {
     let succeeded = true;
     let allPostIDs = null;
-    await User.findOne({email:req.email}, async function (error, docs) {
+    await User.findOne({email:req.email, isDeleted: false}, async function (error, docs) {
         if (error || !docs) {
             succeeded = false;
         } else allPostIDs = docs.allPostIDs;
@@ -363,7 +363,7 @@ const deletePostFromUser = async (req) => {
             return false;
         let toRemove = req.postID;
         allPostIDs = allPostIDs.filter(e => e !== toRemove)
-        await User.findOneAndUpdate({email: req.email}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
+        await User.findOneAndUpdate({email: req.email, isDeleted: false}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
             if (error) succeeded = false;
             console.log("Posts after removal: " + docs.allPostIDs);
         }).clone();
@@ -375,7 +375,7 @@ const deletePostFromUser = async (req) => {
 const AddPostToUser = async (req) => {
     let succeeded = true;
     let allPostIDs = null;
-    await User.findOne({email:req.email}, async function (error, docs) {
+    await User.findOne({email:req.email, isDeleted: false}, async function (error, docs) {
         if (error || !docs) {
             succeeded = false;
         }
@@ -387,7 +387,7 @@ const AddPostToUser = async (req) => {
         let newPostId = req.postID;
         allPostIDs.push(newPostId);
 
-        await User.findOneAndUpdate({email: req.email}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
+        await User.findOneAndUpdate({email: req.email, isDeleted: false}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
             if (error) succeeded = false;
             console.log("Posts after addition: " + docs.allPostIDs);
         }).clone();
@@ -400,7 +400,7 @@ const updateUser = async (req,res) => {
     let sent = false;
     const {email} = req.params;
     const {firstName, lastName, password, profilePicture, address} = req.body;
-    await User.findOne({email:email}, function(error, docs){
+    await User.findOne({email:email, isDeleted: false}, function(error, docs){
         if(error || !docs) {
             res.status(400).send("No user exists with the email provided.");
             sent = true;
@@ -418,7 +418,7 @@ const updateUser = async (req,res) => {
     if(address)
         updateInfo.address = address
 
-    await User.findOneAndUpdate({email: email}, updateInfo, function(error, result){
+    await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo, function(error, result){
         if(error){
             if(!sent){
                 res.status(400).send(error)
@@ -437,7 +437,7 @@ const updateUser = async (req,res) => {
 const readPostsByUser = async (req,res) =>{
     let sent = false;
     const {userEmail} = req.params
-    await User.findOne({email: userEmail}, function(error, docs){
+    await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
         if(error) {
             res.status(400).send("User with this email doesn't exist.");
             sent = true;
@@ -464,7 +464,7 @@ const readPostsByUser = async (req,res) =>{
 const deleteUser = async (req,res) => {
     let sent = false;
     const {email} = req.params;
-    await User.findOneAndUpdate({email: email},{isDeleted: true}, function(error, result){
+    await User.findOneAndUpdate({email: email, isDeleted: false},{isDeleted: true}, function(error, result){
         if(error){
             res.status(400).send(error);
             sent = true;
