@@ -5,7 +5,8 @@ const {AddPostToUser, deletePostFromUser} = require("./userController");
 
 const readPosts = async (req,res) =>{
     await Post.find({isDeleted: false}, function(err, docs) {
-        if (!req || !res){
+        if (!req || !res) {
+            console.log("here")
             if(err)
                 return null;
             return docs;

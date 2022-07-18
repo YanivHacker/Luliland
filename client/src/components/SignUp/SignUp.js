@@ -5,6 +5,7 @@ import {SignUpForm} from "./SignUpForm";
 import {SignUpContainer} from "./SignUpContainer"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import "./SignUpPage.css"
+import {useNavigate} from "react-router-dom";
 
 export const SignUp = ()=>{
     const firstName = useRef()
@@ -13,6 +14,7 @@ export const SignUp = ()=>{
     const password = useRef()
     //const [profileImage, setProfileImage] = useState("")
     const profile = useRef()
+    const history = useNavigate();
 
 
     function createUser(){
@@ -26,7 +28,9 @@ export const SignUp = ()=>{
             password: password.current.value,
             profileImage: ""
         }
+
         signUp(newUser)
+        history("/login")
     }
 
     function loadImage(files){
@@ -36,7 +40,7 @@ export const SignUp = ()=>{
         if(files.length>0)
             console.log(URL.createObjectURL(files[0]))//files[0]
         //setProfileImage(files.length===0?"":files[0].text())
-        //console.log(profile.current.value)
+        //console.log(Profile.current.value)
     }
 
     return (
@@ -54,7 +58,7 @@ export const SignUp = ()=>{
             {/*        password:*/}
             {/*        <input ref={password} type="password" />*/}
             {/*        <br/>*/}
-            {/*        profile image:*/}
+            {/*        Profile image:*/}
             {/*        <br/>*/}
             {/*        <button type="submit" onClick={createUser}>sign up</button>*/}
 
