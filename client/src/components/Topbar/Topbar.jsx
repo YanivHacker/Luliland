@@ -47,7 +47,9 @@ export default function Topbar() {
                     </div>
                 </div>
                 <div className="topbarImage">
-                    <Person />
+                    <Link to="/updateUser" style={{textDecoration:"none"}}>
+                        <Person />
+                    </Link>
                 </div>
                 <div className="topbarImage">
                     <Button onClick={(e) => {
