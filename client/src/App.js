@@ -12,28 +12,28 @@ import Register from "./pages/Register/Register";
 import {Navigate} from 'react-router-dom';
 import {sendMessage} from "./services/MessageService";
 import {getUserByEmail} from "./services/UserService";
-import EditUser from "./pages/EditUser/editUser";
+import EditUser from "./pages/EditUser/EditUser";
+import {getCurrentUser} from "./Utils/currentUser";
 
 function App() {
-  const userEmail = localStorage.getItem("email");
-  const password = localStorage.getItem("password");
-  console.log("email " + userEmail)
-  const [user, setUser] = useState([]);
-  if(userEmail) {
-    const getUser = async () => {
-      const user = await getUserByEmail(userEmail);
-      setUser(user)
-    }
-    getUser();
-
-  }
-  console.log(password)
+  //const userEmail = localStorage.getItem("email");
+  //const password = localStorage.getItem("password");
+  //console.log("email " + userEmail)
+  //const [user, setUser] = useState([]);
+  // if(userEmail) {
+  //   const getUser = async () => {
+  //     const user = await getUserByEmail(userEmail);
+  //     setUser(user)
+  //   }
+  //   getUser();
+  // }
+  //console.log(password)
+  const user = getCurrentUser();
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={user ? <Home /> : <Register />}>
-            {console.log(userEmail)}
           </Route>
           <Route path="/login" element={<Login />}>
           </Route>

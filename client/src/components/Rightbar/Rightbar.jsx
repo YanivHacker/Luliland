@@ -7,11 +7,23 @@ import {useContext, useState, useEffect} from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import {getCurrentUser} from "../../Utils/currentUser"
+import axios from "axios";
+import {SERVER_URL} from "../../services/HttpServiceHelper";
 
+const USER_SERVICE = SERVER_URL + "/users"
 
 export default function Rightbar({ profile }) {
     const user = getCurrentUser();
-
+    const [friends, setFriends] = useState([]);
+    const fetchFriends = async () => {
+        const response = await axios.get(USER_SERVICE + `/${user.email}/friends`)
+        const { data } = response;
+        console.log("friends" + data)
+        setFriends(data);
+    };
+    useEffect( () => {
+        fetchFriends();
+    }, []);
     const HomeRightbar = () => {
         return (
             <>
@@ -23,9 +35,9 @@ export default function Rightbar({ profile }) {
                 </div>
                 <img className="rightbarAd" src="assets/ad.png" alt="" />
                 <hr className="rightbarHr" />
-                <h4 className="rightbarTitle">Friends ({Users.length})</h4>
+                <h4 className="rightbarTitle">Friends ({friends.length})</h4>
                 <ul className="rightbarFriendList">
-                    {Users.map((u) => (
+                    {friends.map((u) => (
                         <CloseFriend key={u.id} user={u} />
                     ))}
                 </ul>
@@ -90,7 +102,8 @@ export default function Rightbar({ profile }) {
     return (
         <div className="rightbar">
             <div className="rightbarWrapper">
-                {profile ? <ProfileRightbar /> : <HomeRightbar />}
+                {/*{profile ? <ProfileRightbar /> : <HomeRightbar />}*/}
+                <HomeRightbar />
             </div>
         </div>
     );
