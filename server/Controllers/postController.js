@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Post = require('../Models/Post');
 const User = require("../Models/User");
 const {AddPostToUser, deletePostFromUser} = require("./userController");
+const {getPopularPostThemes} = require("../Utils/aho-corasick");
 
 const readPosts = async (req,res) =>{
     await Post.find({isDeleted: false}, function(err, docs) {
@@ -18,6 +19,11 @@ const readPosts = async (req,res) =>{
         }
         else return null;
     }).clone();
+}
+
+const getTagsFrequencies = async(req, res) => {
+    const result = getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
+    res.status(200).json(result);
 }
 
 const readCommentsByPost = async (req,res) => {
@@ -191,4 +197,4 @@ const deletePost = async (req,res) => {
             res.status(200).send("Post deleted successfully.");    }).clone();
 }
 
-module.exports = {readPosts, createPost, updatePost, deletePost,getPostById, readCommentsByPost, addCommentToPost, deleteCommentFromPost};
+module.exports = {readPosts, createPost, updatePost, deletePost,getPostById, readCommentsByPost, addCommentToPost, deleteCommentFromPost, getTagsFrequencies};

@@ -5,8 +5,8 @@ const {readPosts} = require("../Controllers/postController");
 //Create data structure
 //Increment counters
 
-const getPopularPostThemes = async() => {
-    let ac = new AhoCorasick(['#sports', '#politics', '#love']); // add whatever tags you want in here
+const getPopularPostThemes = async(tag1, tag2, tag3) => {
+    let ac = new AhoCorasick([tag1, tag2, tag3]); // add whatever tags you want in here
     let allPosts = await readPosts(null, null)
     if(!allPosts){
         console.log("No users in DB")
