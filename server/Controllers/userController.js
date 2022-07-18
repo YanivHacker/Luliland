@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../Models/User');
 const Post = require('../Models/Post');
 const NodeGeocoder = require('node-geocoder');
+const Conversation = require("../Models/Conversation");
 
 const readUsers = async (req,res) =>{
     let sent = false
@@ -349,6 +350,11 @@ const addUserFriend = async(req, res) => {
             sent = true;
         }
     }).clone();
+
+    const conversation = new Conversation({
+        members: [email, newFriend]
+    });
+    await conversation.save()
 }
 
 const deletePostFromUser = async (req) => {

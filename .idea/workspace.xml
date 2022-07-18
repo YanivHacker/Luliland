@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added address to createUser and updateUser and added getAllUserAddresses (as lat-long object)">
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="return only non-deleted posts and users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/conversationController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/conversationController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/messageController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/messageController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -79,7 +80,7 @@
       <workItem from="1657721992085" duration="2814000" />
       <workItem from="1657814090909" duration="4382000" />
       <workItem from="1658053461561" duration="2570000" />
-      <workItem from="1658122768530" duration="3851000" />
+      <workItem from="1658122768530" duration="5683000" />
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
@@ -249,7 +250,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658055951389</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="return only non-deleted posts and users">
+      <created>1658136845770</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1658136845770</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -290,6 +298,7 @@
     <MESSAGE value="Removed title from post" />
     <MESSAGE value="Added both sides of friend addition + added adress field to user" />
     <MESSAGE value="Added address to createUser and updateUser and added getAllUserAddresses (as lat-long object)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added address to createUser and updateUser and added getAllUserAddresses (as lat-long object)" />
+    <MESSAGE value="return only non-deleted posts and users" />
+    <option name="LAST_COMMIT_MESSAGE" value="return only non-deleted posts and users" />
   </component>
 </project>
