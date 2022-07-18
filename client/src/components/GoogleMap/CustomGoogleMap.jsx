@@ -18,9 +18,10 @@ export default function CustomGoogleMap({points}){
 const center = {lat: 32.072578, lng: 34.784779}
 
 function Map({points}){
+    console.log(points)
     return (
         <GoogleMap zoom={12} center={center} mapContainerClassName={"map-container"} >
-            {points.lenght > 0 && points.map((val,key) => {
+            {points.length > 0 && points.map((val,key) => {
                 return (
                     <div key={key} >
                         <Marker position={val}/>

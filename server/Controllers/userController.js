@@ -199,7 +199,7 @@ const searchLatAndLngByAddress = async(address) => {
 // Using callback
     try {
         let status = await geocoder.geocode({'address': address});
-        return {lat: status[0].latitude, long: status[0].longitude};
+        return {lat: status[0].latitude, lng: status[0].longitude};
     }
     catch (err){
         console.log("Error converting address " + address + " with error " + err);

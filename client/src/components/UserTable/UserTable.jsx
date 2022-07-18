@@ -5,6 +5,7 @@ import {getAllAddresses, getAllUsers} from "../../services/UserService";
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneIcon from '@mui/icons-material/Done';
 import CustomGoogleMap from "../GoogleMap/CustomGoogleMap";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const columns = [
     { field: 'email', headerName: 'Email', width: 300, sortable: false},
@@ -47,7 +48,7 @@ export default function UserTable(){
                 const list = await getAllAddresses()
                 console.log(`list from server:`)
                 console.log(list)
-                setAddressesList([{lat:12,lng:32}])
+                setAddressesList(list)
             }catch (err){
                 console.log(err)
                 setAddressesList([])
@@ -68,10 +69,14 @@ export default function UserTable(){
                     getRowId={user => user.email}
                 />
             </div>
-            {addressesList &&
+            {
+                addressesList ?
                 <div className="googleMap">
                     <CustomGoogleMap points={addressesList}/>
-                </div>
+                </div> :
+                    <div>
+                        <CircularProgress />
+                    </div>
             }
         </>
     )
