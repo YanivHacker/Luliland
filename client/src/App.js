@@ -12,6 +12,7 @@ import Register from "./pages/Register/Register";
 import {Navigate} from 'react-router-dom';
 import {sendMessage} from "./services/MessageService";
 import {getUserByEmail} from "./services/UserService";
+import EditUser from "./pages/EditUser/editUser";
 
 function App() {
   const userEmail = localStorage.getItem("email");
@@ -39,6 +40,8 @@ function App() {
           <Route path="/register" element={user ? <Navigate to="/" /> : <Register />}>
           </Route>
           <Route path="/logout" element={<Login />}>
+          </Route>
+          <Route path="/updateUser" element={<EditUser/>}>
           </Route>
           {/*<Route exact path="/" element={<Register/>} />*/}
           {/*<Route exact path="/login" element={<Login />} />*/}

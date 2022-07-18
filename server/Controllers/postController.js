@@ -14,7 +14,7 @@ const readPosts = async (req,res) =>{
         else if (err)
             res.status(400).json({message: err});
         else if(docs) {
-            res.status(200).json(docs);
+            res.status(200).json(docs.reverse());
         }
         else return null;
     }).clone();
