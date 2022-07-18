@@ -24,11 +24,6 @@ export default function Admin(){
             title: 'posts',
             icon: <StickyNote2Icon />,
             action: e => setSelectedView(<PostTable/>)
-        },
-        {
-            title: 'comments',
-            icon: <CommentIcon />,
-            action: e => setSelectedView(<CommentTable/>)
         }
     ]
 

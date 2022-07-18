@@ -61,23 +61,33 @@ export default function UserTable(){
     return (
         <>
             <div className="userTable">
-                <DataGrid
-                    rows={allUserList ?? []}
-                    columns={columns}
-                    pageSize={50}
-                    rowsPerPageOptions={[50]}
-                    getRowId={user => user.email}
-                />
+                <div className="table">
+                    <DataGrid
+                        rows={allUserList ?? []}
+                        columns={columns}
+                        pageSize={50}
+                        rowsPerPageOptions={[50]}
+                        getRowId={user => user.email}
+                    />
+                </div>
+                <div className="map">
+                    {
+                        addressesList ?
+                            <div className="googleMap">
+                                <CustomGoogleMap points={addressesList}/>
+                            </div> :
+                            <div>
+                                <h1 style={{"text-align":"center"}}>
+                                    Loading Users' Addresses on Map
+                                </h1>
+                                <div style={{"text-align":"center"}}>
+                                    <CircularProgress style={{"display":"inline-block", "color": "#d4cb7b"}}/>
+                                </div>
+
+                            </div>
+                    }
+                </div>
             </div>
-            {
-                addressesList ?
-                <div className="googleMap">
-                    <CustomGoogleMap points={addressesList}/>
-                </div> :
-                    <div>
-                        <CircularProgress />
-                    </div>
-            }
         </>
     )
 }
