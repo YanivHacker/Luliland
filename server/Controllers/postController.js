@@ -23,7 +23,7 @@ const readCommentsByPost = async (req,res) => {
     let sent = false;
     const {postID} = req.params
 
-    await Comment.find({postID: postID}, function(error, docs){
+    await Comment.find({postID: postID, isDeleted: false}, function(error, docs){
         if(error || !docs)
             if(!sent) {
                 res.status(400).send("No comments on this post or error occurred.");
@@ -73,7 +73,7 @@ const createPost = async (req,res) => {
     try {
         // validatePost(req.body.content, req.body.image)
         const {userEmail, content, image} = req.body
-        await User.findOne({email: userEmail}, function(error, docs){
+        await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
             if(error || !docs) {
                 res.status(400).send("No user with email " + userEmail + "exists.");
                 sent = true;
@@ -150,7 +150,7 @@ const updatePost = async (req,res) => {
         }
     }
     let resDoc = {_id: id}
-    await User.findOne({email: userEmail}, function(error, docs){
+    await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
         if(error || !docs) {
             if(!sent){
                 res.status(400).send("No user email with the email provided - " + userEmail);

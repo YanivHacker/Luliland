@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="Added both sides of friend addition + added adress field to user">
+    <list default="true" id="1fa3cf47-a755-4972-b255-79ca9f6b5907" name="Changes" comment="return only non-deleted posts and users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/services/HttpServiceHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/services/HttpServiceHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Controllers/postController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/postController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/conversationController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/conversationController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Controllers/messageController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/messageController.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Controllers/userController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/Routes/userRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +79,8 @@
       <workItem from="1657274393591" duration="3341000" />
       <workItem from="1657721992085" duration="2814000" />
       <workItem from="1657814090909" duration="4382000" />
-      <workItem from="1658053461561" duration="2135000" />
+      <workItem from="1658053461561" duration="2570000" />
+      <workItem from="1658122768530" duration="5683000" />
     </task>
     <task id="LOCAL-00001" summary="added login backend">
       <created>1656254225331</created>
@@ -248,7 +243,21 @@
       <option name="project" value="LOCAL" />
       <updated>1657724056872</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Added address to createUser and updateUser and added getAllUserAddresses (as lat-long object)">
+      <created>1658055951389</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1658055951389</updated>
+    </task>
+    <task id="LOCAL-00025" summary="return only non-deleted posts and users">
+      <created>1658136845770</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1658136845770</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,36 +297,8 @@
     <MESSAGE value="Changed &quot;images&quot; in post to be &quot;image&quot;" />
     <MESSAGE value="Removed title from post" />
     <MESSAGE value="Added both sides of friend addition + added adress field to user" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added both sides of friend addition + added adress field to user" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>199</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>204</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="51" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>218</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/server/Controllers/userController.js</url>
-          <line>201</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Added address to createUser and updateUser and added getAllUserAddresses (as lat-long object)" />
+    <MESSAGE value="return only non-deleted posts and users" />
+    <option name="LAST_COMMIT_MESSAGE" value="return only non-deleted posts and users" />
   </component>
 </project>

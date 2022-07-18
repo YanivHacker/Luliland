@@ -1,8 +1,43 @@
 const Conversation = require("../Models/Conversation")
+const User = require("../Models/User")
 
 //new conv
 const newConversation = async (req,res) => {
+    let sent = false;
     try{
+        const {senderEmail, receiverEmail} = req.body;
+        if(!senderEmail || !receiverEmail || senderEmail === receiverEmail){
+            res.status(400).send("Please provide both sender and receiver emails");
+            sent = true;
+        }
+        await User.findOne({email: senderEmail}, async function(errS, resultS){
+            if(errS || !resultS){
+                if(!sent) {
+                    res.status(400).send("Sender email not found or error occurred.");
+                    sent = true;
+                }
+            }
+            else{
+                await User.findOne({email: receiverEmail}, function (errR, resultR){
+                    if(errR || !resultR){
+                        if(!sent) {
+                            res.status(400).send("Receiver email not found or error occurred.");
+                            sent = true;
+                        }
+                    }
+                });
+            }
+        });
+
+        await Conversation.findOne({$or: [{members: [senderEmail, receiverEmail]}, {members: [receiverEmail, senderEmail]}]}, function(error, result){
+            if(result){
+                if(!sent) {
+                    res.status(400).send("These members already have an existing conversation.");
+                    sent = true;
+                }
+            }
+        });
+
         const conversation = new Conversation({
             members: [req.body.senderEmail, req.body.receiverEmail]
         });
