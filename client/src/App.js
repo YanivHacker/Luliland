@@ -33,11 +33,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={user ? <Home /> : <Register />}>
+          <Route exact path="/" element={user ? <Home /> : <SignUp />}>
           </Route>
           <Route path="/login" element={<Login />}>
           </Route>
-          <Route path="/register" element={user ? <Navigate to="/" /> : <Register />}>
+          <Route path="/register" element={user ? <Navigate to="/" /> : <SignUp />}>
           </Route>
           <Route path="/logout" element={<Login />}>
           </Route>

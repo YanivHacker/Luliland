@@ -17,9 +17,10 @@ import {getCurrentUser} from "../../Utils/currentUser";
 // --------------------------------------------------
 
 
-const currentUserEmail = getCurrentUser().email;
+
 
 export default function Messenger() {
+    const currentUserEmail = getCurrentUser().email;
     const [friendList, setFriendList] = useState([])
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
