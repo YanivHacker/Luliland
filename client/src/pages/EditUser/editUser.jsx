@@ -37,12 +37,14 @@ const EditUser = () => {
                 label="Last Name"
                 name="lastname"
             >
+                <Input />
             </Form.Item>
 
             <Form.Item
                 label="Address"
                 name="address"
             >
+                <Input />
             </Form.Item>
 
             <Form.Item
