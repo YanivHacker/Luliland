@@ -1,5 +1,6 @@
 const PostController = require('../Controllers/postController')
 const express = require('express');
+const {getAveragePostAmount} = require("../Utils/avg-posts-map-reduce");
 
 const postsRouter = express.Router();
 
@@ -10,5 +11,6 @@ postsRouter.post('/tags', PostController.getTagsFrequencies);
 postsRouter.patch('/:id',PostController.updatePost);
 postsRouter.delete('/:id',PostController.deletePost);
 postsRouter.get(':postID/comments', PostController.readCommentsByPost);
+postsRouter.get('/average', getAveragePostAmount);
 
 module.exports = postsRouter;
