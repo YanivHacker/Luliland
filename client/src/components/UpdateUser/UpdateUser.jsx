@@ -3,6 +3,7 @@ import {Button, Form, Input, PageHeader, notification, Avatar} from "antd";
 import 'antd/dist/antd.css';
 import {getCurrentUser} from "../../Utils/currentUser";
 import {PermMedia} from "@material-ui/icons";
+import {PermMedia} from "@material-ui/icons";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import axios from "axios";
 
@@ -96,6 +97,7 @@ export default function UpdateUser() {
                         <Avatar
                             size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
                             icon={<AntDesignOutlined />}
+                            src={file && URL.createObjectURL(file)}
                         />
                     </Form.Item>
 
