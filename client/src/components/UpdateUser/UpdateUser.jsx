@@ -2,6 +2,7 @@ import React, {useRef, useState} from "react";
 import {Button, Form, Input, PageHeader, notification, Avatar} from "antd";
 import 'antd/dist/antd.css';
 import {getCurrentUser} from "../../Utils/currentUser";
+import {PermMedia} from "@material-ui/icons";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import axios from "axios";
 
@@ -23,7 +24,7 @@ export default function UpdateUser() {
     const profilePicture = useRef();
 
     const user = getCurrentUser();
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(user.profilePicture);
     const onFinish = (values) => {
         console.log('Success:', values);
     };
@@ -95,10 +96,22 @@ export default function UpdateUser() {
                         <Avatar
                             size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
                             icon={<AntDesignOutlined />}
-                            src={user.profilePicture}
-                            ref={profilePicture}
                         />
                     </Form.Item>
+
+                    <Form.Item style={{paddingLeft: 230}}>
+                        <label htmlFor="file" className="shareOption">
+                            <PermMedia htmlColor="tomato" className="shareIcon" />
+                            <span className="shareOptionText">Upload avatar picture</span>
+                            <input style={{ display: "none" }}
+                                    type="file"
+                                    id="file"
+                                    accept=".png,.jpeg,.jpg"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                            />
+                        </label>
+                    </Form.Item>
+
 
                     <Form.Item
                         wrapperCol={{
