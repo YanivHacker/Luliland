@@ -19,6 +19,8 @@ import {getCurrentUser} from "../../Utils/currentUser";
 
 let currentMessagesBackup = null
 let selectedFriendEmail = null
+let friendListBackup = []
+
 export default function Messenger() {
     const currentUserEmail = getCurrentUser().email;
     const [friendList, setFriendList] = useState([])
@@ -31,7 +33,6 @@ export default function Messenger() {
 
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
-        setOnlineUserList([Users[0],Users[1]])// TODO: get online users from server
         const initializeFriendUserList = async () =>{
             let friendList = []
             try{
@@ -40,6 +41,7 @@ export default function Messenger() {
                 console.log(err)
             }finally {
                 setFriendList(friendList)
+                friendListBackup = friendList
             }
         }
         initializeFriendUserList()
@@ -57,9 +59,7 @@ export default function Messenger() {
     //initialize socket
     useEffect(() => {
         socket.current = io("ws://localhost:8900")
-        socket.current.emit("addUser",currentUserEmail)
         socket.current.on("getMessage", data => {
-            debugger
             const objData = JSON.parse(data)
             console.log(currentMessages)
             const newMsg = {
@@ -71,6 +71,14 @@ export default function Messenger() {
             updateMessagesIfNecessary(newMsg)
             //console.log(arrivalMessage)
         })
+        socket.current.on("getUsers", data => {
+            debugger
+            const onlineEmail = data.map(row => row.userEmail)
+            const onlineFriends = friendListBackup.filter(u => onlineEmail.includes(u.email))
+            console.log(onlineFriends)
+            setOnlineUserList(onlineFriends)
+        })
+        socket.current.emit("addUser",currentUserEmail)
     },[])
     // useEffect(()=>{
     //     arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
@@ -169,7 +177,7 @@ export default function Messenger() {
                 </div>
                 <div className="chatOnline">
                     <div className="chatOnlineWrapper">
-                        { onlineUserList.map(user=><ChatOnline key={user.id.toString()} user={user}/>) }
+                        { onlineUserList.map(user=><ChatOnline key={user._id.toString()} user={user}/>) }
                     </div>
                 </div>
             </div>
