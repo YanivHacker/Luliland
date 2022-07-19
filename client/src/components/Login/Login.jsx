@@ -1,15 +1,12 @@
 import React, {createRef, useRef, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import validator from "validator/es";
 import {getUserByEmail, login} from "../../services/UserService";
-import "./login.css"
 import {useNavigate} from "react-router-dom";
+import "./loginForm.css"
+import {notification} from "antd";
+import 'antd/dist/antd.css';
 
 export default function FormDialog() {
     const [open, setOpen] = useState(false)
@@ -53,8 +50,10 @@ export default function FormDialog() {
             navigate("/")
             handleClose()
         }
-        else
+        else {
             setSuccessLogIn("FAILED")
+            openNotification('Email or password is wrong');
+        }
     }
 
     const handleClickOpen = () => {
@@ -65,52 +64,46 @@ export default function FormDialog() {
         setOpen(false);
     };
 
+    const openNotification = (content) => {
+        notification.open({
+            message: content,
+        });
+    };
+
     return (
-        <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <>
+        <h1 className="title">Luliland</h1>
+        <div className="loginBox">
+            <TextField
+                error={!validEmail}
+                inputRef={emailRef}
+                autoFocus
+                margin="dense"
+                label="Email Address"
+                type="email"
+                onChange={validateError}
+                helperText={!validEmail ? errors.email : ""}
+                fullWidth
+            />
+            <br />
+            <TextField
+                error={!validPassword}
+                inputRef={passwordRef}
+                autoFocus
+                margin="dense"
+                label="Password"
+                type="password"
+                onChange={validateError}
+                helperText={!validPassword ? errors.password : ""}
+                fullWidth
+            />
+            {successLogIn==="FAILED"
+                // <label className={"errorMessage"}>Email or password is wrong</label>
+            }
+            <Button style={{paddingTop: 20}} onClick={signIn} color="primary" disabled={!validEmail || !validPassword}>
                 Sign In
             </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Sign In</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Please enter your user credentials to sign in.
-                    </DialogContentText>
-                    <TextField
-                        error={!validEmail}
-                        inputRef={emailRef}
-                        autoFocus
-                        margin="dense"
-                        label="Email Address"
-                        type="email"
-                        onChange={validateError}
-                        helperText={!validEmail ? errors.email : ""}
-                        fullWidth
-                    />
-                    <TextField
-                        error={!validPassword}
-                        inputRef={passwordRef}
-                        autoFocus
-                        margin="dense"
-                        label="Password"
-                        type="password"
-                        onChange={validateError}
-                        helperText={!validPassword ? errors.password : ""}
-                        fullWidth
-                    />
-                    {successLogIn==="FAILED" &&
-                        <label className={"errorMessage"}>email or password is wrong</label>
-                    }
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={signIn} color="primary" disabled={!validEmail || !validPassword}>
-                        Sign In
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </div>
+        </>
     );
 }
