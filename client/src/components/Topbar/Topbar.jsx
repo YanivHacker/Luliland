@@ -3,26 +3,31 @@ import {Search, Person, Chat, Notifications} from "@material-ui/icons"
 import {Button} from '@material-ui/core'
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import TextField from "@material-ui/core/TextField";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import axios from "axios";
+import 'antd/dist/antd.css';
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import SearchList from "./SearchList";
 import {FormControlLabel, FormGroup} from "@mui/material";
 import {Checkbox} from "antd";
+import useMounted from '../../hooks/useMounted';
 
-export default function Topbar() {
+export default function Topbar(callback, deps) {
     const isUserNameExists  = localStorage.getItem("username");
     const isUserPasswordExists  = localStorage.getItem("password");
     const nav = useNavigate();
     const [inputText, setInputText] = useState("");
     const [users, setUsers] = useState([]);
+    const isMounted  = useMounted();
     let isFirstName = true, isLastName = true, isEmail = true;
 
-    let inputHandler = (e) => {
+
+    const inputHandler = useCallback( (e)  => {
         //convert input text to lower case
         let lowerCase = e.target.value.toLowerCase();
         setInputText(lowerCase);
-    };
+    }, []);
+
     const onClickLogOut = (isUserNameExists,isUserPasswordExists) => {
             localStorage.clear();
             nav('/logout');
@@ -30,16 +35,20 @@ export default function Topbar() {
         return
     };
 
-    const fetchUsers = async () => {
-        const response = await axios.get(SERVER_URL + `/users`);
-        const { data } = response;
-        setUsers(data);
-    };
     useEffect( () => {
-        fetchUsers();
-    });
+        const fetchUsers = async () => {
+            console.log('Yaniv')
+            const response = await axios.get(SERVER_URL + `/users/`);
+            const { data } = response;
+            console.log({data});
+            if(isMounted) setUsers(data);
+        };
+        isMounted && fetchUsers();
+    },[isMounted]);
 
     console.log("Users " + users.length)
+
+    const updatedUsers = useMemo(() => users || [], [users])
 
     return (
         <div className="topbarContainer">
@@ -60,7 +69,8 @@ export default function Topbar() {
                                onChange={inputHandler}
                     />
 
-                    <SearchList input={inputText} userList={users} isFirstName={isFirstName} isLastName={isLastName} isEmail={isEmail}/>
+                    { updatedUsers.length > 0 && <SearchList input={inputText} userList={updatedUsers} isFirstName={isFirstName}
+                                 isLastName={isLastName} isEmail={isEmail}/>}
                 </div>
                 <FormGroup>
                     <FormControlLabel control={<Checkbox defaultChecked/>} label="First Name" onClick={() => {

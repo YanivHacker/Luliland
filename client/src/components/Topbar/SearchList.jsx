@@ -1,13 +1,12 @@
-import { React, useState } from 'react'
+import React , { useState } from 'react'
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-function SearchList(props, userList, isFirstName, isLastName, isEmail) {
-    // let response = async() => await axios.get(SERVER_URL + `/users`)
-    //create a new array by filtering the original array
-    // console.log("User list: " + userList.toString())
-    const filteredData = userList.filter((el) => {
+const SearchList = (props) => {
+    const {userList, isFirstName, isLastName, isEmail} = props
+
+    const filteredData = (userList || []).filter((el) => {
         if (props.input === '') {
             return true;
         }
@@ -25,23 +24,23 @@ function SearchList(props, userList, isFirstName, isLastName, isEmail) {
         }
     })
     return (
-        <div>
-            {filteredData && filteredData.map((u) => (
-                <div className="usersContainer">
-                <Link to={`/profile/${u.email}`}>
-                    <img
-                            className="userProfileImg"
+        <div className="searchList">
+            {filteredData.length  > 0 && filteredData.map((u) => (
+                <div className="postTopLeft">
+                    <Link to={`/profile/${u.userEmail}`}>
+                        <img
+                            className="postProfileImg"
                             src={u.profilePicture ? u.profilePicture : "assets/person/person-icon.png"}
                             alt=""
                         />
-                </Link>
-                <span className="username">
-                                        {u.firstName}
-                                    </span>
+                    </Link>
+                    <span className="postUsername">
+                            {u.firstName + " " + u.lastName}
+                    </span>
                 </div>
-                ))}
+            ))}
         </div>
     )
 }
 
-export default SearchList
+export default React.memo(SearchList)
