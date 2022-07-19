@@ -148,7 +148,7 @@ const addCommentToPost = async (req) => {
     let succeeded = true;
     let allCommentsIDs = null;
     try {
-        let response = await Post.findById(req.postID, async function (error, docs) {
+        await Post.findById(req.postID, async function (error, docs) {
             if (error || !docs) {
                 succeeded = false;
             }
@@ -160,13 +160,9 @@ const addCommentToPost = async (req) => {
             let newCommentId = req.commentID;
             allCommentsIDs.push(newCommentId);
 
-            await Post.findByIdAndUpdate(req.postID, {allCommentsIDs: allCommentsIDs}, {new: true}, function (error, docs) {
-                if (error) succeeded = false;
-                console.log("Posts after addition: " + docs.allCommentsIDs);
-            }).clone();
+            let result = await Post.findByIdAndUpdate(req.postID, {allCommentsIDs: allCommentsIDs}, {new: true}).clone();
+            return result;
         }).clone();
-
-        return succeeded;
     }
     catch(e){
         console.log("Exception " + e + " occurred in addCommentToPost");

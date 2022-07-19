@@ -12,11 +12,8 @@ const {SERVER_URL} = require("../../services/HttpServiceHelper");
 
 
 export default function Post({ post }) {
-    const [like,setLike] = useState(post.like)
-    const [isLiked,setIsLiked] = useState(false)
 
     const [user, setUser] = useState([]);
-    debugger;
     const fetchUser = async () => {
         const response = await axios.get(SERVER_URL + `/users/${post.userEmail}`);
         const { data } = response;

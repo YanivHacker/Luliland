@@ -68,7 +68,6 @@ export default function UpdateUser() {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        debugger
         let updatedUser = {firstName: form.getFieldValue("firstname"), lastName: form.getFieldValue("lastname"), password: form.getFieldValue("password"),
             address: form.getFieldValue("address")}
         if (file) {
@@ -80,7 +79,6 @@ export default function UpdateUser() {
             blobToBase64.default(file, async function (error, base64) {
                 if (!error) {
                     try {
-                        debugger
                         console.log(updatedUser)
                         updatedUser.profilePicture = base64;
                         const response = await axios.patch(SERVER_URL + `/users/${user.email}`, updatedUser);

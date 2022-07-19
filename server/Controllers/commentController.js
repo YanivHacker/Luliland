@@ -41,7 +41,7 @@ const createComment = async (req,res) => {
     let sent = false;
     try {
         const {postID, content} = req.body
-        let response = await Post.findById(postID, function(error, result){
+        await Post.findById(postID, function(error, result){
             if(error || !result) {
                 res.status(404).send("Error with finding post for comment creation.");
                 sent = true;

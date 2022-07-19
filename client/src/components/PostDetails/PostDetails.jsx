@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Button, Form, Input, PageHeader, notification, Avatar, Image, List, Comment} from "antd";
 import 'antd/dist/antd.css';
 import {getCurrentUser} from "../../Utils/currentUser";
@@ -8,6 +8,8 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {format} from "timeago.js";
 import TextArea from "antd/es/input/TextArea";
+import {useParams} from "react-router";
+import useMounted from "../../hooks/useMounted";
 
 const blobToBase64 = require('blob-to-base64')
 
@@ -30,14 +32,16 @@ const openNotification = (content) => {
     });
 };
 
-export default function PostDetails({postID}) {
+const PostDetails = (props) => {
+    const postID = useParams().postID;
     const [comments, setComments] = useState([]);
-    const [users, setUsers] = useState([])
-    const [post, setPost] = useState([])
+    // const [user, setUser] = useState({})
+    // const [post, setPost] = useState({})
     const [submitting, setSubmitting] = useState(false);
     const [value, setValue] = useState('');
-
-
+    const isMounted = useMounted();
+    const user = props.profile;
+    const post = props.post;
     const handleSubmit = async () => {
         if (!value) return;
         setSubmitting(true);
@@ -47,49 +51,34 @@ export default function PostDetails({postID}) {
             setComments([
                 ...comments,
                 {
-                    postID: post.id,
-                    content: {value},
+                    postID: post._id,
+                    content: value,
                 },
             ]);
         }, 1000);
-        const response = await axios.post(SERVER_URL + `/comments/`, {postID: post.id, content: {value}});
-        if(response.status === 200) openNotification('Added comment successfully!');
+        const response = await axios.get(SERVER_URL + `/comments/post/${post._id}`);
+        if(response.status === 200) {
+            openNotification('Added comment successfully!');
+            setComments(response.data)
+        }
         else openNotification('Failed adding comment to post');
     };
 
     const handleChange = (e) => {
         setValue(e.target.value);
     };
-
-
-    const fetchComments = async () => {
-        const response = async() => await axios.get(SERVER_URL + `/posts/${postID}/comments`);
-        const { data } = response;
-        setComments(data);
-    };
-
-    const fetchUsers = async () => {
-        const response = await axios.get(SERVER_URL + `/users/`);
-        const { data } = response;
-        //console.log(data);
-        setUsers(data);
-    };
-
-    const fetchPost = async () => {
-        const response = async() => await axios.get(SERVER_URL + `/posts/${postID}`);
-        const { data } = response;
-        setPost(data);
-    };
-    useEffect( () => {
-        fetchComments();
-        fetchPost();
-        fetchUsers();
-    }, [postID]);
-    console.log(comments)
-    console.log(users)
-    console.log(post)
-    let user = users.find(u => u.email === post.userEmail);
-
+    useEffect(() => {
+        const fetchComments = async () => {
+            const response = await axios.get(SERVER_URL + `/comments/post/${postID}`);
+            const { data } = response;
+            if(isMounted)
+                setComments(data);
+        };
+        isMounted && fetchComments();
+    }, [postID, isMounted])
+    const newComments = useMemo(() => comments || [], [comments]);
+    const updatedPost = useMemo(() => post || {}, [post]);
+    const newUser = useMemo(() => user || [], [user]);
     return (
          <div style={{flex: 5.5}}>
                 <PageHeader
@@ -98,26 +87,26 @@ export default function PostDetails({postID}) {
                     title="Post details"
                 />
                  <div className="postTopLeft">
-                     <Link to={`/profile/${post.userEmail}`}>
+                     <Link to={`/profile/${updatedPost && updatedPost.userEmail}`}>
                          <img
                              className="postProfileImg"
-                             src={user.profilePicture ? user.profilePicture : "assets/person/person-icon.png"}
+                             src={(newUser && newUser.profilePicture) || "assets/person/person-icon.png"}
                             alt=""
                          />
                      </Link>
                      <span className="postUsername">
-                                {user.firstName}
+                                {newUser && newUser.firstName}
                             </span>
-                     <span className="postDate">{format(post.creationDate)}</span>
+                     <span className="postDate">{format(updatedPost && updatedPost.creationDate)}</span>
                  </div>
                  <Image
                      width={200}
-                     src={post && post.image}
+                     src={updatedPost && updatedPost.image}
                  />
 
-                 <List
+                {newComments && newComments.length > 0 && <List
                      itemLayout="horizontal"
-                     dataSource={comments}
+                     dataSource={newComments}
                      renderItem={(item) => (
                          <List.Item>
                              <List.Item.Meta
@@ -125,10 +114,10 @@ export default function PostDetails({postID}) {
                              />
                          </List.Item>
                      )}
-                 />
+                 />}
 
              <Comment
-                 avatar={<Avatar src={getCurrentUser().profilePicture}/>}
+                 avatar={<Avatar src={(newUser && newUser.profilePicture) || "assets/person/person-icon.png"}/>}
                  content={
                      <Editor
                          onChange={handleChange}
@@ -141,3 +130,5 @@ export default function PostDetails({postID}) {
          </div>
     )
 }
+
+export default React.memo(PostDetails)

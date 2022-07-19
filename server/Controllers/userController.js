@@ -300,17 +300,17 @@ const getMostActiveUsers = async (req, res) => {
 };
 
 const getFriendsByUser = async(req, res) => {
+    let sent = false;
     try {
-        let sent = false;
         const {email} = req.params;
         let friends = [];
-        await User.findOne({email: email, isDeleted: false}, function (error, docs) {
+        let response = await User.findOne({email: email, isDeleted: false}, function (error, docs) {
             if (error || !docs) {
                 res.status(400).send("No user exists with the email provided.");
                 sent = true;
             }
         }).clone().then(response => friends = response.friends);
-        await User.find({email: {$in: friends}, isDeleted: false}, function (error, docs) {
+        response = await User.find({email: {$in: friends}, isDeleted: false}, function (error, docs) {
             if ((error || !docs) && !sent) {
                 res.status(400).send("No user exists with the email provided, or no friends for user.");
                 sent = true;
@@ -322,7 +322,8 @@ const getFriendsByUser = async(req, res) => {
     }
     catch(e) {
         console.log("Exception " + e + " occurred in getFriendsByUser");
-        res.status(400).send("error")
+        if(!sent)
+            res.status(400).send("error")
     }
 }
 
