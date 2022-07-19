@@ -12,11 +12,12 @@ import {SERVER_URL} from "../../services/HttpServiceHelper";
 
 const USER_SERVICE = SERVER_URL + "/users"
 
+
 export default function Rightbar({ profile }) {
-    const user = getCurrentUser();
+    //const user = getCurrentUser();
     const [friends, setFriends] = useState([]);
     const fetchFriends = async () => {
-        const response = await axios.get(USER_SERVICE + `/${user.email}/friends`)
+        const response = await axios.get(USER_SERVICE + `/${profile.email}/friends`)
         const { data } = response;
         console.log("friends" + data)
         setFriends(data);
@@ -49,7 +50,7 @@ export default function Rightbar({ profile }) {
         const [friendList, setFriendList] = useState([]);
         useEffect(() => {
             const initalizeFriendList = async () => {
-                const res = await getUserFriends()
+                const res = await getUserFriends(profile.email)
                 setFriendList(res)
             }
             initalizeFriendList()
@@ -74,27 +75,22 @@ export default function Rightbar({ profile }) {
                 </div>
                 <h4 className="rightbarTitle">User friends</h4>
                 <div className="rightbarFollowings">
-                    {friendList.map((friend)=> (
-                        <Link to={"/profile/" + friend.userEmail}
+                    {friendList.map((friend)=> {
+                        debugger
+                        console.log(friend.email)
+                        return (
+                        <Link to={"/profile/" + friend.email}
                         style={{textDecoration: "none"}}>
                             <div className="rightbarFollowing">
                                 <img
-                                    src={friend.profilePicture}
+                                    src={friend.profilePicture ? friend.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                                     alt=""
                                     className="rightbarFollowingImg"
                                 />
-                                <span className="rightbarFollowingName">{friend.firstName + friend.lastName}</span>
+                                <span className="rightbarFollowingName">{friend.firstName + " " + friend.lastName}</span>
                             </div>
                         </Link>
-                    ))}
-                    <div className="rightbarFollowing">
-                        <img
-                            src="assets/person/6.jpeg"
-                            alt=""
-                            className="rightbarFollowingImg"
-                        />
-                        <span className="rightbarFollowingName">John Carter</span>
-                    </div>
+                    )})}
                 </div>
             </>
         );
@@ -102,8 +98,8 @@ export default function Rightbar({ profile }) {
     return (
         <div className="rightbar">
             <div className="rightbarWrapper">
-                {/*{profile ? <ProfileRightbar /> : <HomeRightbar />}*/}
-                <HomeRightbar />
+                {profile ? <ProfileRightbar /> : <HomeRightbar />}
+                {/*<HomeRightbar />*/}
             </div>
         </div>
     );

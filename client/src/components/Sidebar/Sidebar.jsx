@@ -13,35 +13,62 @@ import {
 } from "@material-ui/icons";
 import CloseFriend from "../CloseFriend/CloseFriend";
 import Online from "../Online/Online";
+import {getCurrentUser} from "../../Utils/currentUser";
+import {notification} from "antd";
+
 
 const SidebarData = [
     {
         title: "Feed",
         icon: <RssFeed />,
-        link: "/Home"
+        link: "/home",
+        forAdmin: false
     },
     {
         title: "Chat",
         icon: <Chat />,
-        link: "/Home"
+        link: "/chat",
+        forAdmin: false
+    },
+    {
+        title: "Admin",
+        icon: <Chat />,
+        link: "/Admin",
+        forAdmin: true
     }
 ]
 
 
 
 export default function Sidebar() {
+    const user = getCurrentUser();
+    const openNotification = (content) => {
+        notification.open({
+            message: content,
+        });
+    };
+
     return (
         <div className="sidebar">
             <div className="sidebarWrapper">
                 <ul className="sidebarList">
                     {SidebarData.map((val,key)=>{
                         return (
-                            <li className="sidebarListItem"
-                                key={key}
-                                onClick={() => {window.location.pathname = val.link}}>
-                                <div className="sidebarIcon">{val.icon}</div>
-                                <div className="sidebarListItemTitle">{val.title}</div>
-                            </li>
+                            <>
+                                <li className="sidebarListItem"
+                                    key={key}
+                                    onClick={() => {
+                                        if(val.forAdmin && user.isAdmin) {
+                                            window.location.pathname = val.link
+                                        }
+                                        if(val.forAdmin && !user.isAdmin) {
+                                            openNotification('You cant go there');
+                                        }
+                                    }}>
+                                    <div className="sidebarIcon">{val.icon}</div>
+                                    <div className="sidebarListItemTitle">{val.title}</div>
+                                </li>
+                            </>
                         )
                     })}
                 </ul>

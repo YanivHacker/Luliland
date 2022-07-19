@@ -9,7 +9,7 @@ export default function Topbar() {
     const nav = useNavigate();
     const onClickLogOut = (isUserNameExists,isUserPasswordExists) => {
             localStorage.clear();
-            nav('/logout');
+            nav('/login');
 
         return
     };

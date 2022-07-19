@@ -8,11 +8,13 @@ import axios from "axios";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import { useParams } from "react-router";
 import {getUserByEmail} from "../../services/UserService";
+import {getCurrentUser} from "../../Utils/currentUser";
 
 
 export default function Profile() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState({});
+    //const user = getCurrentUser();
     const userEmail = useParams().userEmail;
     console.log(userEmail);
 
@@ -24,6 +26,7 @@ export default function Profile() {
         fetchUser();
     },[userEmail]);
     //console.log(post.images)
+
     return (
         <>
             <Topbar />
@@ -34,7 +37,7 @@ export default function Profile() {
                             <div className="profileCover">
                                 <img
                                     className="profileCoverImg"
-                                    src="assets/post/3.jpg"
+                                    src="https://images.pexels.com/photos/1535907/pexels-photo-1535907.jpeg?cs=srgb&dl=pexels-karyme-fran%C3%A7a-1535907.jpg&fm=jpg"
                                     alt=""
                                 />
                                 <img
@@ -50,7 +53,7 @@ export default function Profile() {
                         </div>
                         <div className="profileRightBottom">
                             <Feed userEmail={userEmail}/>
-                            <Rightbar />
+                            <Rightbar profile = {user}/>
                         </div>
                     </div>
             </div>
