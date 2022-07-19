@@ -59,9 +59,8 @@ export default function Topbar(callback, deps) {
             </div>
             <div className="topbarCenter">
                 <div className="searchbar">
-                    <Search
-                    />
                     <TextField placeholder="Search for friends!"
+                               size="small"
                                label="Search"
                                variant="outlined"
                                id="outlined-basic"
@@ -69,39 +68,27 @@ export default function Topbar(callback, deps) {
                                onChange={inputHandler}
                     />
 
-                    { updatedUsers.length > 0 && <SearchList input={inputText} userList={updatedUsers} isFirstName={isFirstName}
+                    { updatedUsers.length > 0 && inputText && inputText.length > 0 && <SearchList input={inputText} userList={updatedUsers} isFirstName={isFirstName}
                                  isLastName={isLastName} isEmail={isEmail}/>}
                 </div>
-                <FormGroup>
-                    <FormControlLabel control={<Checkbox defaultChecked/>} label="First Name" onClick={() => {
-                        isFirstName = !isFirstName;
-                    }}/>
-                    <FormControlLabel control={<Checkbox defaultChecked/>} label="Last Name" onClick={() => {
-                        isLastName = !isLastName;
-                    }}/>
-                    <FormControlLabel control={<Checkbox defaultChecked/>} label="Email" onClick={() => {
-                        isEmail = !isEmail;
-                    }}/>
-                </FormGroup>
             </div>
             <div className="topbarRight">
                 <div className="topbarLinks">
-                    <span className="topbarLink">Homepage</span>
-                    <span className="topbarLink">Timeline</span>
-                </div>
-                <div className="topbarIcons">
-                    <div className="topbarIconItem">
-                        <Person />
-                        <span className="topbarIconBadge">1</span>
-                    </div>
-                    <div className="topbarIconItem">
-                        <Chat />
-                        <span className="topbarIconBadge">1</span>
-                    </div>
-                    <div className="topbarIconItem">
-                        <Notifications />
-                        <span className="topbarIconBadge">1</span>
-                    </div>
+                    <span className="topbarLink">
+                        <FormControlLabel control={<Checkbox defaultChecked/>} label="First Name" onClick={() => {
+                            isFirstName = !isFirstName;
+                        }}/>
+                    </span>
+                    <span className="topbarLink">
+                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Last Name" onClick={() => {
+                            isLastName = !isLastName;
+                        }}/>
+                    </span>
+                    <span className="topbarLink">
+                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Email" onClick={() => {
+                            isEmail = !isEmail;
+                        }}/>
+                    </span>
                 </div>
                 <div className="topbarImage">
                     <Link to="/updateUser" style={{textDecoration:"none"}}>

@@ -7,6 +7,7 @@ const SearchList = (props) => {
     const {userList, isFirstName, isLastName, isEmail} = props
 
     const filteredData = (userList || []).filter((el) => {
+        debugger
         if (props.input === '') {
             return true;
         }
@@ -26,8 +27,8 @@ const SearchList = (props) => {
     return (
         <div className="searchList">
             {filteredData.length  > 0 && filteredData.map((u) => (
-                <div className="postTopLeft">
-                    <Link to={`/profile/${u.userEmail}`}>
+                <div className="userRow">
+                    <Link to={`/profile/${u.email}`}>
                         <img
                             className="postProfileImg"
                             src={u.profilePicture ? u.profilePicture : "assets/person/person-icon.png"}
