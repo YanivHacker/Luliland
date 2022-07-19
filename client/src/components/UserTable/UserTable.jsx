@@ -7,11 +7,13 @@ import DoneIcon from '@mui/icons-material/Done';
 import CustomGoogleMap from "../GoogleMap/CustomGoogleMap";
 import CircularProgress from '@mui/material/CircularProgress';
 import ActionList from "../ActionList/ActionList";
+import {useNavigate} from "react-router-dom";
 
 
 
 export default function UserTable(){
 
+    const navigate = useNavigate()
     const [allUserList,setAllUserList] = useState(null)
     const [addressesList,setAddressesList] = useState(null)
     const [flagToLoadAgain,setFlagToLoadAgian] = useState(0)
@@ -42,8 +44,7 @@ export default function UserTable(){
             }
         },
         {field: 'isAdmin', headerName: 'Admin', width: 120, sortable: false, renderCell: (params) => params.row?.isAdmin? <DoneIcon style={{color:"green"}}/> : <ClearIcon style={{color:"red"}}/>},
-        {field: 'isDeleted', headerName: 'Is deleted', width: 120, sortable: false, renderCell: (params) => params.row?.isDeleted? <DoneIcon style={{color:"green"}}/> : <ClearIcon style={{color:"red"}}/>},
-        {field: 'actions', headerName: 'Actions', width: 240,sortable: false, renderCell: (params) => <ActionList deleteAction={e=>deleteUser(params.row?.email)}/>}
+        {field: 'actions', headerName: 'Actions', width: 240,sortable: false, renderCell: (params) => <ActionList deleteAction={e=>deleteUser(params.row?.email)} updateAction={e=>navigate(`/updateUser/${params.row.email}`)}/>}
     ]
 
     useEffect(() => {

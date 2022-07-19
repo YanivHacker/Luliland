@@ -22,4 +22,9 @@ const getPostAveragePerUser = async () => {
     return res.data
 }
 
-module.exports = {getAllPosts, getDistributionTag, getPostAveragePerUser}
+const deletePostById = async (postId) => {
+    const res = await axios.delete(`${POST_SERVICE}/${postId}`)
+    return res.status===200
+}
+
+module.exports = {getAllPosts, getDistributionTag, getPostAveragePerUser, deletePostById}
