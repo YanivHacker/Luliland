@@ -18,9 +18,11 @@ export default function Topbar(callback, deps) {
     const nav = useNavigate();
     const [inputText, setInputText] = useState("");
     const [users, setUsers] = useState([]);
-    const isMounted  = useMounted();
-    let isFirstName = true, isLastName = true, isEmail = true;
+    const [isFirstName, setIsFirstName] = useState(true);
+    const [isLastName, setIsLastName] = useState(true);
+    const [isEmail, setIsEmail] = useState(true);
 
+    const isMounted  = useMounted();
 
     const inputHandler = useCallback( (e)  => {
         //convert input text to lower case
@@ -75,18 +77,18 @@ export default function Topbar(callback, deps) {
             <div className="topbarRight">
                 <div className="topbarLinks">
                     <span className="topbarLink">
-                        <FormControlLabel control={<Checkbox defaultChecked/>} label="First Name" onClick={() => {
-                            isFirstName = !isFirstName;
+                        <FormControlLabel control={<Checkbox defaultChecked/>} label="First Name" onClick={(event) => {
+                            setIsFirstName(event.target.value)
                         }}/>
                     </span>
                     <span className="topbarLink">
-                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Last Name" onClick={() => {
-                            isLastName = !isLastName;
+                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Last Name" onClick={(event) => {
+                            setIsLastName(event.target.value)
                         }}/>
                     </span>
                     <span className="topbarLink">
-                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Email" onClick={() => {
-                            isEmail = !isEmail;
+                        <FormControlLabel control={<Checkbox defaultChecked/>} label="Email" onClick={(event) => {
+                            setIsEmail(event.target.value)
                         }}/>
                     </span>
                 </div>

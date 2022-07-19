@@ -305,57 +305,42 @@ const addUserFriend = async(req, res) => {
     let sent = false;
     const {email} = req.params;
     let friends = null;
-    await User.findOne({email:email, isDeleted: false}, function(error, docs){
-        if(error || !docs) {
-            res.status(400).send("No user exists with the email provided.");
-            sent = true;
-        }
-        else friends = docs.friends;
-        if(!friends)
-            friends = [];
-    }).clone();
+    const result = await User.findOne({email:email, isDeleted: false}).clone();
+    if(!result) {
+        res.status(400).send("No user exists with the email provided.");
+        sent = true;
+    }
+    else friends = result.friends;
+    if(!friends)
+        friends = [];
     let newFriend = req.body.friendEmail;
+    if(friends.includes(newFriend))
+        res.status(200).send("They are already friends.");
     if(!newFriend && !sent){
         res.status(400).send("No friend email provided.");
         sent = true;
     }
     let friendFriends;
 
-    await User.findOne({email:newFriend, isDeleted: false}, function(error, docs){
-        if((error || !docs) && !sent) {
-            res.status(400).send("No user exists with the friend email provided.");
-            sent = true;
-        }
-        friendFriends = docs.friends;
-    }).clone();
-
+    const resultFriend = await User.findOne({email:newFriend, isDeleted: false}).clone();
+    if(!resultFriend && !sent) {
+        res.status(400).send("No user exists with the friend email provided.");
+        sent = true;
+    }
+    friendFriends = resultFriend.friends;
     if(!friendFriends)
         friendFriends = [];
 
     friends.push(newFriend);
     friendFriends.push(email);
-    await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}, function(error, docs){
-        if((error || !docs) && !sent) {
-            res.status(400).send("Error while updating user's friends");
-            sent = true;
-        }
-    }).clone();
-
-    await User.findOneAndUpdate({email: newFriend, isDeleted: false}, {friends: friendFriends}, function(error, docs){
-        if((error || !docs) && !sent) {
-            res.status(400).send("Error while updating user's friends");
-            sent = true;
-        }
-        else if(!sent){
-            res.status(200).send("Updated friend list successfully.");
-            sent = true;
-        }
-    }).clone();
+    const response = await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}).clone();
+    const response2 = await User.findOneAndUpdate({email: newFriend, isDeleted: false}, {friends: friendFriends}).clone();
 
     const conversation = new Conversation({
         members: [email, newFriend]
     });
     await conversation.save()
+    res.status(200).send("Success")
 }
 
 const deletePostFromUser = async (req) => {
