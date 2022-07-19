@@ -7,7 +7,6 @@ const SearchList = (props) => {
     const {userList, isFirstName, isLastName, isEmail} = props
 
     const filteredData = (userList || []).filter((el) => {
-        debugger
         if (props.input === '') {
             return true;
         }

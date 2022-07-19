@@ -42,6 +42,12 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on("getOnline", userEmail => {
+        console.log(`client is ${userEmail}`)
+        const result = users.filter(u => u.userEmail!==userEmail)
+        console.log(result)
+        io.to(socket.socketId).emit("getUsers", result)
+    })
 
 
     //when disconnect

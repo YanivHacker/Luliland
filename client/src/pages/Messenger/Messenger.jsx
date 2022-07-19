@@ -72,13 +72,13 @@ export default function Messenger() {
             //console.log(arrivalMessage)
         })
         socket.current.on("getUsers", data => {
-            debugger
             const onlineEmail = data.map(row => row.userEmail)
             const onlineFriends = friendListBackup.filter(u => onlineEmail.includes(u.email))
             console.log(onlineFriends)
             setOnlineUserList(onlineFriends)
         })
         socket.current.emit("addUser",currentUserEmail)
+        socket.current.emit("getOnline", currentUserEmail)
     },[])
     // useEffect(()=>{
     //     arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
