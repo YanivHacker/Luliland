@@ -11,6 +11,7 @@ postsRouter.post('/',PostController.createPost);
 postsRouter.post('/tags', PostController.getTagsFrequencies);
 postsRouter.patch('/:id',PostController.updatePost);
 postsRouter.delete('/:id',PostController.deletePost);
-postsRouter.get('/average', getAveragePostAmount);
+postsRouter.get(':postID/comments', PostController.readCommentsByPost);
+postsRouter.get('/utils/average', getAveragePostAmount);
 
 module.exports = postsRouter;

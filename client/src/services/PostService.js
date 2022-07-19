@@ -16,7 +16,7 @@ const getDistributionTag = async (tag1,tag2,tag3) => {
 }
 
 const getPostAveragePerUser = async () => {
-    const res = await axios.get(`${POST_SERVICE}/averagek`)
+    const res = await axios.get(`${POST_SERVICE}/utils/average`)
     if(res.status!==200)
         return null
     return res.data
