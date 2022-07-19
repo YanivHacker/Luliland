@@ -71,8 +71,9 @@ export default function FormDialog() {
     };
 
     return (
+        <>
+        <h1 className="title">Luliland</h1>
         <div className="loginBox">
-            <h1>Login</h1>
             <TextField
                 error={!validEmail}
                 inputRef={emailRef}
@@ -103,5 +104,6 @@ export default function FormDialog() {
                 Sign In
             </Button>
         </div>
+        </>
     );
 }
