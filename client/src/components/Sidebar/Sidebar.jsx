@@ -18,12 +18,12 @@ const SidebarData = [
     {
         title: "Feed",
         icon: <RssFeed />,
-        link: "/Home"
+        link: "/"
     },
     {
         title: "Chat",
         icon: <Chat />,
-        link: "/Home"
+        link: "/messenger"
     }
 ]
 

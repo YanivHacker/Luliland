@@ -9,7 +9,7 @@ export default function ChatOnline({user}) {
                     <div className="chatOnlineImgContainer">
                         <img
                             className="chatOnlineImg"
-                            src={user.profilePicture}
+                            src={( user && user.profilePicture) || "assets/person/default.jpg"}
                             alt=""
                         />
                         <div className="chatOnlineBadge"></div>

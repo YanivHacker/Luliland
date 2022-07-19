@@ -5,42 +5,58 @@ const {AddPostToUser, deletePostFromUser} = require("./userController");
 const {getPopularPostThemes} = require("../Utils/aho-corasick");
 
 const readPosts = async (req,res) =>{
-    await Post.find({isDeleted: false}, function(err, docs) {
-        if (!req || !res) {
-            console.log("here")
-            if(err)
-                return null;
-            return docs;
-        }
-        else if (err)
-            res.status(400).json({message: err});
-        else if(docs) {
-            res.status(200).json(docs.reverse());
-        }
-        else return null;
-    }).clone();
+    try {
+        await Post.find({isDeleted: false}, function (err, docs) {
+            if (!req || !res) {
+                console.log("here")
+                if (err)
+                    return null;
+                return docs;
+            } else if (err)
+                res.status(400).json({message: err});
+            else if (docs) {
+                res.status(200).json(docs.reverse());
+            } else return null;
+        }).clone();
+    }
+    catch(e){
+        console.log("Exception " + e + " occurred in readPosts")
+        res.status(400).send("error")
+        return null;
+    }
 }
 
 const getTagsFrequencies = async(req, res) => {
-    const result = getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
-    res.status(200).json(result);
+    try {
+        const result = getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
+        res.status(200).json(result);
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in getTagsFrequencies");
+        res.status(400).send("error")
+    }
 }
 
 const readCommentsByPost = async (req,res) => {
-    let sent = false;
-    const {postID} = req.params
+    try {
+        let sent = false;
+        const {postID} = req.params
 
-    await Comment.find({postID: postID, isDeleted: false}, function(error, docs){
-        if(error || !docs)
-            if(!sent) {
-                res.status(400).send("No comments on this post or error occurred.");
-                sent = true;
-            }
-        else {
-            if(!sent)
-                res.status(200).json(docs);
-        }
-    }).clone();
+        await Comment.find({postID: postID, isDeleted: false}, function (error, docs) {
+            if (error || !docs)
+                if (!sent) {
+                    res.status(400).send("No comments on this post or error occurred.");
+                    sent = true;
+                } else {
+                    if (!sent)
+                        res.status(200).json(docs);
+                }
+        }).clone();
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in readCommentsByPost")
+        res.status(400).send("error")
+    }
 }
 
 const getPostById = async (req,res) => {
@@ -104,97 +120,122 @@ const createPost = async (req,res) => {
 const deleteCommentFromPost = async (req) => {
     let succeeded = true;
     let allCommentIDs = null;
-    let response = await Post.findById(req.postID, async function (error, docs) {
-        if (error || !docs) {
-            succeeded = false;
-        } else allCommentIDs = docs.allCommentIDs;
+    try {
+        let response = await Post.findById(req.postID, async function (error, docs) {
+            if (error || !docs) {
+                succeeded = false;
+            } else allCommentIDs = docs.allCommentIDs;
 
-        if (!succeeded)
-            return false;
-        let toRemove = req.commentID;
-        allCommentIDs = allCommentIDs.filter(e => e !== toRemove)
-        await Post.findByIdAndUpdate(req.postID, {allCommentIDs: allCommentIDs}, {new: true}, function (error, docs) {
-            if (error) succeeded = false;
-            console.log("Posts after removal: " + docs.allCommentIDs);
+            if (!succeeded)
+                return false;
+            let toRemove = req.commentID;
+            allCommentIDs = allCommentIDs.filter(e => e !== toRemove)
+            await Post.findByIdAndUpdate(req.postID, {allCommentIDs: allCommentIDs}, {new: true}, function (error, docs) {
+                if (error) succeeded = false;
+                console.log("Posts after removal: " + docs.allCommentIDs);
+            }).clone();
         }).clone();
-    }).clone();
 
-    return succeeded;
+        return succeeded;
+    }
+    catch(e){
+        console.log("Exception " + e + " occurred in deleteCommentFromPost");
+        return false;
+    }
 }
 
 const addCommentToPost = async (req) => {
     let succeeded = true;
     let allCommentsIDs = null;
-    let response = await Post.findById(req.postID, async function (error, docs) {
-        if (error || !docs) {
-            succeeded = false;
-        }
-        allCommentsIDs = docs.allCommentIDs;
-        if(allCommentsIDs == null) allCommentsIDs = [];
-        console.log(docs);
-        if (!succeeded)
-            return false;
-        let newCommentId = req.commentID;
-        allCommentsIDs.push(newCommentId);
+    try {
+        let response = await Post.findById(req.postID, async function (error, docs) {
+            if (error || !docs) {
+                succeeded = false;
+            }
+            allCommentsIDs = docs.allCommentIDs;
+            if (allCommentsIDs == null) allCommentsIDs = [];
+            console.log(docs);
+            if (!succeeded)
+                return false;
+            let newCommentId = req.commentID;
+            allCommentsIDs.push(newCommentId);
 
-        await Post.findByIdAndUpdate(req.postID, {allCommentsIDs: allCommentsIDs}, {new: true}, function (error, docs) {
-            if (error) succeeded = false;
-            console.log("Posts after addition: " + docs.allCommentsIDs);
+            await Post.findByIdAndUpdate(req.postID, {allCommentsIDs: allCommentsIDs}, {new: true}, function (error, docs) {
+                if (error) succeeded = false;
+                console.log("Posts after addition: " + docs.allCommentsIDs);
+            }).clone();
         }).clone();
-    }).clone();
 
-    return succeeded;
+        return succeeded;
+    }
+    catch(e){
+        console.log("Exception " + e + " occurred in addCommentToPost");
+        return false;
+    }
 }
 
 const updatePost = async (req,res) => {
-    let sent = false;
-    const {id} = req.params;
-    const {userEmail, content, image, allCommentIDs} = req.body;
-    if(!id) {
-        if(!sent) {
-            res.status(404).send(`the id ${id} is not valid`);
-            sent = true;
-        }
-    }
-    let resDoc = {_id: id}
-    let response = await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
-        if(error || !docs) {
-            if(!sent){
-                res.status(400).send("No user email with the email provided - " + userEmail);
+    try {
+        let sent = false;
+        const {id} = req.params;
+        const {userEmail, content, image, allCommentIDs} = req.body;
+        if (!id) {
+            if (!sent) {
+                res.status(404).send(`the id ${id} is not valid`);
                 sent = true;
             }
+        }
+        let resDoc = {_id: id}
+        let response = await User.findOne({email: userEmail, isDeleted: false}, function (error, docs) {
+            if (error || !docs) {
+                if (!sent) {
+                    res.status(400).send("No user email with the email provided - " + userEmail);
+                    sent = true;
+                }
 
-        }
-    }).clone();
-    resDoc.userEmail = userEmail
-    if(content)
-        resDoc.content = content
-    if(image)
-        resDoc.image = image
-    if(allCommentIDs)
-        resDoc.allCommentIDs = allCommentIDs
-    await Post.findByIdAndUpdate(id,resDoc, {new: true}, function(error, docs){
-        if(error && !sent) {
-            res.status(400).send("Error in post update: " + error);
-            sent = true;
-        }
-        if(!sent)
-            res.status(200).json(docs)
-    }).clone();
+            }
+        }).clone();
+        resDoc.userEmail = userEmail
+        if (content)
+            resDoc.content = content
+        if (image)
+            resDoc.image = image
+        if (allCommentIDs)
+            resDoc.allCommentIDs = allCommentIDs
+        await Post.findByIdAndUpdate(id, resDoc, {new: true}, function (error, docs) {
+            if (error && !sent) {
+                res.status(400).send("Error in post update: " + error);
+                sent = true;
+            }
+            if (!sent)
+                res.status(200).json(docs)
+        }).clone();
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in updatePost")
+        res.status(400).send("error")
+    }
 }
 
 const deletePost = async (req,res) => {
-    let sent = false;
-    const {id} = req.params;
-    await Post.findByIdAndUpdate(id,{isDeleted: true}, async function(error, result){
-        if(error && !sent) {
-            res.status(400).send("Error while deleting post with ID " + id);
-            sent = true;
-        }
-        if(result)
-            await deletePostFromUser({email: result.userEmail, postID: result.id});
-        if(!sent)
-            res.status(200).send("Post deleted successfully.");    }).clone();
+    try {
+        let sent = false;
+        const {id} = req.params;
+        await Post.findByIdAndUpdate(id, {isDeleted: true}, async function (error, result) {
+            if (error && !sent) {
+                res.status(400).send("Error while deleting post with ID " + id);
+                sent = true;
+            }
+            if (result)
+                await deletePostFromUser({email: result.userEmail, postID: result.id});
+            if (!sent)
+                res.status(200).send("Post deleted successfully.");
+        }).clone();
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in deletePost")
+        res.status(400).send("error")
+    }
 }
 
 module.exports = {readPosts, createPost, updatePost, deletePost,getPostById, readCommentsByPost, addCommentToPost, deleteCommentFromPost, getTagsFrequencies};

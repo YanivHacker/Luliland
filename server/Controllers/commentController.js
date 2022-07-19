@@ -59,16 +59,22 @@ const createComment = async (req,res) => {
 }
 
 const deleteComment = async (req,res) => {
-    const {id} = req.params;
-    let sent = false;
-    let response = await Comment.findByIdAndUpdate(id,{isDeleted: true}, {new: true}, async function(error, result){
-        if(error && !sent)
-            res.status(400).send("Deletion of comment " + id + " failed with error " + error);
-        await deleteCommentFromPost({postID: result.postID, commentID: result.id});
-    }).clone();
+    try {
+        const {id} = req.params;
+        let sent = false;
+        let response = await Comment.findByIdAndUpdate(id, {isDeleted: true}, {new: true}, async function (error, result) {
+            if (error && !sent)
+                res.status(400).send("Deletion of comment " + id + " failed with error " + error);
+            await deleteCommentFromPost({postID: result.postID, commentID: result.id});
+        }).clone();
 
-    if(!sent)
-        res.status(200).send("Comment deleted successfully.");
+        if (!sent)
+            res.status(200).send("Comment deleted successfully.");
+    }
+    catch(e){
+        console.log("Error " + e + " occurred in deleteComment")
+        res.status(400).send("error")
+    }
 }
 
 module.exports = {readComments, createComment, deleteComment,getCommentById};

@@ -209,275 +209,352 @@ const searchLatAndLngByAddress = async(address) => {
 
 const getAllUserAddresses = async(req, res) => {
     let sent = false;
-    await User.find({isDeleted: false}, async function(error, result){
-        if(error){
-            res.status(400).send("Error gettings user addresses from DB.");
-            sent = true;
-        }
-        if(result) {
-            let addresses = result.map(user => user.address).filter(address => (address !== "Not provided")); // searchLatAndLngByAddress if possible
-            let converted = []
-            for (let i = 0; i < addresses.length; i++) {
-                let object = await searchLatAndLngByAddress(addresses[i]);
-                if (object)
-                    converted.push(object);
-            }
-            if (!sent) {
-                res.status(200).json(converted);
+    try {
+        await User.find({isDeleted: false}, async function (error, result) {
+            if (error) {
+                res.status(400).send("Error gettings user addresses from DB.");
                 sent = true;
             }
-        }
-    }).clone();
+            if (result) {
+                let addresses = result.map(user => user.address).filter(address => (address !== "Not provided")); // searchLatAndLngByAddress if possible
+                let converted = []
+                for (let i = 0; i < addresses.length; i++) {
+                    let object = await searchLatAndLngByAddress(addresses[i]);
+                    if (object)
+                        converted.push(object);
+                }
+                if (!sent) {
+                    res.status(200).json(converted);
+                    sent = true;
+                }
+            }
+        }).clone();
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in getAllUserAddresses");
+        res.status(400).send("error")
+    }
 }
 
 const getMostActiveUsers = async (req, res) => {
     let sent = false;
-    Post.aggregate(
-        [
-            {
-                $group: {
-                    _id: "$userEmail",
-                    count: {"$sum": 1}
+    try {
+        Post.aggregate(
+            [
+                {
+                    $group: {
+                        _id: "$userEmail",
+                        count: {"$sum": 1}
+                    }
+                },
+                {
+                    $sort: {
+                        count: -1
+                    }
                 }
-            },
-            {
-                $sort: {
-                    count: -1
-                }
-            }
-        ],
+            ],
 
-        async function (err, result) {
-            console.log("Before getting user data:")
-            console.log(result)
-            if (err) {
-                if (res && !sent) {
-                    res.status(400).json({message: err});
-                    sent = true;
-                }
-            } else {
-                let updatedResult = []
-                let response;
-                for(let i = 0; i < result.length; i++){
-                    response = await User.findOne({email: result[i]._id, isDeleted: false}, function(err, docs){
-                        if (err && !sent){
-                            res.status(400).json({message: err});
-                            sent = true;
-                        }
-                        if (docs){
-                            docs.numberOfPosts = result[i].count;
-                            updatedResult.push(docs);
-                        }
-                    }).clone();
-                }
-                console.log("After getting user data:")
-                console.log(updatedResult)
-                if (res && !sent) {
-                    res.status(200).json(updatedResult.slice(0,3).map(u => { return {email: u.email, fullName: u.firstName + " " + u.lastName, count: u.allPostIDs.length}})); // maybe not json? just send?
-                    sent = true;
+            async function (err, result) {
+                console.log("Before getting user data:")
+                console.log(result)
+                if (err) {
+                    if (res && !sent) {
+                        res.status(400).json({message: err});
+                        sent = true;
+                    }
+                } else {
+                    let updatedResult = []
+                    let response;
+                    for (let i = 0; i < result.length; i++) {
+                        response = await User.findOne({email: result[i]._id, isDeleted: false}, function (err, docs) {
+                            if (err && !sent) {
+                                res.status(400).json({message: err});
+                                sent = true;
+                            }
+                            if (docs) {
+                                docs.numberOfPosts = result[i].count;
+                                updatedResult.push(docs);
+                            }
+                        }).clone();
+                    }
+                    console.log("After getting user data:")
+                    console.log(updatedResult)
+                    if (res && !sent) {
+                        res.status(200).json(updatedResult.slice(0, 3).map(u => {
+                            return {
+                                email: u.email,
+                                fullName: u.firstName + " " + u.lastName,
+                                count: u.allPostIDs.length
+                            }
+                        })); // maybe not json? just send?
+                        sent = true;
+                    }
                 }
             }
-        }
-    );
+        );
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in getMostActiveUsers")
+        res.status(400).send("error")
+    }
 };
 
 const getFriendsByUser = async(req, res) => {
-    let sent = false;
-    const {email} = req.params;
-    let friends = [];
-    await User.findOne({email:email, isDeleted: false}, function(error, docs){
-        if(error || !docs) {
-            res.status(400).send("No user exists with the email provided.");
-            sent = true;
-        }
-    }).clone().then(response => friends = response.friends);
-    await User.find({email: {$in: friends}, isDeleted: false}, function(error, docs){
-        if((error || !docs) && !sent){
-            res.status(400).send("No user exists with the email provided, or no friends for user.");
-            sent = true;
-        }
-        else if (!sent) {
-            res.status(200).json(docs);
-            sent = true;
-        }
-    }).clone();
+    try {
+        let sent = false;
+        const {email} = req.params;
+        let friends = [];
+        await User.findOne({email: email, isDeleted: false}, function (error, docs) {
+            if (error || !docs) {
+                res.status(400).send("No user exists with the email provided.");
+                sent = true;
+            }
+        }).clone().then(response => friends = response.friends);
+        await User.find({email: {$in: friends}, isDeleted: false}, function (error, docs) {
+            if ((error || !docs) && !sent) {
+                res.status(400).send("No user exists with the email provided, or no friends for user.");
+                sent = true;
+            } else if (!sent) {
+                res.status(200).json(docs);
+                sent = true;
+            }
+        }).clone();
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in getFriendsByUser");
+        res.status(400).send("error")
+    }
 }
 
 const addUserFriend = async(req, res) => {
     let sent = false;
     const {email} = req.params;
     let friends = null;
-    const result = await User.findOne({email:email, isDeleted: false}).clone();
-    if(!result) {
-        res.status(400).send("No user exists with the email provided.");
-        sent = true;
-    }
-    else friends = result.friends;
-    if(!friends)
-        friends = [];
-    let newFriend = req.body.friendEmail;
-    if(friends.includes(newFriend))
-        res.status(200).send("They are already friends.");
-    if(!newFriend && !sent){
-        res.status(400).send("No friend email provided.");
-        sent = true;
-    }
-    let friendFriends;
+    try {
+        const result = await User.findOne({email: email, isDeleted: false}).clone();
+        if (!result) {
+            res.status(400).send("No user exists with the email provided.");
+            sent = true;
+        } else friends = result.friends;
+        if (!friends)
+            friends = [];
+        let newFriend = req.body.friendEmail;
+        if (friends.includes(newFriend))
+            res.status(200).send("They are already friends.");
+        if (!newFriend && !sent) {
+            res.status(400).send("No friend email provided.");
+            sent = true;
+        }
+        let friendFriends;
 
-    const resultFriend = await User.findOne({email:newFriend, isDeleted: false}).clone();
-    if(!resultFriend && !sent) {
-        res.status(400).send("No user exists with the friend email provided.");
-        sent = true;
+        const resultFriend = await User.findOne({email: newFriend, isDeleted: false}).clone();
+        if (!resultFriend && !sent) {
+            res.status(400).send("No user exists with the friend email provided.");
+            sent = true;
+        }
+        friendFriends = resultFriend.friends;
+        if (!friendFriends)
+            friendFriends = [];
+
+        friends.push(newFriend);
+        friendFriends.push(email);
+        let response;
+        response = await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}).clone();
+        response = await User.findOneAndUpdate({email: newFriend, isDeleted: false}, {friends: friendFriends}).clone();
+
+        const conversation = new Conversation({
+            members: [email, newFriend]
+        });
+        await conversation.save()
+        res.status(200).send("Success")
     }
-    friendFriends = resultFriend.friends;
-    if(!friendFriends)
-        friendFriends = [];
-
-    friends.push(newFriend);
-    friendFriends.push(email);
-    const response = await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}).clone();
-    const response2 = await User.findOneAndUpdate({email: newFriend, isDeleted: false}, {friends: friendFriends}).clone();
-
-    const conversation = new Conversation({
-        members: [email, newFriend]
-    });
-    await conversation.save()
-    res.status(200).send("Success")
+    catch(e){
+        console.log("Exception " + e + " occurred in addUserFriend")
+        res.status(400).send("error")
+    }
 }
 
 const deletePostFromUser = async (req) => {
-    let succeeded = true;
-    let allPostIDs = null;
-    let response = await User.findOne({email:req.email, isDeleted: false}, async function (error, docs) {
-        if (error || !docs) {
-            succeeded = false;
-        } else allPostIDs = docs.allPostIDs;
+    try {
+        let succeeded = true;
+        let allPostIDs = null;
+        let response = await User.findOne({email: req.email, isDeleted: false}, async function (error, docs) {
+            if (error || !docs) {
+                succeeded = false;
+            } else allPostIDs = docs.allPostIDs;
 
-        if (!succeeded)
-            return false;
-        let toRemove = req.postID;
-        allPostIDs = allPostIDs.filter(e => e !== toRemove)
-        await User.findOneAndUpdate({email: req.email, isDeleted: false}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
-            if (error) succeeded = false;
-            console.log("Posts after removal: " + docs.allPostIDs);
+            if (!succeeded)
+                return false;
+            let toRemove = req.postID;
+            allPostIDs = allPostIDs.filter(e => e !== toRemove)
+            await User.findOneAndUpdate({
+                email: req.email,
+                isDeleted: false
+            }, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
+                if (error) succeeded = false;
+                console.log("Posts after removal: " + docs.allPostIDs);
+            }).clone();
         }).clone();
-    }).clone();
 
-    return succeeded;
+        return succeeded;
+    }
+    catch (e) {
+        console.log("Exception " + e + " occurred in deletePostFromUser")
+        return false;
+    }
 }
 
 const AddPostToUser = async (req) => {
     let succeeded = true;
     let allPostIDs = null;
-    let response = await User.findOne({email:req.email, isDeleted: false}, async function (error, docs) {
-        if (error || !docs) {
-            succeeded = false;
-        }
-        allPostIDs = docs.allPostIDs;
-        if(allPostIDs == null) allPostIDs = [];
-        console.log(docs);
-        if (!succeeded)
-            return false;
-        let newPostId = req.postID;
-        allPostIDs.push(newPostId);
+    try {
+        let response = await User.findOne({email: req.email, isDeleted: false}, async function (error, docs) {
+            if (error || !docs) {
+                succeeded = false;
+            }
+            allPostIDs = docs.allPostIDs;
+            if (allPostIDs == null) allPostIDs = [];
+            console.log(docs);
+            if (!succeeded)
+                return false;
+            let newPostId = req.postID;
+            allPostIDs.push(newPostId);
 
-        await User.findOneAndUpdate({email: req.email, isDeleted: false}, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
-            if (error) succeeded = false;
-            console.log("Posts after addition: " + docs.allPostIDs);
+            await User.findOneAndUpdate({
+                email: req.email,
+                isDeleted: false
+            }, {allPostIDs: allPostIDs}, {new: true}, function (error, docs) {
+                if (error) succeeded = false;
+                console.log("Posts after addition: " + docs.allPostIDs);
+            }).clone();
         }).clone();
-    }).clone();
 
-    return succeeded;
+        return succeeded;
+    }
+    catch(e){
+        console.log("Exception " + e + " occurred in AddPostToUser")
+        return false;
+    }
 }
 
 const updateUser = async (req,res) => {
-    let sent = false;
-    const {email} = req.params;
-    const {firstName, lastName, password, profilePicture, address} = req.body;
-    let response = await User.findOne({email:email, isDeleted: false}, function(error, docs){
-        if(error || !docs) {
-            res.status(400).send("No user exists with the email provided.");
-            sent = true;
-        }
-    }).clone();
-    let updateInfo = {}
-    if(firstName && firstName.length > 0)
-        updateInfo.firstName = firstName
-    if(lastName && lastName.length > 0)
-        updateInfo.lastName = lastName
-    if(password && password.length > 0)
-        updateInfo.password = password
-    if(profilePicture && profilePicture.length > 0)
-        updateInfo.profilePicture = profilePicture
-    if(address && address.length > 0)
-        updateInfo.address = address
-
-    await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo, function(error, result){
-        if(error){
-            if(!sent){
-                res.status(400).send(error)
+    try {
+        let sent = false;
+        const {email} = req.params;
+        const {firstName, lastName, password, profilePicture, address} = req.body;
+        let response = await User.findOne({email: email, isDeleted: false}, function (error, docs) {
+            if (error || !docs) {
+                res.status(400).send("No user exists with the email provided.");
                 sent = true;
             }
+        }).clone();
+        let updateInfo = {}
+        if (firstName && firstName.length > 0)
+            updateInfo.firstName = firstName
+        if (lastName && lastName.length > 0)
+            updateInfo.lastName = lastName
+        if (password && password.length > 0)
+            updateInfo.password = password
+        if (profilePicture && profilePicture.length > 0)
+            updateInfo.profilePicture = profilePicture
+        if (address && address.length > 0)
+            updateInfo.address = address
 
+        await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo, function (error, result) {
+            if (error) {
+                if (!sent) {
+                    res.status(400).send(error)
+                    sent = true;
+                }
+
+            }
+        }).clone();
+        if (!sent) {
+            res.status(200).json("Updated successfully");
+            sent = true;
         }
-    }).clone();
-    if(!sent) {
-        res.status(200).json("Updated successfully");
-        sent = true;
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in updateUser")
+        res.status(400).send("error")
     }
 }
 
 
 const readPostsByUser = async (req,res) =>{
-    let sent = false;
-    const {userEmail} = req.params
+    try {
+        let sent = false;
+        const {userEmail} = req.params
 
-    let response = await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
-        if(error) {
-            res.status(400).send("User with this email doesn't exist.");
-            sent = true;
-        }
-    }).clone();
+        let response = await User.findOne({email: userEmail, isDeleted: false}, function (error, docs) {
+            if (error) {
+                res.status(400).send("User with this email doesn't exist.");
+                sent = true;
+            }
+        }).clone();
 
-    await Post.find({userEmail: userEmail, isDeleted: false}, function(err, docs) {
-        if (!req || !res){
-            if(err)
-                return null;
-            return docs;
-        }
-        else if (err && !sent) {
-            res.status(400).json({message: err});
-            sent = true;
-        }
-        else if(docs && !sent) {
-            res.status(200).json(docs);
-            sent = true;
-        }
-        else return null;
-    }).clone();
+        await Post.find({userEmail: userEmail, isDeleted: false}, function (err, docs) {
+            if (!req || !res) {
+                if (err)
+                    return null;
+                return docs;
+            } else if (err && !sent) {
+                res.status(400).json({message: err});
+                sent = true;
+            } else if (docs && !sent) {
+                res.status(200).json(docs);
+                sent = true;
+            } else return null;
+        }).clone();
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in readPostsByUser")
+        res.status(400).send("error")
+    }
 }
 
 const deleteUser = async (req,res) => {
-    let sent = false;
-    const {email} = req.params;
-    let response = await User.findOneAndUpdate({email: email, isDeleted: false},{isDeleted: true}, function(error, result){
-        if(error){
-            res.status(400).send(error);
-            sent = true;
-        }
-    }).clone();
-    if(!sent)
-        res.status(200).send("Deleted user successfully");
+    try {
+        let sent = false;
+        const {email} = req.params;
+        let response = await User.findOneAndUpdate({
+            email: email,
+            isDeleted: false
+        }, {isDeleted: true}, function (error, result) {
+            if (error) {
+                res.status(400).send(error);
+                sent = true;
+            }
+        }).clone();
+        if (!sent)
+            res.status(200).send("Deleted user successfully");
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in deleteUser");
+        res.status(400).send("error")
+    }
 }
 
 const getPopularFirstNames = async (req, res) => {
-    const result = getPopularNames(true);
-    res.status(200).json(result);
+    try {
+        const result = getPopularNames(true);
+        res.status(200).json(result);
+    }
+    catch(e) {
+        console.log("Exception " + e + " occurred in getPopularFirstNames")
+        res.status(400).send("error")
+    }
 }
 
 const getPopularLastNames = async (req, res) => {
-    const result = getPopularNames(false);
-    res.status(200).json(result);
+    try {
+        const result = getPopularNames(false);
+        res.status(200).json(result);
+    }
+    catch (e) {
+        console.log("Exception " + e + " occurred in getPopularLastNames")
+        res.status(400).send("error")
+    }
 }
 
 module.exports = {readUsers, createUser, updateUser, AddPostToUser,
