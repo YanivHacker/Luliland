@@ -1,10 +1,14 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {Button, Form, Input, PageHeader, notification, Avatar} from "antd";
 import 'antd/dist/antd.css';
 import {getCurrentUser} from "../../Utils/currentUser";
 import {PermMedia} from "@material-ui/icons";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import axios from "axios";
+import {useParams} from "react-router";
+import useMounted from "../../hooks/useMounted";
+
+const USER_SERVICE = SERVER_URL + "/users"
 
 const blobToBase64 = require('blob-to-base64')
 
@@ -19,20 +23,39 @@ const openNotification = (content) => {
     });
 };
 
-export default function UpdateUser() {
+const UpdateUser = (props) => {
+    const isMounted  = useMounted();
+
     // const firstName = useRef();
     // const lastName = useRef();
     // const password = useRef();
     // const address = useRef();
     // const profilePicture = useRef();
     const [form] = Form.useForm();
+    const [user, setUser] = useState({});
     const firstName = Form.useWatch('firstName', form)
     const lastName = Form.useWatch('lastName', form)
     const address = Form.useWatch('address', form)
     const password = Form.useWatch('password', form)
+    const userEmail = useParams().userEmail;
 
-    const user = getCurrentUser();
+    //const user = getCurrentUser();
     const [file, setFile] = useState(user.profilePicture);
+
+    useEffect( () => {
+        const fetchUser = async () => {
+            //const response = await getUserByEmail(userEmail);
+            const response = await axios.get( USER_SERVICE + `/${userEmail}`)
+            const { data } = response;
+            console.log(data)
+            if (isMounted) setUser(data);
+        };
+        isMounted && fetchUser()
+    },[userEmail, isMounted]);
+
+    //console.log(post.images)
+    const newUser = useMemo(() => user || {}, [user]);
+    console.log(newUser.email)
 
     const onFinish = (values) => {
         // let updatedUser = {firstName: values.firstName, lastName: values.lastName, password: values.password,
@@ -81,7 +104,7 @@ export default function UpdateUser() {
                     try {
                         console.log(updatedUser)
                         updatedUser.profilePicture = base64;
-                        const response = await axios.patch(SERVER_URL + `/users/${user.email}`, updatedUser);
+                        const response = await axios.patch(SERVER_URL + `/users/${newUser.email}`, updatedUser);
                         if(response.status === 200){
                             openNotification('User updated successfully!');
                         }
@@ -100,7 +123,7 @@ export default function UpdateUser() {
                     className="site-page-header"
                     onBack={() => null}
                     title="Edit your details"
-                    subTitle={user.firstName + " " + user.lastName}
+                    subTitle={newUser.firstName + " " + newUser.lastName}
                 />
                 <Form form={form} onSubmitCapture={submitHandler}
                     name="basic"
@@ -122,7 +145,7 @@ export default function UpdateUser() {
                         name="firstname"
                     >
                         <Input
-                            placeholder={user.firstName}
+                            placeholder={newUser.firstName}
                             //ref={firstName}
                         />
                     </Form.Item>
@@ -132,7 +155,7 @@ export default function UpdateUser() {
                         name="lastname"
                     >
                         <Input
-                            placeholder={user.lastName}
+                            placeholder={newUser.lastName}
                             //ref={lastName}
                         />
                     </Form.Item>
@@ -142,7 +165,7 @@ export default function UpdateUser() {
                         name="address"
                     >
                         <Input
-                            placeholder={user.address}
+                            placeholder={newUser.address}
                             //ref={address}
                         />
                     </Form.Item>
@@ -191,3 +214,5 @@ export default function UpdateUser() {
          </div>
     )
 }
+export default React.memo(updateUser);
+
