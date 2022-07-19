@@ -14,7 +14,7 @@ const getAveragePostAmount = async (req, res) => {
         const postLengths = result.map(item => item.allPostIDs.length);
         result = postLengths.reduce((a, b) => a + b, 0) / postLengths.length;
         if(!sent) {
-            res.status(200).send("The average amount of posts per user in our app is: " + result)
+            res.status(200).send("The average amount of posts per user in our app is: " + result.toPrecision(3))
             sent = true;
         }
     }).clone();

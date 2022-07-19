@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Post = require('../Models/Post');
 const User = require("../Models/User");
-const {AddPostToUser, deletePostFromUser} = require("./userController");
-const {getPopularPostThemes} = require("../Utils/aho-corasick");
+const AhoCorasick = require("ahocorasick")
+const {AddPostToUser, deletePostFromUser, getAllUserAddresses} = require("./userController");
+//const {getPopularPostThemes} = require("../Utils/aho-corasick");
 
 const readPosts = async (req,res) =>{
     try {
@@ -26,9 +27,38 @@ const readPosts = async (req,res) =>{
     }
 }
 
+const getPopularPostThemes = async(tag1, tag2, tag3) => {
+    let keywords = [tag1,tag2,tag3]
+    let ac = new AhoCorasick(keywords); // add whatever tags you want in here
+    let allPosts = await readPosts(null, null)
+    if(!allPosts){
+        console.log(allPosts)
+        console.log("No users in DB")
+        return
+    }
+    let result = {}
+    for(let i =0; i < allPosts.length; i++)
+    {
+        let content = allPosts[i].content
+        let results = ac.search(content)
+        for(let j = 0; j < results.length; j++)
+        {
+            let key = results[j][1][0];
+            if(result.hasOwnProperty(key))
+                result[key]++;
+            else result[key] = 1;
+        }
+    }
+    console.log(result)
+    for(let i in keywords){
+        console.log("Amount of " + keywords[i] + " related posts: " + result[keywords[i]])
+    }
+    return result
+}
+
 const getTagsFrequencies = async(req, res) => {
-    try {
-        const result = getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
+    try{
+        const result = await getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
         res.status(200).json(result);
     }
     catch(e) {
