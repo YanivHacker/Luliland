@@ -30,14 +30,18 @@ io.on('connection', (socket) => {
     })
 
     //send and get message
-    socket.on("sendMessage", ({senderEmail,receiverEmail,text}) => {
-        console.log(`sending new message to ${receiverEmail} `)
-        const receiver = getUser(receiverEmail)
-        io.to(receiver.socketId).emit("getMessage", {
-            senderEmail,
-            text
-        })
+    socket.on("sendMessage", jsonStr => { //json should be {senderEmail,receiverEmail,text}
+        if(jsonStr){
+            const {senderEmail,receiverEmail,text} = JSON.parse(jsonStr)
+            console.log(`sending new message to ${receiverEmail} `)
+            const receiver = getUser(receiverEmail)
+            io.to(receiver.socketId).emit("getMessage", JSON.stringify({
+                senderEmail,
+                text
+            }))
+        }
     })
+
 
 
     //when disconnect

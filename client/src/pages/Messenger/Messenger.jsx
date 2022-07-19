@@ -17,15 +17,14 @@ import {getCurrentUser} from "../../Utils/currentUser";
 // --------------------------------------------------
 
 
-
-
+let currentMessagesBackup = null
+let selectedFriendEmail = null
 export default function Messenger() {
     const currentUserEmail = getCurrentUser().email;
     const [friendList, setFriendList] = useState([])
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
-    const [selectedFriendEmail,setSelectedFriendEmail] = useState(null)
-    const [arrivalMessage, setArrivalMessage] = useState(null)
+    //const [arrivalMessage, setArrivalMessage] = useState(null)
     const socket = useRef()
     const scrollRef = useRef()
     const newMessageContent = useRef()
@@ -46,30 +45,44 @@ export default function Messenger() {
         initializeFriendUserList()
     },[currentUserEmail])
 
+    const updateMessagesIfNecessary = (newMessage) => {
+        console.log(newMessage)
+        if(newMessage && newMessage?.sender === selectedFriendEmail){
+            console.log(currentMessages)
+            setCurrentMessages([...currentMessagesBackup, newMessage])
+            console.log(currentMessages)
+        }
+    }
+
     //initialize socket
     useEffect(() => {
         socket.current = io("ws://localhost:8900")
         socket.current.emit("addUser",currentUserEmail)
         socket.current.on("getMessage", data => {
-            console.log(data)
-            setArrivalMessage({
-                sender: data.senderEmail,
-                text: data.text,
-                createdAt: Date.now()
-            })
+            debugger
+            const objData = JSON.parse(data)
+            console.log(currentMessages)
+            const newMsg = {
+                sender: objData.senderEmail,
+                text: objData.text,
+                createdAt: Date.now(),
+                _id: Date.now().toString()
+            }
+            updateMessagesIfNecessary(newMsg)
+            //console.log(arrivalMessage)
         })
     },[])
-
-    useEffect(()=>{
-        arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
-            setCurrentMessages([...currentMessages, arrivalMessage])
-    }, [arrivalMessage, currentConversationId])
+    // useEffect(()=>{
+    //     arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
+    //         setCurrentMessages([...currentMessages, arrivalMessage])
+    // }, [arrivalMessage, currentConversationId])
 
     //fetch message list
     useEffect(()=>{
         const initalizeMessageList = async () => {
             const res = await fetchConversationMessages(currentConversationId)
             setCurrentMessages(res)
+            currentMessagesBackup = res
         }
         initalizeMessageList()
     },[currentConversationId])
@@ -89,10 +102,10 @@ export default function Messenger() {
                         { friendList.map(user=>{
                             return (
                                 <div key={user._id} onClick={()=> {
+                                    selectedFriendEmail = user.email
                                     const initializeConversation = async () => {
                                         const conversation = await getSpecificConversation(currentUserEmail, user.email)
                                         setCurrentConversationId(conversation._id)
-                                        setSelectedFriendEmail(user.email)
                                         console.log(currentConversationId)
                                         console.log(selectedFriendEmail)
                                     }
@@ -135,11 +148,11 @@ export default function Messenger() {
                                                             }
                                                             sendAndGetNewMessage()
                                                             console.log(socket.current.id)
-                                                            socket.current.emit("sendMessage",{
+                                                            socket.current.emit("sendMessage",JSON.stringify({
                                                                 senderEmail: currentUserEmail,
                                                                 receiverEmail: selectedFriendEmail,
-                                                                text: newMessageContent
-                                                            })
+                                                                text
+                                                            }))
                                                         }else
                                                             console.log('message is empty')
                                                     }
