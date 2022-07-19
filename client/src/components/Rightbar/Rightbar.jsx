@@ -17,6 +17,8 @@ export default function Rightbar({ profile }) {
     //const user = getCurrentUser();
     const [friends, setFriends] = useState([]);
     const fetchFriends = async () => {
+        console.log(profile)
+        debugger
         const response = await axios.get(USER_SERVICE + `/${profile.email}/friends`)
         const { data } = response;
         console.log("friends" + data)

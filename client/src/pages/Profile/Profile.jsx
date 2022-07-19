@@ -9,22 +9,28 @@ import {SERVER_URL} from "../../services/HttpServiceHelper";
 import { useParams } from "react-router";
 import {getUserByEmail} from "../../services/UserService";
 import {getCurrentUser} from "../../Utils/currentUser";
+// import useMounted from "../../";
 
 
 export default function Profile() {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+    //const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState({});
     //const user = getCurrentUser();
+    const isMounted  = useMounted();
     const userEmail = useParams().userEmail;
     console.log(userEmail);
 
-    const fetchUser = async () => {
-        const response = await getUserByEmail(userEmail);
-        setUser(response);
-    };
     useEffect( () => {
-        fetchUser();
-    },[userEmail]);
+        const fetchUsers = async () => {
+            debugger
+            const response = await axios.get(SERVER_URL + `/users/${userEmail}`);
+            const { data } = response;
+            console.log({data});
+            if(isMounted) setUser(data);
+        };
+        isMounted && fetchUsers();
+    },[isMounted]);
+
     //console.log(post.images)
 
     return (
@@ -42,7 +48,7 @@ export default function Profile() {
                                 />
                                 <img
                                     className="profileUserImg"
-                                    src={user.profilePicture ? user.profilePicture : "assets/person/default.jpg"}
+                                    src={user.profilePicture ? user.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                                     alt=""
                                 />
                             </div>
