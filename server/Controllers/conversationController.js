@@ -10,7 +10,7 @@ const newConversation = async (req,res) => {
             res.status(400).send("Please provide both sender and receiver emails");
             sent = true;
         }
-        await User.findOne({email: senderEmail}, async function(errS, resultS){
+        let response = await User.findOne({email: senderEmail}, async function(errS, resultS){
             if(errS || !resultS){
                 if(!sent) {
                     res.status(400).send("Sender email not found or error occurred.");
@@ -29,7 +29,7 @@ const newConversation = async (req,res) => {
             }
         });
 
-        await Conversation.findOne({$or: [{members: [senderEmail, receiverEmail]}, {members: [receiverEmail, senderEmail]}]}, function(error, result){
+        response = await Conversation.findOne({$or: [{members: [senderEmail, receiverEmail]}, {members: [receiverEmail, senderEmail]}]}, function(error, result){
             if(result){
                 if(!sent) {
                     res.status(400).send("These members already have an existing conversation.");

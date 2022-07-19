@@ -80,7 +80,7 @@ const createPost = async (req,res) => {
     try {
         // validatePost(req.body.content, req.body.image)
         const {userEmail, content, image} = req.body
-        await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
+        let response = await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
             if(error || !docs) {
                 res.status(400).send("No user with email " + userEmail + "exists.");
                 sent = true;
@@ -92,7 +92,7 @@ const createPost = async (req,res) => {
         }
         const post = new Post({userEmail:userEmail, content:content, image:image});
         await post.save();
-        await AddPostToUser({email: userEmail, postID: post.id});
+        response = await AddPostToUser({email: userEmail, postID: post.id});
         if(!sent)
             res.status(200).json(post);
     } catch (error) {
@@ -104,7 +104,7 @@ const createPost = async (req,res) => {
 const deleteCommentFromPost = async (req) => {
     let succeeded = true;
     let allCommentIDs = null;
-    await Post.findById(req.postID, async function (error, docs) {
+    let response = await Post.findById(req.postID, async function (error, docs) {
         if (error || !docs) {
             succeeded = false;
         } else allCommentIDs = docs.allCommentIDs;
@@ -125,7 +125,7 @@ const deleteCommentFromPost = async (req) => {
 const addCommentToPost = async (req) => {
     let succeeded = true;
     let allCommentsIDs = null;
-    await Post.findById(req.postID, async function (error, docs) {
+    let response = await Post.findById(req.postID, async function (error, docs) {
         if (error || !docs) {
             succeeded = false;
         }
@@ -157,7 +157,7 @@ const updatePost = async (req,res) => {
         }
     }
     let resDoc = {_id: id}
-    await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
+    let response = await User.findOne({email: userEmail, isDeleted: false}, function(error, docs){
         if(error || !docs) {
             if(!sent){
                 res.status(400).send("No user email with the email provided - " + userEmail);

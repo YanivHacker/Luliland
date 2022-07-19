@@ -41,7 +41,7 @@ const createComment = async (req,res) => {
     let sent = false;
     try {
         const {postID, content} = req.body
-        await Post.findById(postID, function(error, result){
+        let response = await Post.findById(postID, function(error, result){
             if(error || !result) {
                 res.status(404).send("Error with finding post for comment creation.");
                 sent = true;
@@ -49,7 +49,7 @@ const createComment = async (req,res) => {
         }).clone();
         const comment = new Comment({postID: postID, content: content});
         await comment.save();
-        await addCommentToPost({postID: comment.postID, commentID: comment.id});
+        response = await addCommentToPost({postID: comment.postID, commentID: comment.id});
         if(!sent)
             res.status(200).json(comment);
     } catch (error) {
@@ -61,7 +61,7 @@ const createComment = async (req,res) => {
 const deleteComment = async (req,res) => {
     const {id} = req.params;
     let sent = false;
-    await Comment.findByIdAndUpdate(id,{isDeleted: true}, {new: true}, async function(error, result){
+    let response = await Comment.findByIdAndUpdate(id,{isDeleted: true}, {new: true}, async function(error, result){
         if(error && !sent)
             res.status(400).send("Deletion of comment " + id + " failed with error " + error);
         await deleteCommentFromPost({postID: result.postID, commentID: result.id});

@@ -11,7 +11,7 @@ const sendMessage = async (req,res) => {
             res.status(400).send("Please provide conversation id, sender and content.");
             sent = true;
         }
-        await Conversation.findById(conversationId, function(err, result){
+        let response = await Conversation.findById(conversationId, function(err, result){
             if(err || !result){
                 if(!sent) {
                     res.status(400).send("Conversation ID not found.");
