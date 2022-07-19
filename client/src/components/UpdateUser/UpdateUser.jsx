@@ -69,8 +69,8 @@ export default function UpdateUser() {
     const submitHandler = async (e) => {
         e.preventDefault();
         debugger
-        let updatedUser = {firstName: firstName, lastName: lastName, password: password,
-            address: address}
+        let updatedUser = {firstName: form.getFieldValue("firstname"), lastName: form.getFieldValue("lastname"), password: form.getFieldValue("password"),
+            address: form.getFieldValue("address")}
         if (file) {
             const data = new FormData();
             const fileName = Date.now() + file.name;
@@ -160,7 +160,7 @@ export default function UpdateUser() {
                         <Avatar
                             size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
                             icon={<AntDesignOutlined />}
-                            src={file && URL.createObjectURL(file)}
+                            src={file && (file.type === Blob || file.type === File || file.type === MediaSource) && URL.createObjectURL(file)}
                             //ref={profilePicture}
                         />
                     </Form.Item>

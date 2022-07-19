@@ -257,7 +257,7 @@ const getMostActiveUsers = async (req, res) => {
             } else {
                 let updatedResult = []
                 for(let i = 0; i < result.length; i++){
-                    await User.findOne({email: result[i].id, isDeleted: false}, function(err, docs){
+                    await User.findOne({email: result[i]._id, isDeleted: false}, function(err, docs){
                         if (err && !sent){
                             res.status(400).json({message: err});
                             sent = true;
@@ -271,7 +271,7 @@ const getMostActiveUsers = async (req, res) => {
                 console.log("After getting user data:")
                 console.log(updatedResult)
                 if (res && !sent) {
-                    res.status(200).json(updatedResult); // maybe not json? just send?
+                    res.status(200).json(updatedResult.slice(0,3).map(u => { return {email: u.email, fullName: u.firstName + " " + u.lastName, count: u.allPostIDs.length}})); // maybe not json? just send?
                     sent = true;
                 }
             }
