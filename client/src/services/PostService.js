@@ -15,4 +15,11 @@ const getDistributionTag = async (tag1,tag2,tag3) => {
     return res.data
 }
 
-module.exports = {getAllPosts, getDistributionTag}
+const getPostAveragePerUser = async () => {
+    const res = await axios.get(`${POST_SERVICE}/averagek`)
+    if(res.status!==200)
+        return null
+    return res.data
+}
+
+module.exports = {getAllPosts, getDistributionTag, getPostAveragePerUser}
