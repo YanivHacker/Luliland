@@ -12,6 +12,7 @@ import {sendMessage} from "./services/MessageService";
 import {getUserByEmail} from "./services/UserService";
 import EditUser from "./pages/EditUser/EditUser";
 import {getCurrentUser} from "./Utils/currentUser";
+import PostItem from "./pages/PostDetails/postDetails"
 
 function App() {
   //const userEmail = localStorage.getItem("email");
@@ -40,6 +41,8 @@ function App() {
           <Route path="/logout" element={<Login />}>
           </Route>
           <Route path="/updateUser" element={<EditUser/>}>
+          </Route>
+          <Route path="/:postID/postDetails" element={<PostItem/>}>
           </Route>
           {/*<Route exact path="/" element={<Register/>} />*/}
           {/*<Route exact path="/login" element={<Login />} />*/}
