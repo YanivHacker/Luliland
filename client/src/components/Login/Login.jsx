@@ -5,6 +5,8 @@ import validator from "validator/es";
 import {getUserByEmail, login} from "../../services/UserService";
 import {useNavigate} from "react-router-dom";
 import "./loginForm.css"
+import {notification} from "antd";
+import 'antd/dist/antd.css';
 
 export default function FormDialog() {
     const [open, setOpen] = useState(false)
@@ -48,8 +50,10 @@ export default function FormDialog() {
             navigate("/")
             handleClose()
         }
-        else
+        else {
             setSuccessLogIn("FAILED")
+            openNotification('Email or password is wrong');
+        }
     }
 
     const handleClickOpen = () => {
@@ -58,6 +62,12 @@ export default function FormDialog() {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const openNotification = (content) => {
+        notification.open({
+            message: content,
+        });
     };
 
     return (
@@ -86,8 +96,8 @@ export default function FormDialog() {
                 helperText={!validPassword ? errors.password : ""}
                 fullWidth
             />
-            {successLogIn==="FAILED" &&
-                <label className={"errorMessage"}>email or password is wrong</label>
+            {successLogIn==="FAILED"
+                // <label className={"errorMessage"}>Email or password is wrong</label>
             }
             <Button style={{paddingTop: 20}} onClick={signIn} color="primary" disabled={!validEmail || !validPassword}>
                 Sign In
