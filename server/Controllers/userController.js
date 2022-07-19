@@ -305,13 +305,13 @@ const getFriendsByUser = async(req, res) => {
     try {
         const {email} = req.params;
         let friends = [];
-        let response = await User.findOne({email: email, isDeleted: false}, function (error, docs) {
+        await User.findOne({email: email, isDeleted: false}, function (error, docs) {
             if (error || !docs) {
                 res.status(400).send("No user exists with the email provided.");
                 sent = true;
             }
         }).clone().then(response => friends = response.friends);
-        response = await User.find({email: {$in: friends}, isDeleted: false}, function (error, docs) {
+        await User.find({email: {$in: friends}, isDeleted: false}, function (error, docs) {
             if ((error || !docs) && !sent) {
                 res.status(400).send("No user exists with the email provided, or no friends for user.");
                 sent = true;
@@ -462,18 +462,13 @@ const updateUser = async (req,res) => {
         if (address && address.length > 0)
             updateInfo.address = address
 
-        await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo, function (error, result) {
-            if (error) {
-                if (!sent) {
-                    res.status(400).send(error)
-                    sent = true;
-                }
-
-            }
-        }).clone();
-        if (!sent) {
-            res.status(200).json("Updated successfully");
+        const result = await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo).clone();
+        if (result && !sent) {
+            res.status(200).json(result);
             sent = true;
+        }
+        else if (!sent){
+            res.status(400).send("Error in updateUser");
         }
     }
     catch(e) {

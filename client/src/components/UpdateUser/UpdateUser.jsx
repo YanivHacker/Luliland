@@ -25,14 +25,9 @@ const openNotification = (content) => {
 
 const UpdateUser = (props) => {
     const isMounted  = useMounted();
-
-    // const firstName = useRef();
-    // const lastName = useRef();
-    // const password = useRef();
-    // const address = useRef();
-    // const profilePicture = useRef();
+    
     const [form] = Form.useForm();
-    const [user, setUser] = useState({});
+    const user = props.profile;
     const firstName = Form.useWatch('firstName', form)
     const lastName = Form.useWatch('lastName', form)
     const address = Form.useWatch('address', form)
@@ -41,22 +36,6 @@ const UpdateUser = (props) => {
 
     //const user = getCurrentUser();
     const [file, setFile] = useState(user.profilePicture);
-
-    useEffect( () => {
-        const fetchUser = async () => {
-            //const response = await getUserByEmail(userEmail);
-            const response = await axios.get( USER_SERVICE + `/${userEmail}`)
-            const { data } = response;
-            console.log(data)
-            if (isMounted) setUser(data);
-        };
-        isMounted && fetchUser()
-    },[userEmail, isMounted]);
-
-    //console.log(post.images)
-    const newUser = useMemo(() => user || {}, [user]);
-    console.log(newUser.email)
-
     const onFinish = (values) => {
         // let updatedUser = {firstName: values.firstName, lastName: values.lastName, password: values.password,
         //     address: values.address}
@@ -88,6 +67,8 @@ const UpdateUser = (props) => {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+    
+    const newUser = useMemo(() => user || {}, [user]);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -214,5 +195,5 @@ const UpdateUser = (props) => {
          </div>
     )
 }
-export default React.memo(updateUser);
+export default React.memo(UpdateUser);
 

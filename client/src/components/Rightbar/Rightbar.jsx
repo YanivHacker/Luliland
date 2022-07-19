@@ -17,7 +17,6 @@ import useMounted from "../../hooks/useMounted";
 
 const USER_SERVICE = SERVER_URL + "/users"
 
-
 const Rightbar = (props) => {
     const [friendList, setFriendList] = useState([]);
     const isMounted = useMounted();
@@ -65,24 +64,6 @@ const Rightbar = (props) => {
                             <span className="rightbarInfoValue">{profile.email}</span>
                         </div>
                     </div>
-                    {/*<h4 className="rightbarTitle">User friends</h4>*/}
-                    {/*<div className="rightbarFollowings">*/}
-                    {/*    {friendList.map((friend)=> {*/}
-                    {/*        console.log(friend.email)*/}
-                    {/*        return (*/}
-                    {/*            <Link to={"/profile/" + friend.email}*/}
-                    {/*                  style={{textDecoration: "none"}}>*/}
-                    {/*                <div className="rightbarFollowing">*/}
-                    {/*                    <img*/}
-                    {/*                        src={friend.profilePicture ? friend.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}*/}
-                    {/*                        alt=""*/}
-                    {/*                        className="rightbarFollowingImg"*/}
-                    {/*                    />*/}
-                    {/*                    <span className="rightbarFollowingName">{friend.firstName + " " + friend.lastName}</span>*/}
-                    {/*                </div>*/}
-                    {/*            </Link>*/}
-                    {/*        )})}*/}
-                    {/*</div>*/}
 
                     <hr className="rightbarHr" />
                     <h4 className="rightbarTitle">User Friends ({friends.length})</h4>

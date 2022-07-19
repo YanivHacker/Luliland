@@ -138,7 +138,7 @@ const createPost = async (req,res) => {
         }
         const post = new Post({userEmail:userEmail, content:content, image:image});
         await post.save();
-        response = await AddPostToUser({email: userEmail, postID: post.id});
+        await AddPostToUser({email: userEmail, postID: post.id});
         if(!sent)
             res.status(200).json(post);
     } catch (error) {

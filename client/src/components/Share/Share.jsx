@@ -38,7 +38,12 @@ export default function Share() {
                     try {
                         newPost.image = base64
                         console.log(newPost);
-                        await axios.post(POST_SERVICE, newPost);
+                        let user = JSON.parse(localStorage.getItem("user"));
+                        let posts = user.allPostIDs || [];
+                        const post = await axios.post(POST_SERVICE, newPost);
+                        posts.push(post._id || post.id);
+                        user.allPostIDs = posts;
+                        localStorage.setItem("user", user);
                         window.location.reload();
                     } catch (err) {}
                 }
