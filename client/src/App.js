@@ -51,6 +51,8 @@ function App() {
           {/*<Route exact path="/login" element={<Login />} />*/}
           <Route path="/profile/:userEmail" element={<Profile />} />
           {/*<Route path="/messenger" element={<Messenger/>}/>*/}
+          {/*<Route path="/profile/:userEmail" element={<Profile />} />*/}
+          <Route path="/messenger" element={<Messenger/>}/>
           <Route path="/admin" element={<Admin/>} />
         </Routes>
       </BrowserRouter>

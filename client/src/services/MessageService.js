@@ -11,6 +11,7 @@ export const fetchConversationMessages = async (conversationId) => {
 
 
 export const sendMessage = async (senderId,conversationId,text) => {
+    console.log('sending message')
     const response = await axios.post(MESSAGE_SERVICE,{conversationId, sender: senderId, text})
     return response.data
 }

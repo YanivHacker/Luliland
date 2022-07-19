@@ -28,7 +28,8 @@ const readPosts = async (req,res) =>{
 }
 
 const getPopularPostThemes = async(tag1, tag2, tag3) => {
-    let ac = new AhoCorasick([tag1, tag2, tag3]); // add whatever tags you want in here
+    let keywords = [tag1,tag2,tag3]
+    let ac = new AhoCorasick(keywords); // add whatever tags you want in here
     let allPosts = await readPosts(null, null)
     if(!allPosts){
         console.log(allPosts)
@@ -48,16 +49,16 @@ const getPopularPostThemes = async(tag1, tag2, tag3) => {
             else result[key] = 1;
         }
     }
-
-    for(let key in Object.keys(result)){
-        console.log("Amount of " + key + " related posts: " + result[key])
+    console.log(result)
+    for(let i in keywords){
+        console.log("Amount of " + keywords[i] + " related posts: " + result[keywords[i]])
     }
     return result
 }
 
 const getTagsFrequencies = async(req, res) => {
-    try {
-        const result = getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
+    try{
+        const result = await getPopularPostThemes(req.body.tag1, req.body.tag2, req.body.tag3);
         res.status(200).json(result);
     }
     catch(e) {

@@ -43,4 +43,19 @@ const getUserFriends = async (userEmail) => {
     return response.data
 }
 
-module.exports = {signUp, login, getAllUsers, getUserByEmail, getUserFriends, getAllAddresses, deleteUserByEmail}
+const getPopularFirstNames = async () => {
+    const response = await axios.get(USER_SERVICE + '/popular/firstNames')
+    return response.status === 200 ? response.data : null
+}
+
+const getPopularLastNames = async () => {
+    const response = await axios.get(USER_SERVICE + '/popular/lastNames')
+    return response.status === 200 ? response.data : null
+}
+
+const getMostActive = async () => {
+    const response = await axios.get(USER_SERVICE + '/mostactive')
+    return response.status === 200 ? response.data : null
+}
+
+module.exports = {signUp, login, getAllUsers, getUserByEmail, getUserFriends, getAllAddresses, deleteUserByEmail, getPopularFirstNames, getPopularLastNames, getMostActive}

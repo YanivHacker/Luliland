@@ -1,11 +1,3 @@
-.tags-container{
-    display: flex;
-}
-
-.tag {
-    flex: 1;
-}
-
-.submit {
-    flex: 2;
+.container{
+    overflow-y: scroll;
 }

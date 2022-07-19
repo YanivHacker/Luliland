@@ -51,6 +51,7 @@ export default function Messenger() {
         socket.current = io("ws://localhost:8900")
         socket.current.emit("addUser",currentUserEmail)
         socket.current.on("getMessage", data => {
+            console.log(data)
             setArrivalMessage({
                 sender: data.senderEmail,
                 text: data.text,
@@ -92,6 +93,8 @@ export default function Messenger() {
                                         const conversation = await getSpecificConversation(currentUserEmail, user.email)
                                         setCurrentConversationId(conversation._id)
                                         setSelectedFriendEmail(user.email)
+                                        console.log(currentConversationId)
+                                        console.log(selectedFriendEmail)
                                     }
                                     initializeConversation()
                                 }}>
@@ -122,6 +125,8 @@ export default function Messenger() {
                                         <button
                                                 className="chatSubmitButton"
                                                 onClick={(e)=>{
+                                                    console.log(currentConversationId)
+                                                    console.log(selectedFriendEmail)
                                                         const text = newMessageContent.current.value
                                                         if(text && text!== ""){
                                                             const sendAndGetNewMessage = async ()=>{
@@ -129,6 +134,7 @@ export default function Messenger() {
                                                                 setCurrentMessages([...currentMessages,savedMessage])
                                                             }
                                                             sendAndGetNewMessage()
+                                                            console.log(socket.current.id)
                                                             socket.current.emit("sendMessage",{
                                                                 senderEmail: currentUserEmail,
                                                                 receiverEmail: selectedFriendEmail,

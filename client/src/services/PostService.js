@@ -9,7 +9,7 @@ const getAllPosts = async () =>{
 }
 
 const getDistributionTag = async (tag1,tag2,tag3) => {
-    const res = await axios.post(`${POST_SERVICE}/tags`, {tag1, tag2, tag3})
+    const res = await axios.post(`${POST_SERVICE}/utils/tags`, {tag1, tag2, tag3})
     if(res.status!==200)
         return null
     return res.data

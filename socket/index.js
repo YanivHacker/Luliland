@@ -25,12 +25,13 @@ io.on('connection', (socket) => {
     //take userEmail and socketId from user
     socket.on("addUser", userEmail => {
         addUser(userEmail,socket.id)
-        console.log(`there are ${users.length} online users`)
+        console.log(`${userEmail} is connected`)
         io.emit("getUsers", users)
     })
 
     //send and get message
     socket.on("sendMessage", ({senderEmail,receiverEmail,text}) => {
+        console.log(`sending new message to ${receiverEmail} `)
         const receiver = getUser(receiverEmail)
         io.to(receiver.socketId).emit("getMessage", {
             senderEmail,
