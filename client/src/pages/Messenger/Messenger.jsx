@@ -17,22 +17,22 @@ import {getCurrentUser} from "../../Utils/currentUser";
 // --------------------------------------------------
 
 
-
+let currentMessagesBackup = null
+let selectedFriendEmail = null
+let friendListBackup = []
 
 export default function Messenger() {
     const currentUserEmail = getCurrentUser().email;
     const [friendList, setFriendList] = useState([])
     const [currentConversationId, setCurrentConversationId] = useState(null)
     const [currentMessages, setCurrentMessages] = useState([])
-    const [selectedFriendEmail,setSelectedFriendEmail] = useState(null)
-    const [arrivalMessage, setArrivalMessage] = useState(null)
+    //const [arrivalMessage, setArrivalMessage] = useState(null)
     const socket = useRef()
     const scrollRef = useRef()
     const newMessageContent = useRef()
 
     const [onlineUserList,setOnlineUserList] = useState([])
     useEffect(()=>{
-        setOnlineUserList([Users[0],Users[1]])// TODO: get online users from server
         const initializeFriendUserList = async () =>{
             let friendList = []
             try{
@@ -41,34 +41,56 @@ export default function Messenger() {
                 console.log(err)
             }finally {
                 setFriendList(friendList)
+                friendListBackup = friendList
             }
         }
         initializeFriendUserList()
     },[currentUserEmail])
 
+    const updateMessagesIfNecessary = (newMessage) => {
+        console.log(newMessage)
+        if(newMessage && newMessage?.sender === selectedFriendEmail){
+            console.log(currentMessages)
+            setCurrentMessages([...currentMessagesBackup, newMessage])
+            console.log(currentMessages)
+        }
+    }
+
     //initialize socket
     useEffect(() => {
         socket.current = io("ws://localhost:8900")
-        socket.current.emit("addUser",currentUserEmail)
         socket.current.on("getMessage", data => {
-            setArrivalMessage({
-                sender: data.senderEmail,
-                text: data.text,
-                createdAt: Date.now()
-            })
+            const objData = JSON.parse(data)
+            console.log(currentMessages)
+            const newMsg = {
+                sender: objData.senderEmail,
+                text: objData.text,
+                createdAt: Date.now(),
+                _id: Date.now().toString()
+            }
+            updateMessagesIfNecessary(newMsg)
+            //console.log(arrivalMessage)
         })
+        socket.current.on("getUsers", data => {
+            const onlineEmail = data.map(row => row.userEmail)
+            const onlineFriends = friendListBackup.filter(u => onlineEmail.includes(u.email))
+            console.log(onlineFriends)
+            setOnlineUserList(onlineFriends)
+        })
+        socket.current.emit("addUser",currentUserEmail)
+        socket.current.emit("getOnline", currentUserEmail)
     },[])
-
-    useEffect(()=>{
-        arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
-            setCurrentMessages([...currentMessages, arrivalMessage])
-    }, [arrivalMessage, currentConversationId])
+    // useEffect(()=>{
+    //     arrivalMessage && arrivalMessage?.senderEmail === selectedFriendEmail &&
+    //         setCurrentMessages([...currentMessages, arrivalMessage])
+    // }, [arrivalMessage, currentConversationId])
 
     //fetch message list
     useEffect(()=>{
         const initalizeMessageList = async () => {
             const res = await fetchConversationMessages(currentConversationId)
             setCurrentMessages(res)
+            currentMessagesBackup = res
         }
         initalizeMessageList()
     },[currentConversationId])
@@ -88,10 +110,12 @@ export default function Messenger() {
                         { friendList.map(user=>{
                             return (
                                 <div key={user._id} onClick={()=> {
+                                    selectedFriendEmail = user.email
                                     const initializeConversation = async () => {
                                         const conversation = await getSpecificConversation(currentUserEmail, user.email)
                                         setCurrentConversationId(conversation._id)
-                                        setSelectedFriendEmail(user.email)
+                                        console.log(currentConversationId)
+                                        console.log(selectedFriendEmail)
                                     }
                                     initializeConversation()
                                 }}>
@@ -122,6 +146,8 @@ export default function Messenger() {
                                         <button
                                                 className="chatSubmitButton"
                                                 onClick={(e)=>{
+                                                    console.log(currentConversationId)
+                                                    console.log(selectedFriendEmail)
                                                         const text = newMessageContent.current.value
                                                         if(text && text!== ""){
                                                             const sendAndGetNewMessage = async ()=>{
@@ -129,11 +155,12 @@ export default function Messenger() {
                                                                 setCurrentMessages([...currentMessages,savedMessage])
                                                             }
                                                             sendAndGetNewMessage()
-                                                            socket.current.emit("sendMessage",{
+                                                            console.log(socket.current.id)
+                                                            socket.current.emit("sendMessage",JSON.stringify({
                                                                 senderEmail: currentUserEmail,
                                                                 receiverEmail: selectedFriendEmail,
-                                                                text: newMessageContent
-                                                            })
+                                                                text
+                                                            }))
                                                         }else
                                                             console.log('message is empty')
                                                     }
@@ -150,7 +177,7 @@ export default function Messenger() {
                 </div>
                 <div className="chatOnline">
                     <div className="chatOnlineWrapper">
-                        { onlineUserList.map(user=><ChatOnline key={user.id.toString()} user={user}/>) }
+                        { onlineUserList.map(user=><ChatOnline key={user._id.toString()} user={user}/>) }
                     </div>
                 </div>
             </div>

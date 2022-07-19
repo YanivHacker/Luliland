@@ -14,7 +14,7 @@ export default function ChatOnline({user}) {
                         />
                         <div className="chatOnlineBadge"></div>
                     </div>
-                    <span className="chatOnlineName">{user.username}</span>
+                    <span className="chatOnlineName">{`${user.firstName} ${user.lastName}`}</span>
                 </div>
             </div>
         </>

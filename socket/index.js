@@ -25,17 +25,28 @@ io.on('connection', (socket) => {
     //take userEmail and socketId from user
     socket.on("addUser", userEmail => {
         addUser(userEmail,socket.id)
-        console.log(`there are ${users.length} online users`)
+        console.log(`${userEmail} is connected`)
         io.emit("getUsers", users)
     })
 
     //send and get message
-    socket.on("sendMessage", ({senderEmail,receiverEmail,text}) => {
-        const receiver = getUser(receiverEmail)
-        io.to(receiver.socketId).emit("getMessage", {
-            senderEmail,
-            text
-        })
+    socket.on("sendMessage", jsonStr => { //json should be {senderEmail,receiverEmail,text}
+        if(jsonStr){
+            const {senderEmail,receiverEmail,text} = JSON.parse(jsonStr)
+            console.log(`sending new message to ${receiverEmail} `)
+            const receiver = getUser(receiverEmail)
+            io.to(receiver.socketId).emit("getMessage", JSON.stringify({
+                senderEmail,
+                text
+            }))
+        }
+    })
+
+    socket.on("getOnline", userEmail => {
+        console.log(`client is ${userEmail}`)
+        const result = users.filter(u => u.userEmail!==userEmail)
+        console.log(result)
+        io.to(socket.socketId).emit("getUsers", result)
     })
 
 

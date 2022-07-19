@@ -3,7 +3,8 @@ const User = require('../Models/User');
 const Post = require('../Models/Post');
 const NodeGeocoder = require('node-geocoder');
 const Conversation = require("../Models/Conversation");
-const {getPopularNames} = require("../Utils/most-popular-first-names");
+const createCountMinSketch = require("count-min-sketch")
+//const {getPopularNames} = require("../Utils/most-popular-first-names");
 
 const readUsers = async (req,res) =>{
     let sent = false
@@ -199,7 +200,7 @@ const searchLatAndLngByAddress = async(address) => {
 // Using callback
     try {
         let status = await geocoder.geocode({'address': address});
-        return {lat: status[0].latitude, long: status[0].longitude};
+        return {lat: status[0].latitude, lng: status[0].longitude};
     }
     catch (err){
         console.log("Error converting address " + address + " with error " + err);
@@ -535,6 +536,69 @@ const deleteUser = async (req,res) => {
         res.status(400).send("error")
     }
 }
+
+
+
+//Increment counters
+
+const getPopularNames = async(isFirstName) => {
+    //Create data structure
+    let sketch = createCountMinSketch(0.01)
+    let allNames = [];
+    let allUsers = await readUsers(null, null);
+    if(!allUsers){
+        console.log("No users in DB")
+        return
+    }
+    for(let i =0; i < allUsers.length; i++)
+    {
+        let name = null
+        if(isFirstName)
+            name = allUsers[i].firstName;
+        else name = allUsers[i].lastName;
+        sketch.update(name, 1);
+        if(!allNames.includes(name))
+            allNames.push(name);
+    }
+
+//Query results
+    // get top 3 names and counts
+    let max = 0, maxName = null;
+    let secondMax = 0, secondMaxName = null;
+    let thirdMax = 0, thirdMaxName = null;
+    for(let i = 0; i < allNames.length; i++){
+        let key = allNames[i]
+        let frequency = sketch.query(key);
+        if(frequency > max){
+            thirdMax = secondMax;
+            thirdMaxName = secondMaxName;
+            secondMax = max;
+            secondMaxName = maxName;
+            max = frequency;
+            maxName = key;
+        }
+        else if(frequency > secondMax){
+            thirdMax = secondMax;
+            thirdMaxName = secondMaxName;
+            secondMax = frequency;
+            secondMaxName = key;
+        }
+        else if(frequency > thirdMax){
+            thirdMax = frequency;
+            thirdMaxName = key;
+        }
+    }
+    console.log("first place: " + maxName + " with " + max + " appearances")
+    console.log("second place: " + secondMaxName + " with " + secondMax + " appearances")
+    console.log("third place: " + thirdMaxName + " with " + thirdMax + " appearances")
+    return {firstPlace: maxName,
+        firstFrequency: max,
+        secondPlace: secondMaxName,
+        secondFrequency: secondMax,
+        thirdPlace: thirdMaxName,
+        thirdFrequency: thirdMax}
+}
+
 
 const getPopularFirstNames = async (req, res) => {
     try {
