@@ -28,25 +28,26 @@ function App() {
   // }
   //console.log(password)
   const user = getCurrentUser();
+  console.log("User in App.js" + user)
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={user ? <Home /> : <SignUp />}>
+          <Route exact path="/" element={<Home /> }>
           </Route>
-          <Route path="/login" element={<Login />}>
+          <Route path="/login" element={<Login /> }>
           </Route>
           <Route path="/register" element={user ? <Navigate to="/" /> : <SignUp />}>
           </Route>
-          <Route path="/logout" element={<Login />}>
-          </Route>
+          {/*<Route path="/logout" element={<Login />}>*/}
+          {/*</Route>*/}
           <Route path="/updateUser" element={<EditUser/>}>
           </Route>
           <Route path="/:postID/postDetails" element={<PostItem/>}>
           </Route>
           {/*<Route exact path="/" element={<Register/>} />*/}
           {/*<Route exact path="/login" element={<Login />} />*/}
-          {/*<Route path="/profile/:userEmail" element={<Profile />} />*/}
+          <Route path="/profile/:userEmail" element={<Profile />} />
           {/*<Route path="/messenger" element={<Messenger/>}/>*/}
         </Routes>
       </BrowserRouter>

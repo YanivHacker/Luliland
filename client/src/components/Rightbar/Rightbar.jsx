@@ -9,102 +9,86 @@ import { Link } from "react-router-dom";
 import {getCurrentUser} from "../../Utils/currentUser"
 import axios from "axios";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
+import {useParams} from "react-router";
+import React from "react";
+import {Avatar} from "antd";
+
 
 const USER_SERVICE = SERVER_URL + "/users"
 
-export default function Rightbar({ profile }) {
-    const user = getCurrentUser();
-    const [friends, setFriends] = useState([]);
-    const fetchFriends = async () => {
-        const response = await axios.get(USER_SERVICE + `/${user.email}/friends`)
-        const { data } = response;
-        console.log("friends" + data)
-        setFriends(data);
-    };
-    useEffect( () => {
-        fetchFriends();
-    }, []);
-    const HomeRightbar = () => {
-        return (
-            <>
-                <div className="birthdayContainer">
-                    <img className="birthdayImg" src="assets/gift.png" alt="" />
-                    <span className="birthdayText">
-            <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
-          </span>
-                </div>
-                <img className="rightbarAd" src="assets/ad.png" alt="" />
-                <hr className="rightbarHr" />
-                <h4 className="rightbarTitle">Friends ({friends.length})</h4>
-                <ul className="rightbarFriendList">
-                    {friends.map((u) => (
-                        <CloseFriend key={u.id} user={u} />
-                    ))}
-                </ul>
-            </>
-        );
-    };
 
-    const ProfileRightbar = () => {
-        const [friendList, setFriendList] = useState([]);
-        useEffect(() => {
-            const initalizeFriendList = async () => {
-                const res = await getUserFriends()
-                setFriendList(res)
-            }
-            initalizeFriendList()
-        }, []);
+const Rightbar = (props) => {
+    const [friendList, setFriendList] = useState([]);
+    console.log(props.profile.email)
+    useEffect(() => {
+        const initalizeFriendList = async () => {
+            console.log(props.profile)
+            const res = await getUserFriends(props.profile.email)
+            setFriendList(res)
+        }
+        initalizeFriendList()
+    }, [props.profile]);
 
-        return (
-            <>
-                <h4 className="rightbarTitle">User information</h4>
-                <div className="rightbarInfo">
-                    <div className="rightbarInfoItem">
-                        <span className="rightbarInfoKey">City:</span>
-                        <span className="rightbarInfoValue">New York</span>
-                    </div>
-                    <div className="rightbarInfoItem">
-                        <span className="rightbarInfoKey">From:</span>
-                        <span className="rightbarInfoValue">Madrid</span>
-                    </div>
-                    <div className="rightbarInfoItem">
-                        <span className="rightbarInfoKey">Relationship:</span>
-                        <span className="rightbarInfoValue">Single</span>
-                    </div>
-                </div>
-                <h4 className="rightbarTitle">User friends</h4>
-                <div className="rightbarFollowings">
-                    {friendList.map((friend)=> (
-                        <Link to={"/profile/" + friend.userEmail}
-                        style={{textDecoration: "none"}}>
-                            <div className="rightbarFollowing">
-                                <img
-                                    src={friend.profilePicture}
-                                    alt=""
-                                    className="rightbarFollowingImg"
-                                />
-                                <span className="rightbarFollowingName">{friend.firstName + friend.lastName}</span>
-                            </div>
-                        </Link>
-                    ))}
-                    <div className="rightbarFollowing">
-                        <img
-                            src="assets/person/6.jpeg"
-                            alt=""
-                            className="rightbarFollowingImg"
-                        />
-                        <span className="rightbarFollowingName">John Carter</span>
-                    </div>
-                </div>
-            </>
-        );
-    };
+    function AntDesignOutlined() {
+        return null;
+    }
+
     return (
         <div className="rightbar">
             <div className="rightbarWrapper">
-                {/*{profile ? <ProfileRightbar /> : <HomeRightbar />}*/}
-                <HomeRightbar />
+                <>
+                    <h4 className="rightbarTitle">User information</h4>
+                    <div className="rightbarInfo">
+                        <div className="rightbarInfoItem">
+                            <Avatar
+                                size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+                                icon={<AntDesignOutlined />}
+                                src={props.profile.profilePicture ? props.profile.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
+                            />
+                        </div>
+                        <div className="rightbarInfoItem">
+                            <span className="rightbarInfoKey">Full Name:</span>
+                            <span className="rightbarInfoValue">{props.profile.firstName + " " + props.profile.lastName}</span>
+                        </div>
+                        <div className="rightbarInfoItem">
+                            <span className="rightbarInfoKey">Address:</span>
+                            <span className="rightbarInfoValue">{props.profile.address}</span>
+                        </div>
+                        <div className="rightbarInfoItem">
+                            <span className="rightbarInfoKey">Email:</span>
+                            <span className="rightbarInfoValue">{props.profile.email}</span>
+                        </div>
+                    </div>
+                    {/*<h4 className="rightbarTitle">User friends</h4>*/}
+                    {/*<div className="rightbarFollowings">*/}
+                    {/*    {friendList.map((friend)=> {*/}
+                    {/*        console.log(friend.email)*/}
+                    {/*        return (*/}
+                    {/*            <Link to={"/profile/" + friend.email}*/}
+                    {/*                  style={{textDecoration: "none"}}>*/}
+                    {/*                <div className="rightbarFollowing">*/}
+                    {/*                    <img*/}
+                    {/*                        src={friend.profilePicture ? friend.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}*/}
+                    {/*                        alt=""*/}
+                    {/*                        className="rightbarFollowingImg"*/}
+                    {/*                    />*/}
+                    {/*                    <span className="rightbarFollowingName">{friend.firstName + " " + friend.lastName}</span>*/}
+                    {/*                </div>*/}
+                    {/*            </Link>*/}
+                    {/*        )})}*/}
+                    {/*</div>*/}
+
+                    <hr className="rightbarHr" />
+                    <h4 className="rightbarTitle">User Friends ({friendList.length})</h4>
+                    <ul className="rightbarFriendList">
+                        {friendList.map((u) => (
+                            <CloseFriend key={u.id} user={u} />
+                        ))}
+                    </ul>
+                </>
             </div>
         </div>
     );
 }
+
+export default React.memo(Rightbar);

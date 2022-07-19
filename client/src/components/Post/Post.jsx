@@ -16,6 +16,7 @@ export default function Post({ post }) {
     const [isLiked,setIsLiked] = useState(false)
 
     const [user, setUser] = useState([]);
+    debugger;
     const fetchUser = async () => {
         const response = await axios.get(SERVER_URL + `/users/${post.userEmail}`);
         const { data } = response;
@@ -28,11 +29,6 @@ export default function Post({ post }) {
     //console.log(user)
     console.log(post.images)
 
-
-    const likeHandler =()=>{
-        setLike(isLiked ? like-1 : like+1)
-        setIsLiked(!isLiked)
-    }
     return (
         <div className="post">
             <div className="postWrapper">
@@ -41,7 +37,7 @@ export default function Post({ post }) {
                         <Link to={`/profile/${post.userEmail}`}>
                             <img
                                 className="postProfileImg"
-                                src={user.profilePicture ? user.profilePicture : "assets/person/person-icon.png"}
+                                src={user.profilePicture ? user.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                                 alt=""
                             />
                         </Link>
@@ -55,19 +51,14 @@ export default function Post({ post }) {
                     </div>
                 </div>
                 <div className="postCenter">
-                    <span className="postText">{post.title}</span>
+                    <span className="postText">{post.content}</span>
                         <img className="postImg" src={post.image} alt="" />
-                    <span className="postContent">{post.content}</span>
+                    {/*<span className="postContent">{post.content}</span>*/}
                 </div>
                 <div className="postBottom">
-                    <div className="postBottomLeft">
-                        <img className="likeIcon" src="assets/like.png" onClick={likeHandler} alt="" />
-                        <img className="likeIcon" src="assets/heart.png" onClick={likeHandler} alt="" />
-                        <span className="postLikeCounter">{like} people like it</span>
-                    </div>
-                    <div className="postBottomRight">
-                        <span className="postCommentText">{post.comment} comments</span>
-                    </div>
+                    {/*<div className="postBottomRight">*/}
+                    {/*    <span className="postCommentText">{post.comment} comments</span>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </div>

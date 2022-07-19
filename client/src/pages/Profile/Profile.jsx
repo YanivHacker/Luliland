@@ -3,27 +3,38 @@ import Topbar from "../../components/Topbar/Topbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Feed from "../../components/Feed/Feed";
 import Rightbar from "../../components/Rightbar/Rightbar";
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import { useParams } from "react-router";
 import {getUserByEmail} from "../../services/UserService";
+import {getCurrentUser} from "../../Utils/currentUser";
+import useMounted from "../../hooks/useMounted";
 
+const USER_SERVICE = SERVER_URL + "/users"
 
 export default function Profile() {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState({});
+    const isMounted  = useMounted();
     const userEmail = useParams().userEmail;
     console.log(userEmail);
 
-    const fetchUser = async () => {
-        const response = await getUserByEmail(userEmail);
-        setUser(response);
-    };
+
     useEffect( () => {
-        fetchUser();
-    },[userEmail]);
+        const fetchUser = async () => {
+            //const response = await getUserByEmail(userEmail);
+            const response = await axios.get( USER_SERVICE + `/${userEmail}`)
+            const { data } = response;
+            console.log(data)
+            if (isMounted) setUser(data);
+        };
+        isMounted && fetchUser()
+    },[userEmail, isMounted]);
+
     //console.log(post.images)
+    const newUser = useMemo(() => user || {}, [user]);
+    console.log(newUser.email)
+    
     return (
         <>
             <Topbar />
@@ -34,23 +45,24 @@ export default function Profile() {
                             <div className="profileCover">
                                 <img
                                     className="profileCoverImg"
-                                    src="assets/post/3.jpg"
+                                    src="https://images.pexels.com/photos/1535907/pexels-photo-1535907.jpeg?cs=srgb&dl=pexels-karyme-fran%C3%A7a-1535907.jpg&fm=jpg"
                                     alt=""
                                 />
                                 <img
                                     className="profileUserImg"
-                                    src={user.profilePicture ? user.profilePicture : "assets/person/default.jpg"}
+                                    src={newUser.profilePicture ? newUser.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                                     alt=""
                                 />
                             </div>
                             <div className="profileInfo">
-                                <h4 className="profileInfoName">{user.userEmail}</h4>
+                                <h4 className="profileInfoName">{newUser.userEmail}</h4>
                                 <span className="profileInfoDesc">Hello my friends!</span>
                             </div>
                         </div>
                         <div className="profileRightBottom">
-                            <Feed userEmail={userEmail}/>
-                            <Rightbar />
+                            {newUser.email === getCurrentUser().email &&
+                                <Feed userEmail={userEmail}/>}
+                            {newUser && newUser.email && <Rightbar profile={newUser} />}
                         </div>
                     </div>
             </div>

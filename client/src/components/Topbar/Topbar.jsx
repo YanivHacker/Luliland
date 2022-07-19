@@ -32,7 +32,7 @@ export default function Topbar(callback, deps) {
 
     const onClickLogOut = (isUserNameExists,isUserPasswordExists) => {
             localStorage.clear();
-            nav('/logout');
+            nav('/login');
 
         return
     };

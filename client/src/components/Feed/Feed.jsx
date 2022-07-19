@@ -11,7 +11,7 @@ export default function Feed({userEmail}) {
     const [posts, setPosts] = useState([]);
     const fetchPosts = async () => {
         const response = userEmail
-        ? await axios.get(SERVER_URL + `/users/${userEmail}/posts`)
+        ? await axios.get(SERVER_URL + `/users/${userEmail}/posts `)
         : await axios.get(POST_SERVICE);
         const { data } = response;
         setPosts(data);

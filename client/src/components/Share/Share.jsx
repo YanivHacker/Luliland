@@ -56,11 +56,7 @@ export default function Share() {
                 <div className="shareTop">
                     <img
                         className="shareProfileImg"
-                        src={
-                            user.profilePicture
-                                ? PF + user.profilePicture
-                                : PF + "person/noAvatar.png"
-                        }
+                        src={user.profilePicture ? user.profilePicture : "assets/person/person-icon.png"}
                         alt=""
                     />
                     <input
