@@ -502,7 +502,7 @@ const readPostsByUser = async (req,res) =>{
                 res.status(400).json({message: err});
                 sent = true;
             } else if (docs && !sent) {
-                res.status(200).json(docs);
+                res.status(200).json(docs.reverse());
                 sent = true;
             } else return null;
         }).clone();
