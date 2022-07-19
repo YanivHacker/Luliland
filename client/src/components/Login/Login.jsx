@@ -8,8 +8,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import validator from "validator/es";
 import {getUserByEmail, login} from "../../services/UserService";
-import "./login.css"
 import {useNavigate} from "react-router-dom";
+import "./loginForm.css"
 
 export default function FormDialog() {
     const [open, setOpen] = useState(false)
@@ -66,51 +66,37 @@ export default function FormDialog() {
     };
 
     return (
-        <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <div className="loginBox">
+            <h1>Login</h1>
+            <TextField
+                error={!validEmail}
+                inputRef={emailRef}
+                autoFocus
+                margin="dense"
+                label="Email Address"
+                type="email"
+                onChange={validateError}
+                helperText={!validEmail ? errors.email : ""}
+                fullWidth
+            />
+            <br />
+            <TextField
+                error={!validPassword}
+                inputRef={passwordRef}
+                autoFocus
+                margin="dense"
+                label="Password"
+                type="password"
+                onChange={validateError}
+                helperText={!validPassword ? errors.password : ""}
+                fullWidth
+            />
+            {successLogIn==="FAILED" &&
+                <label className={"errorMessage"}>email or password is wrong</label>
+            }
+            <Button style={{paddingTop: 20}} onClick={signIn} color="primary" disabled={!validEmail || !validPassword}>
                 Sign In
             </Button>
-            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Sign In</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Please enter your user credentials to sign in.
-                    </DialogContentText>
-                    <TextField
-                        error={!validEmail}
-                        inputRef={emailRef}
-                        autoFocus
-                        margin="dense"
-                        label="Email Address"
-                        type="email"
-                        onChange={validateError}
-                        helperText={!validEmail ? errors.email : ""}
-                        fullWidth
-                    />
-                    <TextField
-                        error={!validPassword}
-                        inputRef={passwordRef}
-                        autoFocus
-                        margin="dense"
-                        label="Password"
-                        type="password"
-                        onChange={validateError}
-                        helperText={!validPassword ? errors.password : ""}
-                        fullWidth
-                    />
-                    {successLogIn==="FAILED" &&
-                        <label className={"errorMessage"}>email or password is wrong</label>
-                    }
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={signIn} color="primary" disabled={!validEmail || !validPassword}>
-                        Sign In
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </div>
     );
 }
