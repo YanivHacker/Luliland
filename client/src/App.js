@@ -6,7 +6,6 @@ import { SignUp } from "./components/SignUp/SignUp";
 import Profile from "./pages/Profile/Profile";
 import Messenger from "./pages/Messenger/Messenger";
 import Admin from "./pages/admin/Admin";
-import { AuthContext } from "./context/AuthContext";
 import {useContext, useState} from "react";
 import Login from "./components/Login/Login";
 import {Navigate} from 'react-router-dom';
@@ -50,8 +49,6 @@ function App() {
           {/*<Route exact path="/" element={<Register/>} />*/}
           {/*<Route exact path="/login" element={<Login />} />*/}
           <Route path="/profile/:userEmail" element={<Profile />} />
-          {/*<Route path="/messenger" element={<Messenger/>}/>*/}
-          {/*<Route path="/profile/:userEmail" element={<Profile />} />*/}
           <Route path="/messenger" element={<Messenger/>}/>
           <Route path="/admin" element={<Admin/>} />
         </Routes>

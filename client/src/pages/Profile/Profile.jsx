@@ -10,6 +10,9 @@ import { useParams } from "react-router";
 import {getUserByEmail} from "../../services/UserService";
 import {getCurrentUser} from "../../Utils/currentUser";
 import useMounted from "../../hooks/useMounted";
+import {Button} from "@material-ui/core";
+import {notification} from "antd";
+
 
 const USER_SERVICE = SERVER_URL + "/users"
 
@@ -34,7 +37,21 @@ export default function Profile() {
     //console.log(post.images)
     const newUser = useMemo(() => user || {}, [user]);
     console.log(newUser.email)
-    
+
+    const openNotification = (content) => {
+        notification.open({
+            message: content,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const response = await axios.post( USER_SERVICE + `/${getCurrentUser().email}/addFriend`,{friendEmail: newUser.email})
+        if(response.status === 200) {
+            openNotification("Added User to your friends list successfully")
+        }
+    }
+
     return (
         <>
             <Topbar />
@@ -56,7 +73,7 @@ export default function Profile() {
                             </div>
                             <div className="profileInfo">
                                 <h4 className="profileInfoName">{newUser.userEmail}</h4>
-                                <span className="profileInfoDesc">Hello my friends!</span>
+                                {getCurrentUser().email !== newUser.email && <Button onClick={handleSubmit}>Add Friend</Button>}
                             </div>
                         </div>
                         <div className="profileRightBottom">

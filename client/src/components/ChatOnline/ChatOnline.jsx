@@ -9,7 +9,7 @@ export default function ChatOnline({user}) {
                     <div className="chatOnlineImgContainer">
                         <img
                             className="chatOnlineImg"
-                            src={( user && user.profilePicture) || "assets/person/default.jpg"}
+                            src={( user && user.profilePicture) || "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                             alt=""
                         />
                         <div className="chatOnlineBadge"></div>

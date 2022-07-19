@@ -1,6 +1,8 @@
 import "./sidebar.css"
 import HomeIcon from '@mui/icons-material/Home';
 import {Users} from "../../dummyData"
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+
 import {
     RssFeed,
     Chat,
@@ -21,12 +23,20 @@ const SidebarData = [
     {
         title: "Feed",
         icon: <RssFeed />,
-        link: "/"
+        link: "/",
+        forAdmin: false
     },
     {
         title: "Chat",
         icon: <Chat />,
-        link: "/messenger"
+        link: "/messenger",
+        forAdmin: false
+    },
+    {
+        title: "Admin",
+        icon: <AdminPanelSettingsIcon />,
+        link: "/admin",
+        forAdmin: true
     }
 ]
 
@@ -56,6 +66,9 @@ export default function Sidebar() {
                                         if(val.forAdmin && !user.isAdmin) {
                                             openNotification('You cant go there');
                                         }
+                                        if(!val.forAdmin) {
+                                            window.location.pathname = val.link;
+                                        }
                                     }}>
                                     <div className="sidebarIcon">{val.icon}</div>
                                     <div className="sidebarListItemTitle">{val.title}</div>
@@ -64,14 +77,14 @@ export default function Sidebar() {
                         )
                     })}
                 </ul>
-                <button className="sidebarButton">Show More</button>
+                {/*<button className="sidebarButton">Welcom to Luliland</button>*/}
                 <hr className="sidebarHr" />
-                <ul className="sidebarFriendList">
-                    <h4 className="sidebarTitle">Online Friends</h4>
-                    {Users.map((u) => (
-                        <Online key={u.id} user={u} />
-                    ))}
-                </ul>
+                {/*<ul className="sidebarFriendList">*/}
+                {/*    <h4 className="sidebarTitle">Online Friends</h4>*/}
+                {/*    {Users.map((u) => (*/}
+                {/*        <Online key={u.id} user={u} />*/}
+                {/*    ))}*/}
+                {/*</ul>*/}
             </div>
         </div>
     )

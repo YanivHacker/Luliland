@@ -4,7 +4,6 @@ import Online from "../Online/Online";
 import CloseFriend from "../CloseFriend/CloseFriend";
 import {getUserFriends} from "../../services/UserService";
 import {useContext, useState, useEffect, useMemo} from "react";
-import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import {getCurrentUser} from "../../Utils/currentUser"
 import axios from "axios";

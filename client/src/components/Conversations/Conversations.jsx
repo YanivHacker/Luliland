@@ -6,7 +6,7 @@ export default function Conversation({user}){
         <>
             <div className="conversation">
                 <img className="conversationImg"
-                 src={user.profilePicture ? user.profilePicture : "assets/person/default.jpg"}
+                 src={user.profilePicture ? user.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                  alt=""/>
 
                 <span className="conversationName">{`${user.firstName} ${user.lastName}`}</span>
