@@ -3,36 +3,38 @@ import Topbar from "../../components/Topbar/Topbar";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Feed from "../../components/Feed/Feed";
 import Rightbar from "../../components/Rightbar/Rightbar";
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {SERVER_URL} from "../../services/HttpServiceHelper";
 import { useParams } from "react-router";
 import {getUserByEmail} from "../../services/UserService";
 import {getCurrentUser} from "../../Utils/currentUser";
-// import useMounted from "../../";
+import useMounted from "../../hooks/useMounted";
 
+const USER_SERVICE = SERVER_URL + "/users"
 
 export default function Profile() {
-    //const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [user, setUser] = useState({});
-    //const user = getCurrentUser();
     const isMounted  = useMounted();
     const userEmail = useParams().userEmail;
     console.log(userEmail);
 
+
     useEffect( () => {
-        const fetchUsers = async () => {
-            debugger
-            const response = await axios.get(SERVER_URL + `/users/${userEmail}`);
+        const fetchUser = async () => {
+            //const response = await getUserByEmail(userEmail);
+            const response = await axios.get( USER_SERVICE + `/${userEmail}`)
             const { data } = response;
-            console.log({data});
-            if(isMounted) setUser(data);
+            console.log(data)
+            if (isMounted) setUser(data);
         };
-        isMounted && fetchUsers();
-    },[isMounted]);
+        isMounted && fetchUser()
+    },[userEmail, isMounted]);
 
     //console.log(post.images)
-
+    const newUser = useMemo(() => user || {}, [user]);
+    console.log(newUser.email)
+    
     return (
         <>
             <Topbar />
@@ -48,18 +50,19 @@ export default function Profile() {
                                 />
                                 <img
                                     className="profileUserImg"
-                                    src={user.profilePicture ? user.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
+                                    src={newUser.profilePicture ? newUser.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                                     alt=""
                                 />
                             </div>
                             <div className="profileInfo">
-                                <h4 className="profileInfoName">{user.userEmail}</h4>
+                                <h4 className="profileInfoName">{newUser.userEmail}</h4>
                                 <span className="profileInfoDesc">Hello my friends!</span>
                             </div>
                         </div>
                         <div className="profileRightBottom">
-                            <Feed userEmail={userEmail}/>
-                            <Rightbar profile = {user}/>
+                            {newUser.email === getCurrentUser().email &&
+                                <Feed userEmail={userEmail}/>}
+                            {newUser && newUser.email && <Rightbar profile={newUser} />}
                         </div>
                     </div>
             </div>
