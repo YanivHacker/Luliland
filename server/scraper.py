@@ -8,7 +8,8 @@ def make_sample_info(name: str) -> dict:
         'firstName': name.split(' ')[0],
         'lastName': name.split(' ')[1],
         'email': f"{name.split(' ')[0]}.{name.split(' ')[1]}@generated-email.com",
-        'password': f"{name}-generated-password123"
+        'password': f"{name}-generated-password123",
+        'address': f"{name.split(' ')[1]} Rd."
     }
     return res
 
