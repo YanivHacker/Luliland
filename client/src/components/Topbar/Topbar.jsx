@@ -11,6 +11,7 @@ import SearchList from "./SearchList";
 import {FormControlLabel, FormGroup} from "@mui/material";
 import {Checkbox} from "antd";
 import useMounted from '../../hooks/useMounted';
+import {getCurrentUser} from "../../Utils/currentUser";
 
 export default function Topbar(callback, deps) {
     const isUserNameExists  = localStorage.getItem("username");
@@ -93,7 +94,7 @@ export default function Topbar(callback, deps) {
                     </span>
                 </div>
                 <div className="topbarImage">
-                    <Link to="/updateUser" style={{textDecoration:"none"}}>
+                    <Link to={`/updateUser/${getCurrentUser().email}`} style={{textDecoration:"none"}}>
                         <Person />
                     </Link>
                 </div>

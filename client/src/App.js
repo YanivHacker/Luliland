@@ -43,7 +43,7 @@ function App() {
           </Route>
           {/*<Route path="/logout" element={<Login />}>*/}
           {/*</Route>*/}
-          <Route path="/updateUser/:" element={<EditUser/>}>
+          <Route path="/updateUser/:userEmail" element={<EditUser/>}>
           </Route>
           <Route path="/:postID/postDetails" element={<PostItem/>}>
           </Route>
