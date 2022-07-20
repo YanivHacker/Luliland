@@ -14,7 +14,6 @@ const EditUser = () => {
             <div className="homeContainer">
                 <Sidebar />
                 <UpdateUser />
-                <Rightbar />
             </div>
         </>
     );

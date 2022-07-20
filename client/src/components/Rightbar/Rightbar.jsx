@@ -25,12 +25,12 @@ const Rightbar = (props) => {
     console.log(props.profile.email)
     useEffect(() => {
         const initalizeFriendList = async () => {
-            console.log(props.profile)
+            console.log("Props profile: " + props.profile.email)
             const res = await getUserFriends(props.profile.email)
             if(isMounted)
                 setFriendList(res)
         }
-        isMounted && initalizeFriendList()
+        props.profile && isMounted && initalizeFriendList()
     }, [props.profile, isMounted]);
 
     function AntDesignOutlined() {
@@ -44,7 +44,7 @@ const Rightbar = (props) => {
             <div className="rightbarWrapper">
                 <>
                     <h4 className="rightbarTitle">User information</h4>
-                    <div className="rightbarInfo">
+                    {profile && <div className="rightbarInfo">
                         <div className="rightbarInfoItem">
                             <Avatar
                                 size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
@@ -64,7 +64,7 @@ const Rightbar = (props) => {
                             <span className="rightbarInfoKey">Email:</span>
                             <span className="rightbarInfoValue">{profile.email}</span>
                         </div>
-                    </div>
+                    </div>}
                     {/*<h4 className="rightbarTitle">User friends</h4>*/}
                     {/*<div className="rightbarFollowings">*/}
                     {/*    {friendList.map((friend)=> {*/}

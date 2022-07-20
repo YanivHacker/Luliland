@@ -361,18 +361,23 @@ const addUserFriend = async(req, res) => {
         friends.push(newFriend);
         friendFriends.push(email);
         let response;
-        response = await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}).clone();
         response = await User.findOneAndUpdate({email: newFriend, isDeleted: false}, {friends: friendFriends}).clone();
+        response = await User.findOneAndUpdate({email: email, isDeleted: false}, {friends: friends}).clone();
 
         const conversation = new Conversation({
             members: [email, newFriend]
         });
         await conversation.save()
-        res.status(200).send("Success")
+        if(!sent) {
+            res.status(200).json(response)
+            sent = true;
+        }
     }
     catch(e){
         console.log("Exception " + e + " occurred in addUserFriend")
-        res.status(400).send("error")
+        if(!sent) {
+            res.status(400).send("error")
+        }
     }
 }
 
@@ -462,17 +467,9 @@ const updateUser = async (req,res) => {
         if (address && address.length > 0)
             updateInfo.address = address
 
-        await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo, function (error, result) {
-            if (error) {
-                if (!sent) {
-                    res.status(400).send(error)
-                    sent = true;
-                }
-
-            }
-        }).clone();
+        const result = await User.findOneAndUpdate({email: email, isDeleted: false}, updateInfo).clone();
         if (!sent) {
-            res.status(200).json("Updated successfully");
+            res.status(200).json(result);
             sent = true;
         }
     }
