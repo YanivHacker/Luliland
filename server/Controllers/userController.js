@@ -599,7 +599,7 @@ const getPopularNames = async(isFirstName) => {
 
 const getPopularFirstNames = async (req, res) => {
     try {
-        const result = getPopularNames(true);
+        const result = await getPopularNames(true);
         res.status(200).json(result);
     }
     catch(e) {
@@ -610,7 +610,7 @@ const getPopularFirstNames = async (req, res) => {
 
 const getPopularLastNames = async (req, res) => {
     try {
-        const result = getPopularNames(false);
+        const result = await getPopularNames(false);
         res.status(200).json(result);
     }
     catch (e) {
