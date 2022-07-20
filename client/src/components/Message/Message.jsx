@@ -77,7 +77,7 @@ export default  function Message({own, userEmail, messageInfo}){
                 <div className="messageTop">
                     <img
                         className="messageImg"
-                        src={userInfo.profilePicture ? userInfo.profilePicture : "assets/person/default.jpg"}
+                        src={userInfo.profilePicture ? userInfo.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                         alt=""
                     />
                     <p className="messageText">

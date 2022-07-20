@@ -62,7 +62,7 @@ export default function Share() {
                 <div className="shareTop">
                     <img
                         className="shareProfileImg"
-                        src={user.profilePicture ? user.profilePicture : "assets/person/person-icon.png"}
+                        src={user.profilePicture ? user.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                         alt=""
                     />
                     <input

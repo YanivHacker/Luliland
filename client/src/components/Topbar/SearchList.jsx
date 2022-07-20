@@ -30,7 +30,7 @@ const SearchList = (props) => {
                     <Link to={`/profile/${u.email}`}>
                         <img
                             className="postProfileImg"
-                            src={u.profilePicture ? u.profilePicture : "assets/person/person-icon.png"}
+                            src={u.profilePicture ? u.profilePicture : "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                             alt=""
                         />
                     </Link>

@@ -90,7 +90,7 @@ const PostDetails = (props) => {
                      <Link to={`/profile/${updatedPost && updatedPost.userEmail}`}>
                          <img
                              className="postProfileImg"
-                             src={(newUser && newUser.profilePicture) || "assets/person/person-icon.png"}
+                             src={(newUser && newUser.profilePicture) || "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}
                             alt=""
                          />
                      </Link>
@@ -117,7 +117,7 @@ const PostDetails = (props) => {
                  />}
 
              <Comment
-                 avatar={<Avatar src={(newUser && newUser.profilePicture) || "assets/person/person-icon.png"}/>}
+                 avatar={<Avatar src={(newUser && newUser.profilePicture) || "https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png"}/>}
                  content={
                      <Editor
                          onChange={handleChange}
