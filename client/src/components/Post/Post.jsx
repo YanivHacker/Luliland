@@ -3,7 +3,7 @@ import { MoreVert } from "@material-ui/icons";
 //import { Users } from "../../dummyData";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { format } from "timeago.js";
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -13,6 +13,7 @@ const {SERVER_URL} = require("../../services/HttpServiceHelper");
 
 export default function Post({ post }) {
 
+    const navigate = useNavigate()
     const [user, setUser] = useState([]);
     const fetchUser = async () => {
         const response = await axios.get(SERVER_URL + `/users/${post.userEmail}`);
@@ -27,7 +28,7 @@ export default function Post({ post }) {
     console.log(post.images)
 
     return (
-        <div className="post">
+        <div className="post" onClick={(e) => navigate(`/${post._id}/postDetails`)}>
             <div className="postWrapper">
                 <div className="postTop">
                     <div className="postTopLeft">
