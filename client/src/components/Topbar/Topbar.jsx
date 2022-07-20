@@ -98,9 +98,9 @@ export default function Topbar(callback, deps) {
                     </Link>
                 </div>
                 <div className="topbarImage">
-                    <Button onClick={(e) => {
+                    <Button  variant="outlined" onClick={(e) => {
                         onClickLogOut(isUserNameExists, isUserPasswordExists)
-                    }} style={{background:"grey"}}>
+                    }} >
                         Logout
                     </Button>
                 </div>
