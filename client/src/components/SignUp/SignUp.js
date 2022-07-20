@@ -22,7 +22,7 @@ export const SignUp = ()=>{
             firstName: firstName.current.value,
             lastName: lastName.current.value,
             fullName: firstName.current.value + " " + lastName.current.value,
-            isAdmin: true,
+            isAdmin: false,
             creationDate: new Date(Date.now()),
             email: email.current.value,
             password: password.current.value,
