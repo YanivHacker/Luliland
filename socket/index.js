@@ -35,10 +35,12 @@ io.on('connection', (socket) => {
             const {senderEmail,receiverEmail,text} = JSON.parse(jsonStr)
             console.log(`sending new message to ${receiverEmail} `)
             const receiver = getUser(receiverEmail)
-            io.to(receiver.socketId).emit("getMessage", JSON.stringify({
-                senderEmail,
-                text
-            }))
+            if(receiver) {
+                io.to(receiver.socketId).emit("getMessage", JSON.stringify({
+                    senderEmail,
+                    text
+                }))
+            }
         }
     })
 
