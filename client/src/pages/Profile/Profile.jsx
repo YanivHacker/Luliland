@@ -49,7 +49,8 @@ export default function Profile() {
         const response = await axios.post( USER_SERVICE + `/${getCurrentUser().email}/addFriend`,{friendEmail: newUser.email})
         if(response.status === 200) {
             console.log("User after friend: " + response.data)
-            localStorage.setItem("user", JSON.stringify(response.data));
+            if(response.data.email === getCurrentUser().email)
+                localStorage.setItem("user", JSON.stringify(response.data));
             openNotification("Added User to your friends list successfully")
         }
     }

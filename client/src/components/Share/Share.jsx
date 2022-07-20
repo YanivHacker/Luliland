@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import getUserByEmail from "../../services/UserService";
+import {getCurrentUser} from "../../Utils/currentUser";
 
 const {SERVER_URL} = require("../../services/HttpServiceHelper");
 const POST_SERVICE = SERVER_URL + '/posts';
@@ -38,7 +39,12 @@ export default function Share() {
                     try {
                         newPost.image = base64
                         console.log(newPost);
-                        await axios.post(POST_SERVICE, newPost);
+                        let user = getCurrentUser();
+                        let posts = user.allPostIDs || [];
+                        const post = await axios.post(POST_SERVICE, newPost);
+                        posts.push(post._id || post.id);
+                        user.allPostIDs = posts;
+                        localStorage.setItem("user", JSON.stringify(user));
                         window.location.reload();
                     } catch (err) {}
                 }

@@ -84,7 +84,8 @@ export default function UpdateUser() {
                         const response = await axios.patch(SERVER_URL + `/users/${user.email}`, updatedUser);
                         console.log("Updated user: " + response.data);
                         if(response.status === 200){
-                            localStorage.setItem("user", JSON.stringify(response.data));
+                            if(response.data.email === getCurrentUser().email)
+                                localStorage.setItem("user", JSON.stringify(response.data));
                             openNotification('User updated successfully!');
                         }
                         else openNotification('Error while updating your user');
