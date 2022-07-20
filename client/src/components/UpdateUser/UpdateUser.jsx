@@ -119,6 +119,7 @@ export default function UpdateUser() {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
+                      style={{paddingRight:500}}
                 >
                     <Form.Item
                         label="First Name"
@@ -157,16 +158,7 @@ export default function UpdateUser() {
                         <Input.Password />
                     </Form.Item>
 
-                    <Form.Item style={{paddingLeft: 400}}>
-                        <Avatar
-                            size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
-                            icon={<AntDesignOutlined />}
-                            src={file && (file.type === Blob || file.type === File || file.type === MediaSource) && URL.createObjectURL(file)}
-                            //ref={profilePicture}
-                        />
-                    </Form.Item>
-
-                    <Form.Item style={{paddingLeft: 230}}>
+                    <Form.Item style={{paddingLeft: 290}}>
                         <label htmlFor="file" className="shareOption">
                             <PermMedia htmlColor="tomato" className="shareIcon" />
                             <span className="shareOptionText">Upload avatar picture</span>
