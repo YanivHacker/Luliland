@@ -16,17 +16,17 @@ export default function Admin(){
 
     const menuOption = [
         {
-            title: 'users',
+            title: 'Users',
             icon: <PeopleAltIcon />,
             action: e => setSelectedView(<UserTable/>)
         },
         {
-            title: 'posts',
+            title: 'Posts',
             icon: <StickyNote2Icon />,
             action: e => setSelectedView(<PostTable/>)
         },
         {
-            title: 'analytics info',
+            title: 'Analytics Info',
             icon: <QueryStatsIcon />,
             action: e => setSelectedView(<Analytic/>)
         }
