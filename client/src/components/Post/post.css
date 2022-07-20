@@ -6,6 +6,10 @@
     margin: 30px 0;
 }
 
+.post:hover{
+    cursor: pointer;
+}
+
 .postWrapper {
     padding: 10px;
 }
