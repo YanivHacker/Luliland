@@ -2,7 +2,7 @@ import React, {createRef, useRef, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import validator from "validator/es";
-import {getUserByEmail, login} from "../../services/UserService";
+import {getUserByEmail, login, signUp} from "../../services/UserService";
 import {useNavigate} from "react-router-dom";
 import "./loginForm.css"
 import {notification} from "antd";
@@ -102,6 +102,11 @@ export default function FormDialog() {
             }
             <Button style={{paddingTop: 20}} onClick={signIn} color="primary" disabled={!validEmail || !validPassword}>
                 Sign In
+            </Button>
+            <Button style={{paddingTop: 20}} onClick={(e) => {
+                navigate("/register")
+            }} color="primary">
+                Sign Up
             </Button>
         </div>
         </>
